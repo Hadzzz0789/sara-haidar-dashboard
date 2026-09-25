@@ -1,16 +1,20 @@
-const clock = document.getElementById("clock");
-const search = document.getElementById("search");
+/* =========================================================
+   SARA'S & HAIDAR'S DASHBOARD
+   ========================================================= */
 
-const cards =
-    [...document.querySelectorAll(".game-card")];
 
-const filters =
-    [...document.querySelectorAll(".filter")];
+/* =========================
+   CLOCK
+   ========================= */
+
+const clock =
+    document.getElementById("clock");
 
 
 function updateClock() {
 
-    const now = new Date();
+    const now =
+        new Date();
 
     clock.textContent =
         now.toLocaleTimeString(
@@ -22,94 +26,246 @@ function updateClock() {
         );
 }
 
+
 updateClock();
 
-setInterval(updateClock, 1000);
+setInterval(
+    updateClock,
+    1000
+);
 
 
-let currentFilter = "all";
+/* =========================
+   DARK / LIGHT MODE
+   ========================= */
+
+const root =
+    document.documentElement;
+
+const themeButton =
+    document.getElementById(
+        "themeToggle"
+    );
+
+const themeIcon =
+    document.getElementById(
+        "themeIcon"
+    );
 
 
-function updateGames() {
+const savedTheme =
+    localStorage.getItem(
+        "sh-theme"
+    );
+
+
+if (savedTheme) {
+
+    root.setAttribute(
+        "data-theme",
+        savedTheme
+    );
+
+} else {
+
+    root.setAttribute(
+        "data-theme",
+        "dark"
+    );
+}
+
+
+function updateThemeIcon() {
+
+    const theme =
+        root.getAttribute(
+            "data-theme"
+        );
+
+    themeIcon.textContent =
+        theme === "dark"
+            ? "☀️"
+            : "🌙";
+}
+
+
+updateThemeIcon();
+
+
+themeButton.addEventListener(
+    "click",
+    () => {
+
+        const current =
+            root.getAttribute(
+                "data-theme"
+            );
+
+        const next =
+            current === "dark"
+                ? "light"
+                : "dark";
+
+        root.setAttribute(
+            "data-theme",
+            next
+        );
+
+        localStorage.setItem(
+            "sh-theme",
+            next
+        );
+
+        updateThemeIcon();
+    }
+);
+
+
+/* =========================
+   GAME SEARCH
+   ========================= */
+
+const search =
+    document.getElementById(
+        "gameSearch"
+    );
+
+const cards =
+    Array.from(
+        document.querySelectorAll(
+            ".game-card"
+        )
+    );
+
+let currentCategory =
+    "all";
+
+
+function updateVisibleGames() {
 
     const query =
-        search.value.toLowerCase();
+        search.value
+            .trim()
+            .toLowerCase();
 
-    cards.forEach(card => {
 
-        const name =
-            card.dataset.name.toLowerCase();
+    cards.forEach(
+        card => {
 
-        const category =
-            card.dataset.category;
+            const gameName =
+                card.dataset.name
+                    .toLowerCase();
 
-        const matchesSearch =
-            name.includes(query);
+            const category =
+                card.dataset.category;
 
-        const matchesFilter =
-            currentFilter === "all" ||
-            category === currentFilter;
 
-        card.classList.toggle(
-            "hidden",
-            !(matchesSearch && matchesFilter)
-        );
-    });
+            const matchesSearch =
+                gameName.includes(
+                    query
+                );
+
+
+            const matchesCategory =
+                currentCategory === "all" ||
+                category === currentCategory;
+
+
+            card.classList.toggle(
+                "hidden",
+                !(
+                    matchesSearch &&
+                    matchesCategory
+                )
+            );
+        }
+    );
 }
 
 
 search.addEventListener(
     "input",
-    updateGames
+    updateVisibleGames
 );
 
 
-filters.forEach(button => {
+/* =========================
+   FILTERS
+   ========================= */
 
-    button.addEventListener(
-        "click",
-        () => {
-
-            filters.forEach(
-                b => b.classList.remove("active")
-            );
-
-            button.classList.add("active");
-
-            currentFilter =
-                button.dataset.filter;
-
-            updateGames();
-        }
+const filters =
+    document.querySelectorAll(
+        ".filter"
     );
-});
 
 
-cards.forEach(card => {
+filters.forEach(
+    button => {
 
-    card.addEventListener(
-        "click",
-        () => {
+        button.addEventListener(
+            "click",
+            () => {
 
-            const played =
-                Number(
-                    localStorage.getItem(
-                        "shGamesPlayed"
-                    )
-                ) || 0;
+                filters.forEach(
+                    filter =>
+                        filter.classList.remove(
+                            "active"
+                        )
+                );
 
-            localStorage.setItem(
-                "shGamesPlayed",
-                played + 1
-            );
-        }
+
+                button.classList.add(
+                    "active"
+                );
+
+
+                currentCategory =
+                    button.dataset.filter;
+
+
+                updateVisibleGames();
+            }
+        );
+    }
+);
+
+
+/* =========================
+   PLAY COUNTER
+   ========================= */
+
+const playedElement =
+    document.getElementById(
+        "playedCount"
     );
-});
 
 
-document.getElementById(
-    "gamesPlayed"
-).textContent =
-    localStorage.getItem(
-        "shGamesPlayed"
+let plays =
+    Number(
+        localStorage.getItem(
+            "sh-total-plays"
+        )
     ) || 0;
+
+
+playedElement.textContent =
+    plays;
+
+
+cards.forEach(
+    card => {
+
+        card.addEventListener(
+            "click",
+            () => {
+
+                plays++;
+
+                localStorage.setItem(
+                    "sh-total-plays",
+                    plays
+                );
+            }
+        );
+    }
+);
