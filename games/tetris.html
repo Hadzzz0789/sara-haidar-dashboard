@@ -1,1 +1,187 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Block Drop · S&H</title><link rel="stylesheet" href="../css/game.css"></head><body><nav class="nav"><a href="../index.html">← Dashboard</a><div class="logo">S&H ARCADE</div></nav><main class="shell"><h1>Block Drop</h1><p class="sub">Clear the lines.</p><div class="bar"><div class="pill"><small>SCORE</small><b id="score">0</b></div><div class="pill"><small>BEST</small><b id="best">0</b></div></div><canvas id="game" width="800" height="500"></canvas><div class="help" id="help"></div><button onclick="location.reload()">Restart</button></main><script>window.GAME='tetris'</script><script src="../js/arcade.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#070910"
+    >
+
+    <title>
+        Block Drop | Sara's & Haidar's Dashboard
+    </title>
+
+    <!-- Shared game styling -->
+    <link
+        rel="stylesheet"
+        href="../css/game.css"
+    >
+</head>
+
+
+<body>
+
+    <!-- =========================================
+         TOP NAVIGATION
+         ========================================= -->
+
+    <nav class="game-nav">
+
+        <a href="../index.html">
+            ← Back to Dashboard
+        </a>
+
+        <div class="logo">
+            S&H ARCADE
+        </div>
+
+        <div>
+            BLOCK DROP
+        </div>
+
+    </nav>
+
+
+    <!-- =========================================
+         GAME AREA
+         ========================================= -->
+
+    <main class="game-container">
+
+        <h1>
+            🧱 Block Drop
+        </h1>
+
+        <p class="subtitle">
+            Stack the blocks. Clear the lines.
+            Don't let them reach the top.
+        </p>
+
+
+        <!-- =====================================
+             SCOREBOARD
+             ===================================== -->
+
+        <div class="scorebar">
+
+            <div class="score-box">
+
+                <span>
+                    SCORE
+                </span>
+
+                <strong id="score">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="score-box">
+
+                <span>
+                    BEST
+                </span>
+
+                <strong id="best">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="score-box">
+
+                <span>
+                    LINES
+                </span>
+
+                <strong id="lines">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================
+             GAME CANVAS
+             ===================================== -->
+
+        <canvas
+            id="game"
+            width="300"
+            height="600"
+        >
+            Your browser does not support
+            HTML canvas.
+        </canvas>
+
+
+        <!-- =====================================
+             CONTROLS
+             ===================================== -->
+
+        <div class="instructions">
+
+            ← → MOVE
+
+            &nbsp;&nbsp;•&nbsp;&nbsp;
+
+            ↑ ROTATE
+
+            &nbsp;&nbsp;•&nbsp;&nbsp;
+
+            ↓ SOFT DROP
+
+            &nbsp;&nbsp;•&nbsp;&nbsp;
+
+            SPACE HARD DROP
+
+        </div>
+
+
+        <!-- =====================================
+             BUTTONS
+             ===================================== -->
+
+        <div>
+
+            <button
+                id="restartButton"
+                onclick="resetGame()"
+            >
+                Restart Game
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================
+         TELL ARCADE.JS WHICH GAME TO LOAD
+         ========================================= -->
+
+    <script>
+        window.GAME = "tetris";
+    </script>
+
+
+    <!-- =========================================
+         SHARED GAME ENGINE
+         ========================================= -->
+
+    <script src="../js/arcade.js"></script>
+
+</body>
+
+</html>
