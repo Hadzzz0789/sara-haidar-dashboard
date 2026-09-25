@@ -1,1 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Snake</title>
+
+<style>
+
+body {
+    margin: 0;
+    background: #080b16;
+    color: white;
+    font-family: Arial;
+    text-align: center;
+}
+
+nav {
+    padding: 20px;
+    text-align: left;
+}
+
+nav a {
+    color: #5ef4ff;
+    text-decoration: none;
+}
+
+h1 {
+    color: #5ef4ff;
+}
+
+canvas {
+    background: #111827;
+    border: 3px solid #5ef4ff;
+    border-radius: 10px;
+    max-width: 90vw;
+}
+
+.info {
+    margin: 15px;
+    font-size: 20px;
+}
+
+button {
+    background: #5ef4ff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+    <a href="../index.html">← Back to Arcade</a>
+</nav>
+
+<h1>🐍 SNAKE</h1>
+
+<div class="info">
+    Score: <span id="score">0</span>
+    &nbsp; | &nbsp;
+    High Score: <span id="highScore">0</span>
+</div>
+
+<canvas id="game" width="400" height="400"></canvas>
+
+<br>
+
+<button onclick="restartGame()">Restart</button>
+
+<p>Use ↑ ↓ ← → or WASD</p>
+
+<script src="../js/snake.js"></script>
+
+</body>
+</html>
