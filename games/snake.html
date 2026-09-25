@@ -1,63 +1,75 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Snake · S&H</title>
+    <title>Snake | Sara's & Haidar's Arcade</title>
 
     <link rel="stylesheet" href="../css/game.css">
 </head>
 
 <body>
 
-<nav class="nav">
-    <a href="../index.html">← Dashboard</a>
-    <div class="logo">S&H ARCADE</div>
+<nav class="game-nav">
+    <a href="../index.html">← Back to Arcade</a>
+
+    <div class="game-brand">
+        S&H ARCADE
+    </div>
 </nav>
 
-<main class="shell">
+<main class="game-shell">
 
-    <h1>🐍 Snake</h1>
+    <div class="game-heading">
+        <div class="game-icon">🐍</div>
 
-    <p class="sub">
-        Eat. Grow. Survive.
-    </p>
+        <div>
+            <p class="eyebrow">SARA'S & HAIDAR'S ARCADE</p>
+            <h1>Snake</h1>
+            <p class="subtitle">Eat. Grow. Survive.</p>
+        </div>
+    </div>
 
-    <div class="bar">
+    <div class="game-stats">
 
-        <div class="pill">
-            <small>SCORE</small>
-            <b id="score">0</b>
+        <div class="stat">
+            <span>SCORE</span>
+            <strong id="score">0</strong>
         </div>
 
-        <div class="pill">
-            <small>BEST</small>
-            <b id="best">0</b>
+        <div class="stat">
+            <span>HIGH SCORE</span>
+            <strong id="best">0</strong>
         </div>
 
     </div>
 
-    <canvas
-        id="game"
-        width="800"
-        height="500">
-    </canvas>
+    <div class="canvas-wrapper">
 
-    <div
-        class="help"
-        id="help">
+        <canvas
+            id="game"
+            width="800"
+            height="500">
+        </canvas>
+
     </div>
 
-    <button onclick="location.reload()">
-        Restart
-    </button>
+    <div class="game-controls">
+
+        <p id="help">
+            Arrow Keys / WASD
+        </p>
+
+        <button
+            class="restart-btn"
+            onclick="location.reload()">
+            ↻ Restart Game
+        </button>
+
+    </div>
 
 </main>
-
-<script>
-    window.GAME = "snake";
-</script>
 
 <script src="../js/arcade.js"></script>
 
