@@ -1,488 +1,616 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
 
-:root {
-    --bg: #07080d;
-    --surface: #0d1018;
-    --surface2: #111520;
-    --border: rgba(255,255,255,.08);
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    --text: #f7f8fc;
-    --muted: #7e879c;
+    <title>Sara's & Haidar's Dashboard</title>
 
-    --cyan: #4de8ff;
-    --purple: #986cff;
-    --pink: #ff4ba8;
-}
+    <link rel="stylesheet" href="./css/main.css">
+</head>
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+<body>
 
-html {
-    scroll-behavior: smooth;
-}
+<div class="background-grid"></div>
+<div class="glow glow-one"></div>
+<div class="glow glow-two"></div>
 
-body {
-    background:
-        radial-gradient(circle at 20% 0%, rgba(84,73,255,.13), transparent 30%),
-        radial-gradient(circle at 90% 30%, rgba(255,55,153,.08), transparent 25%),
-        var(--bg);
+<div class="page">
 
-    color: var(--text);
+    <!-- NAVIGATION -->
 
-    font-family: Inter, sans-serif;
+    <nav class="navbar">
 
-    min-height: 100vh;
-    overflow-x: hidden;
-}
+        <a href="./index.html" class="logo">
 
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
+            <div class="logo-icon">
+                S&H
+            </div>
 
-    background-image:
-        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+            <div>
+                <strong>Sara's & Haidar's</strong>
+                <span>ARCADE DASHBOARD</span>
+            </div>
 
-    background-size: 40px 40px;
+        </a>
 
-    pointer-events: none;
-}
 
-.navbar {
-    width: min(1400px, 92%);
-    margin: auto;
+        <div class="nav-actions">
 
-    height: 100px;
+            <div class="online">
+                <i></i>
+                ARCADE ONLINE
+            </div>
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+            <div id="clock">
+                00:00
+            </div>
 
-    border-bottom: 1px solid var(--border);
-}
+            <button
+                id="themeToggle"
+                class="theme-toggle"
+                aria-label="Toggle theme"
+            >
+                <span id="themeIcon">☀️</span>
+            </button>
 
-.brand {
-    display: flex;
-    gap: 14px;
-    align-items: center;
-}
+        </div>
 
-.brand-icon {
-    width: 48px;
-    height: 48px;
+    </nav>
 
-    display: grid;
-    place-items: center;
 
-    border-radius: 13px;
+    <!-- HERO -->
 
-    font-family: "Space Grotesk";
-    font-weight: 800;
+    <header class="hero">
 
-    background:
-        linear-gradient(135deg, var(--cyan), var(--purple));
+        <div class="hero-copy">
 
-    color: #06070b;
+            <div class="eyebrow">
+                ✦ S&H PRIVATE ARCADE
+            </div>
 
-    box-shadow:
-        0 0 35px rgba(77,232,255,.2);
-}
+            <h1>
+                Sara's & Haidar's
+                <span>Dashboard.</span>
+            </h1>
 
-.brand h2 {
-    font-family: "Space Grotesk";
-    font-size: 16px;
-}
+            <p>
+                Pick a game, chase a high score and absolutely
+                destroy your productivity.
+            </p>
 
-.brand p {
-    color: var(--muted);
-    font-size: 10px;
-    letter-spacing: 4px;
-    margin-top: 4px;
-}
+        </div>
 
-.nav-right {
-    display: flex;
-    gap: 25px;
-    align-items: center;
 
-    color: var(--muted);
-    font-size: 12px;
-}
+        <div class="hero-stats">
 
-.status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+            <div class="stat">
+                <strong>15</strong>
+                <span>GAMES</span>
+            </div>
 
-.status span {
-    width: 7px;
-    height: 7px;
+            <div class="stat">
+                <strong id="playedCount">0</strong>
+                <span>PLAYS</span>
+            </div>
 
-    border-radius: 50%;
+            <div class="stat">
+                <strong>∞</strong>
+                <span>RETRIES</span>
+            </div>
 
-    background: #55ff96;
+        </div>
 
-    box-shadow:
-        0 0 12px #55ff96;
-}
+    </header>
 
-.hero {
-    width: min(1400px, 92%);
-    margin: auto;
 
-    padding: 100px 0 70px;
-}
+    <!-- TOOLBAR -->
 
-.hero-tag {
-    color: var(--cyan);
+    <section class="toolbar">
 
-    font-size: 12px;
-    letter-spacing: 3px;
-    font-weight: 700;
+        <div class="search">
 
-    margin-bottom: 22px;
-}
+            <span>⌕</span>
 
-.hero h1 {
-    font-family: "Space Grotesk";
-    font-size: clamp(55px, 7vw, 105px);
-    line-height: .95;
-    letter-spacing: -5px;
+            <input
+                id="gameSearch"
+                type="text"
+                placeholder="Search games..."
+                autocomplete="off"
+            >
 
-    max-width: 1000px;
-}
+        </div>
 
-.hero h1 span {
-    color: transparent;
 
-    -webkit-text-stroke:
-        1px rgba(255,255,255,.35);
-}
+        <div class="filters">
 
-.hero > p {
-    max-width: 600px;
+            <button
+                class="filter active"
+                data-filter="all"
+            >
+                All
+            </button>
 
-    color: var(--muted);
+            <button
+                class="filter"
+                data-filter="classic"
+            >
+                Classics
+            </button>
 
-    font-size: 17px;
-    line-height: 1.7;
+            <button
+                class="filter"
+                data-filter="action"
+            >
+                Action
+            </button>
 
-    margin-top: 30px;
-}
+            <button
+                class="filter"
+                data-filter="puzzle"
+            >
+                Puzzle
+            </button>
 
-.stats {
-    display: flex;
-    gap: 55px;
-    margin-top: 55px;
-}
+            <button
+                class="filter"
+                data-filter="sports"
+            >
+                Sports
+            </button>
 
-.stats div {
-    display: flex;
-    flex-direction: column;
-}
+        </div>
 
-.stats strong {
-    font-family: "Space Grotesk";
-    font-size: 28px;
-}
+    </section>
 
-.stats span {
-    color: var(--muted);
 
-    font-size: 9px;
-    letter-spacing: 2px;
+    <!-- GAME GRID -->
 
-    margin-top: 5px;
-}
+    <main class="game-grid">
 
-.controls {
-    width: min(1400px, 92%);
-    margin: auto auto 35px;
 
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-}
+        <a
+            class="game-card"
+            href="./games/snake.html"
+            data-name="snake"
+            data-category="classic"
+        >
 
-.search-box {
-    width: 320px;
+            <div class="game-top">
+                <span class="number">01</span>
+                <span class="tag">CLASSIC</span>
+            </div>
 
-    display: flex;
-    align-items: center;
-    gap: 12px;
+            <div class="game-icon green">
+                🐍
+            </div>
 
-    padding: 13px 17px;
+            <div class="game-info">
+                <h2>Snake</h2>
+                <p>Eat. Grow. Survive.</p>
+            </div>
 
-    border: 1px solid var(--border);
-    border-radius: 10px;
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-    background: rgba(255,255,255,.025);
-}
+        </a>
 
-.search-box input {
-    border: none;
-    outline: none;
 
-    background: transparent;
+        <a
+            class="game-card"
+            href="./games/flappy.html"
+            data-name="flappy bird"
+            data-category="action"
+        >
 
-    color: white;
+            <div class="game-top">
+                <span class="number">02</span>
+                <span class="tag">ACTION</span>
+            </div>
 
-    width: 100%;
-}
+            <div class="game-icon yellow">
+                🐤
+            </div>
 
-.filters {
-    display: flex;
-    gap: 8px;
-}
+            <div class="game-info">
+                <h2>Flappy</h2>
+                <p>Fly through the gaps.</p>
+            </div>
 
-.filter {
-    border: 1px solid var(--border);
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-    background: rgba(255,255,255,.025);
+        </a>
 
-    color: var(--muted);
 
-    padding: 10px 16px;
+        <a
+            class="game-card"
+            href="./games/launcher.html"
+            data-name="bird launcher"
+            data-category="action"
+        >
 
-    border-radius: 8px;
+            <div class="game-top">
+                <span class="number">03</span>
+                <span class="tag">PHYSICS</span>
+            </div>
 
-    cursor: pointer;
+            <div class="game-icon red">
+                🐦
+            </div>
 
-    transition: .2s;
-}
+            <div class="game-info">
+                <h2>Bird Launcher</h2>
+                <p>Pull. Aim. Destroy.</p>
+            </div>
 
-.filter:hover,
-.filter.active {
-    color: white;
-    border-color: rgba(255,255,255,.25);
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-    background: rgba(255,255,255,.08);
-}
+        </a>
 
-.game-grid {
-    width: min(1400px, 92%);
-    margin: auto;
 
-    display: grid;
+        <a
+            class="game-card"
+            href="./games/tetris.html"
+            data-name="block drop tetris"
+            data-category="puzzle"
+        >
 
-    grid-template-columns:
-        repeat(auto-fit, minmax(280px,1fr));
+            <div class="game-top">
+                <span class="number">04</span>
+                <span class="tag">PUZZLE</span>
+            </div>
 
-    gap: 16px;
-}
+            <div class="game-icon purple">
+                🧱
+            </div>
 
-.game-card {
-    position: relative;
+            <div class="game-info">
+                <h2>Block Drop</h2>
+                <p>Stack. Clear. Repeat.</p>
+            </div>
 
-    min-height: 360px;
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-    overflow: hidden;
+        </a>
 
-    text-decoration: none;
-    color: white;
 
-    border: 1px solid var(--border);
+        <a
+            class="game-card"
+            href="./games/pong.html"
+            data-name="pong"
+            data-category="classic"
+        >
 
-    background:
-        linear-gradient(
-            160deg,
-            rgba(255,255,255,.055),
-            rgba(255,255,255,.012)
-        );
+            <div class="game-top">
+                <span class="number">05</span>
+                <span class="tag">CLASSIC</span>
+            </div>
 
-    border-radius: 18px;
+            <div class="game-icon cyan">
+                🏓
+            </div>
 
-    padding: 25px;
+            <div class="game-info">
+                <h2>Pong</h2>
+                <p>You vs the machine.</p>
+            </div>
 
-    transition:
-        transform .3s,
-        border-color .3s,
-        box-shadow .3s;
-}
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-.game-card:hover {
-    transform: translateY(-7px);
+        </a>
 
-    border-color:
-        rgba(255,255,255,.23);
 
-    box-shadow:
-        0 30px 60px rgba(0,0,0,.35);
-}
+        <a
+            class="game-card"
+            href="./games/breakout.html"
+            data-name="breakout"
+            data-category="classic"
+        >
 
-.card-number {
-    position: absolute;
+            <div class="game-top">
+                <span class="number">06</span>
+                <span class="tag">CLASSIC</span>
+            </div>
 
-    right: 20px;
-    top: 17px;
+            <div class="game-icon orange">
+                🧱
+            </div>
 
-    color: rgba(255,255,255,.15);
+            <div class="game-info">
+                <h2>Breakout</h2>
+                <p>Smash every brick.</p>
+            </div>
 
-    font-family: "Space Grotesk";
-    font-size: 12px;
-}
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-.game-art {
-    height: 175px;
+        </a>
 
-    display: grid;
-    place-items: center;
 
-    font-size: 72px;
+        <a
+            class="game-card"
+            href="./games/invaders.html"
+            data-name="space attack invaders"
+            data-category="action"
+        >
 
-    border-radius: 13px;
+            <div class="game-top">
+                <span class="number">07</span>
+                <span class="tag">ACTION</span>
+            </div>
 
-    margin-bottom: 25px;
+            <div class="game-icon purple">
+                👾
+            </div>
 
-    transition: transform .35s;
-}
+            <div class="game-info">
+                <h2>Space Attack</h2>
+                <p>Defend the galaxy.</p>
+            </div>
 
-.game-card:hover .game-art {
-    transform: scale(1.03);
-}
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-.green {
-    background:
-        radial-gradient(circle, rgba(58,255,150,.25), rgba(20,255,150,.025));
-}
+        </a>
 
-.yellow {
-    background:
-        radial-gradient(circle, rgba(255,214,60,.25), rgba(255,200,30,.025));
-}
 
-.red {
-    background:
-        radial-gradient(circle, rgba(255,75,90,.25), rgba(255,50,80,.025));
-}
+        <a
+            class="game-card"
+            href="./games/runner.html"
+            data-name="dino runner"
+            data-category="action"
+        >
 
-.blue {
-    background:
-        radial-gradient(circle, rgba(60,170,255,.25), rgba(40,100,255,.025));
-}
+            <div class="game-top">
+                <span class="number">08</span>
+                <span class="tag">ACTION</span>
+            </div>
 
-.purple {
-    background:
-        radial-gradient(circle, rgba(160,90,255,.25), rgba(110,50,255,.025));
-}
+            <div class="game-icon green">
+                🦖
+            </div>
 
-.orange {
-    background:
-        radial-gradient(circle, rgba(255,145,40,.25), rgba(255,100,30,.025));
-}
+            <div class="game-info">
+                <h2>Runner</h2>
+                <p>Jump. Duck. Run.</p>
+            </div>
 
-.category {
-    color: var(--cyan);
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-    font-size: 9px;
-    letter-spacing: 2px;
+        </a>
 
-    font-weight: 700;
-}
 
-.card-content h2 {
-    font-family: "Space Grotesk";
-    font-size: 25px;
+        <a
+            class="game-card"
+            href="./games/game2048.html"
+            data-name="2048"
+            data-category="puzzle"
+        >
 
-    margin: 7px 0;
-}
+            <div class="game-top">
+                <span class="number">09</span>
+                <span class="tag">PUZZLE</span>
+            </div>
 
-.card-content p {
-    color: var(--muted);
-    font-size: 13px;
-}
+            <div class="game-icon amber text-icon">
+                2048
+            </div>
 
-.play {
-    position: absolute;
+            <div class="game-info">
+                <h2>2048</h2>
+                <p>Merge to victory.</p>
+            </div>
 
-    bottom: 23px;
-    right: 23px;
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-    font-size: 10px;
-    letter-spacing: 2px;
+        </a>
 
-    opacity: 0;
 
-    transform: translateX(-8px);
+        <a
+            class="game-card"
+            href="./games/minesweeper.html"
+            data-name="minesweeper"
+            data-category="puzzle"
+        >
 
-    transition: .25s;
+            <div class="game-top">
+                <span class="number">10</span>
+                <span class="tag">PUZZLE</span>
+            </div>
 
-    color: var(--cyan);
-}
+            <div class="game-icon red">
+                💣
+            </div>
 
-.game-card:hover .play {
-    opacity: 1;
-    transform: translateX(0);
-}
+            <div class="game-info">
+                <h2>Minesweeper</h2>
+                <p>Don't hit the mines.</p>
+            </div>
 
-.game-card.hidden {
-    display: none;
-}
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-footer {
-    width: min(1400px, 92%);
-    margin: 100px auto 0;
+        </a>
 
-    border-top: 1px solid var(--border);
 
-    padding: 40px 0 60px;
+        <a
+            class="game-card"
+            href="./games/maze.html"
+            data-name="maze chase"
+            data-category="classic"
+        >
 
-    display: flex;
-    align-items: center;
-    gap: 20px;
+            <div class="game-top">
+                <span class="number">11</span>
+                <span class="tag">CLASSIC</span>
+            </div>
 
-    color: var(--muted);
+            <div class="game-icon yellow">
+                🟡
+            </div>
 
-    font-size: 10px;
-    letter-spacing: 2px;
-}
+            <div class="game-info">
+                <h2>Maze Chase</h2>
+                <p>Collect. Escape. Repeat.</p>
+            </div>
 
-footer div {
-    font-family: "Space Grotesk";
-    color: white;
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-    border: 1px solid var(--border);
+        </a>
 
-    padding: 10px;
-    border-radius: 8px;
-}
 
-footer span {
-    margin-left: auto;
-}
+        <a
+            class="game-card"
+            href="./games/asteroids.html"
+            data-name="asteroids space"
+            data-category="action"
+        >
 
-@media(max-width:700px) {
+            <div class="game-top">
+                <span class="number">12</span>
+                <span class="tag">ACTION</span>
+            </div>
 
-    .hero {
-        padding-top: 65px;
-    }
+            <div class="game-icon cyan">
+                🚀
+            </div>
 
-    .hero h1 {
-        letter-spacing: -3px;
-    }
+            <div class="game-info">
+                <h2>Asteroids</h2>
+                <p>Survive deep space.</p>
+            </div>
 
-    .controls {
-        flex-direction: column;
-    }
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-    .search-box {
-        width: 100%;
-    }
+        </a>
 
-    .filters {
-        overflow-x: auto;
-    }
 
-    .nav-right .status {
-        display: none;
-    }
+        <a
+            class="game-card"
+            href="./games/reaction.html"
+            data-name="reaction time"
+            data-category="puzzle"
+        >
 
-    .stats {
-        gap: 30px;
-    }
-}
+            <div class="game-top">
+                <span class="number">13</span>
+                <span class="tag">SKILL</span>
+            </div>
+
+            <div class="game-icon green">
+                ⚡
+            </div>
+
+            <div class="game-info">
+                <h2>Reaction</h2>
+                <p>Test your speed.</p>
+            </div>
+
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
+
+        </a>
+
+
+        <a
+            class="game-card"
+            href="./games/penalties.html"
+            data-name="penalty football"
+            data-category="sports"
+        >
+
+            <div class="game-top">
+                <span class="number">14</span>
+                <span class="tag">SPORTS</span>
+            </div>
+
+            <div class="game-icon green">
+                ⚽
+            </div>
+
+            <div class="game-info">
+                <h2>Penalties</h2>
+                <p>Beat the keeper.</p>
+            </div>
+
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
+
+        </a>
+
+
+        <a
+            class="game-card"
+            href="./games/racing.html"
+            data-name="neon racer racing"
+            data-category="sports"
+        >
+
+            <div class="game-top">
+                <span class="number">15</span>
+                <span class="tag">RACING</span>
+            </div>
+
+            <div class="game-icon pink">
+                🏎️
+            </div>
+
+            <div class="game-info">
+                <h2>Neon Racer</h2>
+                <p>Dodge the traffic.</p>
+            </div>
+
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
+
+        </a>
+
+    </main>
+
+
+    <footer>
+
+        <div class="footer-logo">
+            S&H
+        </div>
+
+        <p>
+            SARA'S & HAIDAR'S DASHBOARD
+        </p>
+
+        <span>
+            15 GAMES • BUILT FOR FUN
+        </span>
+
+    </footer>
+
+</div>
+
+<script src="./js/dashboard.js"></script>
+
+</body>
+</html>
