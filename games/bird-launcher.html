@@ -1,1 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Bird Launcher</title>
+
+<style>
+
+body {
+    margin: 0;
+    text-align: center;
+    font-family: Arial;
+    background: #101626;
+    color: white;
+}
+
+nav {
+    padding: 20px;
+    text-align: left;
+}
+
+nav a {
+    color: #65efff;
+    text-decoration: none;
+}
+
+canvas {
+    border: 3px solid white;
+    border-radius: 12px;
+    max-width: 95vw;
+    cursor: grab;
+}
+
+button {
+    margin: 15px;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav>
+<a href="../index.html">
+← Back to Arcade
+</a>
+</nav>
+
+<h1>🐦 BIRD LAUNCHER</h1>
+
+<p>
+Targets destroyed:
+<span id="score">0</span>
+</p>
+
+<canvas
+id="game"
+width="900"
+height="500">
+</canvas>
+
+<br>
+
+<button onclick="resetLevel()">
+Reset Level
+</button>
+
+<p>
+Drag the bird backwards and release it!
+</p>
+
+<script src="../js/bird-launcher.js"></script>
+
+</body>
+
+</html>
