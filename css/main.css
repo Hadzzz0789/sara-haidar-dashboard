@@ -1,616 +1,1259 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="dark">
+/* =========================================================
+   SARA'S & HAIDAR'S DASHBOARD
+   MAIN.CSS
+   ========================================================= */
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Sara's & Haidar's Dashboard</title>
+/* =========================================================
+   DARK THEME — DEFAULT
+   ========================================================= */
 
-    <link rel="stylesheet" href="./css/main.css">
-</head>
+:root {
+    --bg: #070910;
+    --bg-secondary: #0c0f18;
 
-<body>
+    --card: rgba(18, 22, 34, 0.82);
+    --card-hover: rgba(24, 29, 44, 0.97);
 
-<div class="background-grid"></div>
-<div class="glow glow-one"></div>
-<div class="glow glow-two"></div>
+    --text: #f7f8fc;
+    --muted: #818aa0;
 
-<div class="page">
+    --border: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(255, 255, 255, 0.22);
 
-    <!-- NAVIGATION -->
+    --accent: #67e8f9;
+    --accent-two: #8b5cf6;
 
-    <nav class="navbar">
+    --shadow: rgba(0, 0, 0, 0.35);
 
-        <a href="./index.html" class="logo">
+    --input-bg: rgba(255, 255, 255, 0.035);
+}
 
-            <div class="logo-icon">
-                S&H
-            </div>
 
-            <div>
-                <strong>Sara's & Haidar's</strong>
-                <span>ARCADE DASHBOARD</span>
-            </div>
+/* =========================================================
+   LIGHT THEME
+   ========================================================= */
 
-        </a>
+html[data-theme="light"] {
+    --bg: #f4f6fb;
+    --bg-secondary: #ffffff;
 
+    --card: rgba(255, 255, 255, 0.88);
+    --card-hover: #ffffff;
 
-        <div class="nav-actions">
+    --text: #10131d;
+    --muted: #687086;
 
-            <div class="online">
-                <i></i>
-                ARCADE ONLINE
-            </div>
+    --border: rgba(20, 25, 40, 0.09);
+    --border-hover: rgba(20, 25, 40, 0.22);
 
-            <div id="clock">
-                00:00
-            </div>
+    --accent: #087fa2;
+    --accent-two: #7148e7;
 
-            <button
-                id="themeToggle"
-                class="theme-toggle"
-                aria-label="Toggle theme"
-            >
-                <span id="themeIcon">☀️</span>
-            </button>
+    --shadow: rgba(30, 40, 70, 0.14);
 
-        </div>
+    --input-bg: rgba(255, 255, 255, 0.8);
+}
 
-    </nav>
 
+/* =========================================================
+   RESET
+   ========================================================= */
 
-    <!-- HERO -->
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    <header class="hero">
+html {
+    scroll-behavior: smooth;
+}
 
-        <div class="hero-copy">
+body {
+    min-height: 100vh;
 
-            <div class="eyebrow">
-                ✦ S&H PRIVATE ARCADE
-            </div>
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
 
-            <h1>
-                Sara's & Haidar's
-                <span>Dashboard.</span>
-            </h1>
+    color: var(--text);
 
-            <p>
-                Pick a game, chase a high score and absolutely
-                destroy your productivity.
-            </p>
+    background:
+        radial-gradient(
+            circle at 15% 0%,
+            rgba(93, 84, 255, 0.14),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(0, 217, 255, 0.09),
+            transparent 25%
+        ),
+        var(--bg);
 
-        </div>
+    transition:
+        background 0.3s ease,
+        color 0.3s ease;
 
+    overflow-x: hidden;
+}
 
-        <div class="hero-stats">
 
-            <div class="stat">
-                <strong>15</strong>
-                <span>GAMES</span>
-            </div>
+/* =========================================================
+   BACKGROUND GRID
+   ========================================================= */
 
-            <div class="stat">
-                <strong id="playedCount">0</strong>
-                <span>PLAYS</span>
-            </div>
+.background-grid {
+    position: fixed;
+    inset: 0;
 
-            <div class="stat">
-                <strong>∞</strong>
-                <span>RETRIES</span>
-            </div>
+    pointer-events: none;
 
-        </div>
+    background-image:
+        linear-gradient(
+            rgba(120, 130, 170, 0.045) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(120, 130, 170, 0.045) 1px,
+            transparent 1px
+        );
 
-    </header>
+    background-size: 45px 45px;
 
+    -webkit-mask-image:
+        linear-gradient(
+            to bottom,
+            black,
+            transparent 85%
+        );
 
-    <!-- TOOLBAR -->
+    mask-image:
+        linear-gradient(
+            to bottom,
+            black,
+            transparent 85%
+        );
 
-    <section class="toolbar">
+    z-index: 0;
+}
 
-        <div class="search">
 
-            <span>⌕</span>
+/* =========================================================
+   BACKGROUND GLOWS
+   ========================================================= */
 
-            <input
-                id="gameSearch"
-                type="text"
-                placeholder="Search games..."
-                autocomplete="off"
-            >
+.glow {
+    position: fixed;
 
-        </div>
+    width: 500px;
+    height: 500px;
 
+    border-radius: 50%;
 
-        <div class="filters">
+    filter: blur(120px);
 
-            <button
-                class="filter active"
-                data-filter="all"
-            >
-                All
-            </button>
+    opacity: 0.12;
 
-            <button
-                class="filter"
-                data-filter="classic"
-            >
-                Classics
-            </button>
+    pointer-events: none;
 
-            <button
-                class="filter"
-                data-filter="action"
-            >
-                Action
-            </button>
+    z-index: 0;
+}
 
-            <button
-                class="filter"
-                data-filter="puzzle"
-            >
-                Puzzle
-            </button>
+.glow-one {
+    background: #715cff;
 
-            <button
-                class="filter"
-                data-filter="sports"
-            >
-                Sports
-            </button>
+    top: -250px;
+    left: -200px;
+}
 
-        </div>
+.glow-two {
+    background: #00d9ff;
 
-    </section>
+    top: 200px;
+    right: -350px;
+}
 
 
-    <!-- GAME GRID -->
+/* =========================================================
+   PAGE WRAPPER
+   ========================================================= */
 
-    <main class="game-grid">
+.page {
+    position: relative;
 
+    z-index: 2;
 
-        <a
-            class="game-card"
-            href="./games/snake.html"
-            data-name="snake"
-            data-category="classic"
-        >
+    width: min(1500px, 94%);
 
-            <div class="game-top">
-                <span class="number">01</span>
-                <span class="tag">CLASSIC</span>
-            </div>
+    margin: 0 auto;
+}
 
-            <div class="game-icon green">
-                🐍
-            </div>
 
-            <div class="game-info">
-                <h2>Snake</h2>
-                <p>Eat. Grow. Survive.</p>
-            </div>
+/* =========================================================
+   NAVBAR
+   ========================================================= */
 
-            <div class="play">
-                PLAY <span>→</span>
-            </div>
+.navbar {
+    min-height: 82px;
 
-        </a>
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
+    gap: 30px;
 
-        <a
-            class="game-card"
-            href="./games/flappy.html"
-            data-name="flappy bird"
-            data-category="action"
-        >
+    border-bottom: 1px solid var(--border);
+}
 
-            <div class="game-top">
-                <span class="number">02</span>
-                <span class="tag">ACTION</span>
-            </div>
 
-            <div class="game-icon yellow">
-                🐤
-            </div>
+/* =========================================================
+   LOGO
+   ========================================================= */
 
-            <div class="game-info">
-                <h2>Flappy</h2>
-                <p>Fly through the gaps.</p>
-            </div>
+.logo {
+    display: flex;
+    align-items: center;
 
-            <div class="play">
-                PLAY <span>→</span>
-            </div>
+    gap: 13px;
 
-        </a>
+    color: var(--text);
 
+    text-decoration: none;
+}
 
-        <a
-            class="game-card"
-            href="./games/launcher.html"
-            data-name="bird launcher"
-            data-category="action"
-        >
+.logo-icon {
+    width: 46px;
+    height: 46px;
 
-            <div class="game-top">
-                <span class="number">03</span>
-                <span class="tag">PHYSICS</span>
-            </div>
+    flex-shrink: 0;
 
-            <div class="game-icon red">
-                🐦
-            </div>
+    display: grid;
+    place-items: center;
 
-            <div class="game-info">
-                <h2>Bird Launcher</h2>
-                <p>Pull. Aim. Destroy.</p>
-            </div>
+    border-radius: 13px;
 
-            <div class="play">
-                PLAY <span>→</span>
-            </div>
+    color: #071014;
 
-        </a>
+    font-size: 13px;
+    font-weight: 900;
 
+    background:
+        linear-gradient(
+            135deg,
+            #67e8f9,
+            #a78bfa
+        );
 
-        <a
-            class="game-card"
-            href="./games/tetris.html"
-            data-name="block drop tetris"
-            data-category="puzzle"
-        >
+    box-shadow:
+        0 8px 30px rgba(103, 232, 249, 0.17);
+}
 
-            <div class="game-top">
-                <span class="number">04</span>
-                <span class="tag">PUZZLE</span>
-            </div>
+.logo strong {
+    display: block;
 
-            <div class="game-icon purple">
-                🧱
-            </div>
+    font-size: 15px;
 
-            <div class="game-info">
-                <h2>Block Drop</h2>
-                <p>Stack. Clear. Repeat.</p>
-            </div>
+    letter-spacing: -0.2px;
+}
 
-            <div class="play">
-                PLAY <span>→</span>
-            </div>
+.logo span {
+    display: block;
 
-        </a>
+    margin-top: 4px;
 
+    color: var(--muted);
 
-        <a
-            class="game-card"
-            href="./games/pong.html"
-            data-name="pong"
-            data-category="classic"
-        >
+    font-size: 8px;
 
-            <div class="game-top">
-                <span class="number">05</span>
-                <span class="tag">CLASSIC</span>
-            </div>
+    letter-spacing: 2.5px;
+}
 
-            <div class="game-icon cyan">
-                🏓
-            </div>
 
-            <div class="game-info">
-                <h2>Pong</h2>
-                <p>You vs the machine.</p>
-            </div>
+/* =========================================================
+   NAVIGATION ACTIONS
+   ========================================================= */
 
-            <div class="play">
-                PLAY <span>→</span>
-            </div>
+.nav-actions {
+    display: flex;
+    align-items: center;
 
-        </a>
+    gap: 18px;
 
+    color: var(--muted);
 
-        <a
-            class="game-card"
-            href="./games/breakout.html"
-            data-name="breakout"
-            data-category="classic"
-        >
+    font-size: 11px;
+}
 
-            <div class="game-top">
-                <span class="number">06</span>
-                <span class="tag">CLASSIC</span>
-            </div>
 
-            <div class="game-icon orange">
-                🧱
-            </div>
+/* =========================================================
+   ONLINE STATUS
+   ========================================================= */
 
-            <div class="game-info">
-                <h2>Breakout</h2>
-                <p>Smash every brick.</p>
-            </div>
+.online {
+    display: flex;
+    align-items: center;
 
-            <div class="play">
-                PLAY <span>→</span>
-            </div>
+    gap: 8px;
 
-        </a>
+    letter-spacing: 1px;
+}
 
+.online i {
+    width: 7px;
+    height: 7px;
 
-        <a
-            class="game-card"
-            href="./games/invaders.html"
-            data-name="space attack invaders"
-            data-category="action"
-        >
+    display: block;
 
-            <div class="game-top">
-                <span class="number">07</span>
-                <span class="tag">ACTION</span>
-            </div>
+    border-radius: 50%;
 
-            <div class="game-icon purple">
-                👾
-            </div>
+    background: #45f68c;
 
-            <div class="game-info">
-                <h2>Space Attack</h2>
-                <p>Defend the galaxy.</p>
-            </div>
+    box-shadow:
+        0 0 10px #45f68c,
+        0 0 20px rgba(69, 246, 140, 0.4);
+}
 
-            <div class="play">
-                PLAY <span>→</span>
-            </div>
 
-        </a>
+/* =========================================================
+   CLOCK
+   ========================================================= */
 
+#clock {
+    min-width: 42px;
 
-        <a
-            class="game-card"
-            href="./games/runner.html"
-            data-name="dino runner"
-            data-category="action"
-        >
+    font-variant-numeric: tabular-nums;
 
-            <div class="game-top">
-                <span class="number">08</span>
-                <span class="tag">ACTION</span>
-            </div>
+    color: var(--muted);
+}
 
-            <div class="game-icon green">
-                🦖
-            </div>
 
-            <div class="game-info">
-                <h2>Runner</h2>
-                <p>Jump. Duck. Run.</p>
-            </div>
+/* =========================================================
+   DARK / LIGHT MODE BUTTON
+   ========================================================= */
 
-            <div class="play">
-                PLAY <span>→</span>
-            </div>
+.theme-toggle {
+    width: 42px;
+    height: 42px;
 
-        </a>
+    display: grid;
+    place-items: center;
 
+    border: 1px solid var(--border);
+    border-radius: 11px;
 
-        <a
-            class="game-card"
-            href="./games/game2048.html"
-            data-name="2048"
-            data-category="puzzle"
-        >
+    color: var(--text);
 
-            <div class="game-top">
-                <span class="number">09</span>
-                <span class="tag">PUZZLE</span>
-            </div>
+    background: var(--card);
 
-            <div class="game-icon amber text-icon">
-                2048
-            </div>
+    cursor: pointer;
 
-            <div class="game-info">
-                <h2>2048</h2>
-                <p>Merge to victory.</p>
-            </div>
+    font-size: 16px;
 
-            <div class="play">
-                PLAY <span>→</span>
-            </div>
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
 
-        </a>
+.theme-toggle:hover {
+    transform: translateY(-2px);
 
+    border-color: var(--border-hover);
 
-        <a
-            class="game-card"
-            href="./games/minesweeper.html"
-            data-name="minesweeper"
-            data-category="puzzle"
-        >
+    background: var(--card-hover);
+}
 
-            <div class="game-top">
-                <span class="number">10</span>
-                <span class="tag">PUZZLE</span>
-            </div>
+.theme-toggle:active {
+    transform: translateY(0);
+}
 
-            <div class="game-icon red">
-                💣
-            </div>
 
-            <div class="game-info">
-                <h2>Minesweeper</h2>
-                <p>Don't hit the mines.</p>
-            </div>
+/* =========================================================
+   HERO
+   ========================================================= */
 
-            <div class="play">
-                PLAY <span>→</span>
-            </div>
+.hero {
+    padding: 58px 0 44px;
 
-        </a>
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
 
+    gap: 40px;
+}
 
-        <a
-            class="game-card"
-            href="./games/maze.html"
-            data-name="maze chase"
-            data-category="classic"
-        >
+.hero-copy {
+    max-width: 850px;
+}
 
-            <div class="game-top">
-                <span class="number">11</span>
-                <span class="tag">CLASSIC</span>
-            </div>
+.eyebrow {
+    color: var(--accent);
 
-            <div class="game-icon yellow">
-                🟡
-            </div>
+    font-size: 10px;
+    font-weight: 800;
 
-            <div class="game-info">
-                <h2>Maze Chase</h2>
-                <p>Collect. Escape. Repeat.</p>
-            </div>
+    letter-spacing: 3px;
 
-            <div class="play">
-                PLAY <span>→</span>
-            </div>
+    margin-bottom: 18px;
+}
 
-        </a>
 
+/* =========================================================
+   HERO TITLE
+   ========================================================= */
 
-        <a
-            class="game-card"
-            href="./games/asteroids.html"
-            data-name="asteroids space"
-            data-category="action"
-        >
+.hero h1 {
+    max-width: 900px;
 
-            <div class="game-top">
-                <span class="number">12</span>
-                <span class="tag">ACTION</span>
-            </div>
+    font-size: clamp(44px, 5.8vw, 86px);
 
-            <div class="game-icon cyan">
-                🚀
-            </div>
+    line-height: 0.95;
 
-            <div class="game-info">
-                <h2>Asteroids</h2>
-                <p>Survive deep space.</p>
-            </div>
+    letter-spacing: -4px;
 
-            <div class="play">
-                PLAY <span>→</span>
-            </div>
+    font-weight: 800;
+}
 
-        </a>
+.hero h1 span {
+    display: block;
 
+    color: transparent;
 
-        <a
-            class="game-card"
-            href="./games/reaction.html"
-            data-name="reaction time"
-            data-category="puzzle"
-        >
+    -webkit-text-stroke:
+        1px var(--muted);
 
-            <div class="game-top">
-                <span class="number">13</span>
-                <span class="tag">SKILL</span>
-            </div>
+    opacity: 0.72;
+}
 
-            <div class="game-icon green">
-                ⚡
-            </div>
 
-            <div class="game-info">
-                <h2>Reaction</h2>
-                <p>Test your speed.</p>
-            </div>
+/* =========================================================
+   HERO DESCRIPTION
+   ========================================================= */
 
-            <div class="play">
-                PLAY <span>→</span>
-            </div>
+.hero p {
+    max-width: 600px;
 
-        </a>
+    margin-top: 22px;
 
+    color: var(--muted);
 
-        <a
-            class="game-card"
-            href="./games/penalties.html"
-            data-name="penalty football"
-            data-category="sports"
-        >
+    line-height: 1.7;
 
-            <div class="game-top">
-                <span class="number">14</span>
-                <span class="tag">SPORTS</span>
-            </div>
+    font-size: 15px;
+}
 
-            <div class="game-icon green">
-                ⚽
-            </div>
 
-            <div class="game-info">
-                <h2>Penalties</h2>
-                <p>Beat the keeper.</p>
-            </div>
+/* =========================================================
+   HERO STATS
+   ========================================================= */
 
-            <div class="play">
-                PLAY <span>→</span>
-            </div>
+.hero-stats {
+    display: flex;
 
-        </a>
+    gap: 12px;
 
+    flex-shrink: 0;
+}
 
-        <a
-            class="game-card"
-            href="./games/racing.html"
-            data-name="neon racer racing"
-            data-category="sports"
-        >
+.stat {
+    width: 105px;
 
-            <div class="game-top">
-                <span class="number">15</span>
-                <span class="tag">RACING</span>
-            </div>
+    padding: 17px;
 
-            <div class="game-icon pink">
-                🏎️
-            </div>
+    border: 1px solid var(--border);
+    border-radius: 13px;
 
-            <div class="game-info">
-                <h2>Neon Racer</h2>
-                <p>Dodge the traffic.</p>
-            </div>
+    background: var(--card);
 
-            <div class="play">
-                PLAY <span>→</span>
-            </div>
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
 
-        </a>
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
 
-    </main>
+.stat:hover {
+    transform: translateY(-3px);
 
+    border-color: var(--border-hover);
+}
 
-    <footer>
+.stat strong {
+    display: block;
 
-        <div class="footer-logo">
-            S&H
-        </div>
+    font-size: 25px;
 
-        <p>
-            SARA'S & HAIDAR'S DASHBOARD
-        </p>
+    font-weight: 800;
+}
 
-        <span>
-            15 GAMES • BUILT FOR FUN
-        </span>
+.stat span {
+    display: block;
 
-    </footer>
+    margin-top: 5px;
 
-</div>
+    color: var(--muted);
 
-<script src="./js/dashboard.js"></script>
+    font-size: 8px;
 
-</body>
-</html>
+    letter-spacing: 2px;
+}
+
+
+/* =========================================================
+   TOOLBAR
+   ========================================================= */
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 22px 0;
+
+    border-top: 1px solid var(--border);
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+.search {
+    width: 300px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 11px 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    background: var(--card);
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.search:focus-within {
+    border-color: rgba(103, 232, 249, 0.45);
+
+    box-shadow:
+        0 0 0 3px rgba(103, 232, 249, 0.07);
+}
+
+.search span {
+    color: var(--muted);
+
+    font-size: 17px;
+}
+
+.search input {
+    width: 100%;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: var(--text);
+
+    font-family: inherit;
+    font-size: 12px;
+}
+
+.search input::placeholder {
+    color: var(--muted);
+}
+
+
+/* =========================================================
+   FILTER BUTTONS
+   ========================================================= */
+
+.filters {
+    display: flex;
+
+    gap: 7px;
+}
+
+.filter {
+    padding: 9px 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    color: var(--muted);
+
+    background: var(--card);
+
+    font-family: inherit;
+    font-size: 11px;
+
+    cursor: pointer;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.filter:hover {
+    color: var(--text);
+
+    border-color: var(--border-hover);
+
+    transform: translateY(-1px);
+}
+
+.filter.active {
+    color: #071014;
+
+    border-color: transparent;
+
+    background:
+        linear-gradient(
+            135deg,
+            #67e8f9,
+            #a78bfa
+        );
+
+    font-weight: 700;
+
+    box-shadow:
+        0 6px 20px rgba(103, 232, 249, 0.12);
+}
+
+
+/* =========================================================
+   GAME GRID
+
+   Desktop = 5 games across
+   15 games = 3 rows
+   ========================================================= */
+
+.game-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+    gap: 14px;
+
+    padding-bottom: 45px;
+}
+
+
+/* =========================================================
+   GAME CARDS
+   ========================================================= */
+
+.game-card {
+    position: relative;
+
+    min-width: 0;
+    min-height: 270px;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 16px;
+
+    overflow: hidden;
+
+    color: var(--text);
+
+    text-decoration: none;
+
+    background: var(--card);
+
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+
+    border: 1px solid var(--border);
+    border-radius: 16px;
+
+    box-shadow:
+        0 10px 35px transparent;
+
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+.game-card:hover {
+    transform: translateY(-6px);
+
+    background: var(--card-hover);
+
+    border-color: var(--border-hover);
+
+    box-shadow:
+        0 20px 45px var(--shadow);
+}
+
+
+/* =========================================================
+   TOP NEON LINE ON HOVER
+   ========================================================= */
+
+.game-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 20%;
+
+    width: 60%;
+    height: 1px;
+
+    opacity: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--accent),
+            transparent
+        );
+
+    transition: opacity 0.25s ease;
+}
+
+.game-card:hover::before {
+    opacity: 1;
+}
+
+
+/* =========================================================
+   SUBTLE CARD GLOW
+   ========================================================= */
+
+.game-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 150px;
+    height: 150px;
+
+    top: -90px;
+    right: -90px;
+
+    border-radius: 50%;
+
+    background: var(--accent);
+
+    filter: blur(80px);
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition: opacity 0.3s ease;
+}
+
+.game-card:hover::after {
+    opacity: 0.08;
+}
+
+
+/* =========================================================
+   GAME CARD TOP
+   ========================================================= */
+
+.game-top {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.number {
+    color: var(--muted);
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+}
+
+.tag {
+    color: var(--accent);
+
+    font-size: 8px;
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+}
+
+
+/* =========================================================
+   GAME ICON AREA
+   ========================================================= */
+
+.game-icon {
+    position: relative;
+
+    z-index: 2;
+
+    height: 112px;
+
+    display: grid;
+    place-items: center;
+
+    margin: 13px 0 16px;
+
+    border-radius: 12px;
+
+    font-size: 48px;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.25s ease,
+        filter 0.25s ease;
+}
+
+.game-card:hover .game-icon {
+    transform: scale(1.035);
+
+    filter: brightness(1.1);
+}
+
+.text-icon {
+    font-size: 26px;
+
+    font-weight: 900;
+
+    letter-spacing: -2px;
+}
+
+
+/* =========================================================
+   ICON COLOURS
+   ========================================================= */
+
+.green {
+    background:
+        radial-gradient(
+            circle,
+            rgba(59, 255, 145, 0.22),
+            rgba(59, 255, 145, 0.025)
+        );
+}
+
+.yellow {
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 214, 61, 0.22),
+            rgba(255, 214, 61, 0.025)
+        );
+}
+
+.red {
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 76, 97, 0.22),
+            rgba(255, 76, 97, 0.025)
+        );
+}
+
+.purple {
+    background:
+        radial-gradient(
+            circle,
+            rgba(157, 101, 255, 0.24),
+            rgba(157, 101, 255, 0.025)
+        );
+}
+
+.cyan {
+    background:
+        radial-gradient(
+            circle,
+            rgba(58, 216, 255, 0.22),
+            rgba(58, 216, 255, 0.025)
+        );
+}
+
+.orange,
+.amber {
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 151, 54, 0.22),
+            rgba(255, 151, 54, 0.025)
+        );
+}
+
+.pink {
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 69, 168, 0.22),
+            rgba(255, 69, 168, 0.025)
+        );
+}
+
+
+/* =========================================================
+   GAME INFORMATION
+   ========================================================= */
+
+.game-info {
+    position: relative;
+
+    z-index: 2;
+}
+
+.game-info h2 {
+    margin-bottom: 5px;
+
+    color: var(--text);
+
+    font-size: 18px;
+    font-weight: 750;
+
+    letter-spacing: -0.5px;
+}
+
+.game-info p {
+    color: var(--muted);
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   PLAY LINK
+   ========================================================= */
+
+.play {
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: auto;
+
+    padding-top: 15px;
+
+    color: var(--muted);
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    transition:
+        color 0.2s ease;
+}
+
+.play span {
+    display: inline-block;
+
+    margin-left: 4px;
+
+    color: var(--accent);
+
+    transition:
+        transform 0.2s ease,
+        margin-left 0.2s ease;
+}
+
+.game-card:hover .play {
+    color: var(--text);
+}
+
+.game-card:hover .play span {
+    margin-left: 10px;
+}
+
+
+/* =========================================================
+   SEARCH / FILTER HIDDEN CARDS
+   ========================================================= */
+
+.game-card.hidden {
+    display: none;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+    min-height: 100px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    border-top: 1px solid var(--border);
+
+    color: var(--muted);
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+}
+
+.footer-logo {
+    width: 34px;
+    height: 34px;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    color: var(--text);
+
+    font-weight: 800;
+}
+
+footer span {
+    margin-left: auto;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+    width: 9px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(125, 135, 165, 0.35);
+
+    border-radius: 10px;
+
+    border: 2px solid var(--bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(125, 135, 165, 0.55);
+}
+
+
+/* =========================================================
+   TEXT SELECTION
+   ========================================================= */
+
+::selection {
+    color: #071014;
+
+    background: #67e8f9;
+}
+
+
+/* =========================================================
+   4 COLUMNS
+   ========================================================= */
+
+@media (max-width: 1250px) {
+
+    .game-grid {
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+    }
+}
+
+
+/* =========================================================
+   3 COLUMNS
+   ========================================================= */
+
+@media (max-width: 950px) {
+
+    .game-grid {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+    .hero {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .hero-stats {
+        width: 100%;
+    }
+
+    .stat {
+        flex: 1;
+
+        width: auto;
+    }
+}
+
+
+/* =========================================================
+   TABLET — 2 COLUMNS
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .page {
+        width: 92%;
+    }
+
+    .navbar {
+        min-height: 72px;
+    }
+
+    .game-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .toolbar {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .search {
+        width: 100%;
+    }
+
+    .filters {
+        overflow-x: auto;
+
+        padding-bottom: 4px;
+    }
+
+    .filter {
+        white-space: nowrap;
+    }
+
+    .hero {
+        padding-top: 45px;
+    }
+
+    .hero h1 {
+        letter-spacing: -2.5px;
+    }
+
+    .online {
+        display: none;
+    }
+
+    .hero-stats {
+        width: 100%;
+    }
+
+    .stat {
+        flex: 1;
+    }
+
+    .game-card {
+        min-height: 255px;
+    }
+
+    .game-icon {
+        height: 100px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 450px) {
+
+    .game-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #clock {
+        display: none;
+    }
+
+    .hero h1 {
+        font-size: 44px;
+
+        letter-spacing: -2px;
+    }
+
+    .hero-stats {
+        gap: 7px;
+    }
+
+    .stat {
+        padding: 13px;
+    }
+
+    .stat strong {
+        font-size: 21px;
+    }
+
+    .game-card {
+        min-height: 240px;
+    }
+
+    .game-icon {
+        height: 95px;
+    }
+
+    footer span {
+        display: none;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+
+        transition-duration: 0.01ms !important;
+
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+    }
+}
