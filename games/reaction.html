@@ -1,1 +1,76 @@
+<!doctype html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Reaction · S&H
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="../css/game.css"
+    >
+
+</head>
+
+<body>
+
+<nav class="nav">
+
+    <a href="../index.html">
+        ← Dashboard
+    </a>
+
+    <div class="logo">
+        S&H ARCADE
+    </div>
+
+</nav>
+
+<main class="shell">
+
+    <h1>⚡ Reaction</h1>
+
+    <p class="sub">
+        How fast are you?
+    </p>
+
+    <div class="bar">
+
+        <div class="pill">
+            <small>TIME</small>
+            <b id="score">—</b>
+        </div>
+
+        <div class="pill">
+            <small>BEST</small>
+            <b id="best">—</b>
+        </div>
+
+    </div>
+
+    <div id="domgame"></div>
+
+    <div
+        id="help"
+        class="help">
+    </div>
+
+</main>
+
+<script>
+    window.GAME = "reaction";
+</script>
+
+<script src="../js/arcade.js"></script>
+
+</body>
+</html>
