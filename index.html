@@ -1,503 +1,616 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#070811">
+
     <title>Sara's & Haidar's Dashboard</title>
-    <link rel="stylesheet" href="css/main.css">
+
+    <link rel="stylesheet" href="./css/main.css">
 </head>
 
 <body>
 
-<div class="noise"></div>
-<div class="orb orb-one"></div>
-<div class="orb orb-two"></div>
+<div class="background-grid"></div>
+<div class="glow glow-one"></div>
+<div class="glow glow-two"></div>
 
-<nav class="navbar">
+<div class="page">
 
-    <div class="brand">
-        <div class="brand-icon">S&H</div>
+    <!-- NAVIGATION -->
 
-        <div>
-            <h2>Sara's & Haidar's</h2>
-            <p>DASHBOARD</p>
-        </div>
-    </div>
+    <nav class="navbar">
 
-    <div class="nav-right">
-        <div class="status">
-            <span></span>
-            ARCADE ONLINE
-        </div>
+        <a href="./index.html" class="logo">
 
-        <div id="clock"></div>
-    </div>
+            <div class="logo-icon">
+                S&H
+            </div>
 
-</nav>
+            <div>
+                <strong>Sara's & Haidar's</strong>
+                <span>ARCADE DASHBOARD</span>
+            </div>
+
+        </a>
 
 
-<header class="hero">
+        <div class="nav-actions">
 
-    <div class="hero-tag">
-        ✦ S&H ARCADE
-    </div>
+            <div class="online">
+                <i></i>
+                ARCADE ONLINE
+            </div>
 
-    <h1>
-        Pick a game.<br>
-        <span>Beat the score.</span>
-    </h1>
+            <div id="clock">
+                00:00
+            </div>
 
-    <p>
-        Welcome to Sara's & Haidar's private arcade.
-        Fifteen games. One dashboard. Zero productivity.
-    </p>
+            <button
+                id="themeToggle"
+                class="theme-toggle"
+                aria-label="Toggle theme"
+            >
+                <span id="themeIcon">☀️</span>
+            </button>
 
-    <div class="stats">
-
-        <div>
-            <strong>15</strong>
-            <span>GAMES</span>
         </div>
 
-        <div>
-            <strong id="gamesPlayed">0</strong>
-            <span>PLAYED</span>
+    </nav>
+
+
+    <!-- HERO -->
+
+    <header class="hero">
+
+        <div class="hero-copy">
+
+            <div class="eyebrow">
+                ✦ S&H PRIVATE ARCADE
+            </div>
+
+            <h1>
+                Sara's & Haidar's
+                <span>Dashboard.</span>
+            </h1>
+
+            <p>
+                Pick a game, chase a high score and absolutely
+                destroy your productivity.
+            </p>
+
         </div>
 
-        <div>
-            <strong>∞</strong>
-            <span>ATTEMPTS</span>
+
+        <div class="hero-stats">
+
+            <div class="stat">
+                <strong>15</strong>
+                <span>GAMES</span>
+            </div>
+
+            <div class="stat">
+                <strong id="playedCount">0</strong>
+                <span>PLAYS</span>
+            </div>
+
+            <div class="stat">
+                <strong>∞</strong>
+                <span>RETRIES</span>
+            </div>
+
         </div>
 
-    </div>
-
-</header>
+    </header>
 
 
-<section class="controls">
+    <!-- TOOLBAR -->
 
-    <div class="search-box">
-        <span>⌕</span>
+    <section class="toolbar">
 
-        <input
-            id="search"
-            type="text"
-            placeholder="Search the arcade..."
+        <div class="search">
+
+            <span>⌕</span>
+
+            <input
+                id="gameSearch"
+                type="text"
+                placeholder="Search games..."
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <div class="filters">
+
+            <button
+                class="filter active"
+                data-filter="all"
+            >
+                All
+            </button>
+
+            <button
+                class="filter"
+                data-filter="classic"
+            >
+                Classics
+            </button>
+
+            <button
+                class="filter"
+                data-filter="action"
+            >
+                Action
+            </button>
+
+            <button
+                class="filter"
+                data-filter="puzzle"
+            >
+                Puzzle
+            </button>
+
+            <button
+                class="filter"
+                data-filter="sports"
+            >
+                Sports
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- GAME GRID -->
+
+    <main class="game-grid">
+
+
+        <a
+            class="game-card"
+            href="./games/snake.html"
+            data-name="snake"
+            data-category="classic"
         >
-    </div>
 
-    <div class="filters">
+            <div class="game-top">
+                <span class="number">01</span>
+                <span class="tag">CLASSIC</span>
+            </div>
 
-        <button class="filter active" data-filter="all">
-            All
-        </button>
+            <div class="game-icon green">
+                🐍
+            </div>
 
-        <button class="filter" data-filter="classic">
-            Classics
-        </button>
+            <div class="game-info">
+                <h2>Snake</h2>
+                <p>Eat. Grow. Survive.</p>
+            </div>
 
-        <button class="filter" data-filter="action">
-            Action
-        </button>
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-        <button class="filter" data-filter="puzzle">
-            Puzzle
-        </button>
+        </a>
 
-        <button class="filter" data-filter="sports">
-            Sports
-        </button>
+
+        <a
+            class="game-card"
+            href="./games/flappy.html"
+            data-name="flappy bird"
+            data-category="action"
+        >
 
-    </div>
+            <div class="game-top">
+                <span class="number">02</span>
+                <span class="tag">ACTION</span>
+            </div>
 
-</section>
+            <div class="game-icon yellow">
+                🐤
+            </div>
 
+            <div class="game-info">
+                <h2>Flappy</h2>
+                <p>Fly through the gaps.</p>
+            </div>
 
-<main class="game-grid" id="gameGrid">
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
+        </a>
 
-<a href="games/snake.html"
-   class="game-card"
-   data-name="snake"
-   data-category="classic">
+
+        <a
+            class="game-card"
+            href="./games/launcher.html"
+            data-name="bird launcher"
+            data-category="action"
+        >
 
-    <div class="card-number">01</div>
+            <div class="game-top">
+                <span class="number">03</span>
+                <span class="tag">PHYSICS</span>
+            </div>
 
-    <div class="game-art green">
-        🐍
-    </div>
+            <div class="game-icon red">
+                🐦
+            </div>
 
-    <div class="card-content">
-        <span class="category">CLASSIC</span>
-        <h2>Snake</h2>
-        <p>Eat. Grow. Survive.</p>
-    </div>
+            <div class="game-info">
+                <h2>Bird Launcher</h2>
+                <p>Pull. Aim. Destroy.</p>
+            </div>
 
-    <div class="play">
-        PLAY →
-    </div>
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-</a>
+        </a>
 
+
+        <a
+            class="game-card"
+            href="./games/tetris.html"
+            data-name="block drop tetris"
+            data-category="puzzle"
+        >
 
-<a href="games/flappy.html"
-   class="game-card"
-   data-name="flappy bird"
-   data-category="action">
+            <div class="game-top">
+                <span class="number">04</span>
+                <span class="tag">PUZZLE</span>
+            </div>
 
-    <div class="card-number">02</div>
+            <div class="game-icon purple">
+                🧱
+            </div>
 
-    <div class="game-art yellow">
-        🐤
-    </div>
+            <div class="game-info">
+                <h2>Block Drop</h2>
+                <p>Stack. Clear. Repeat.</p>
+            </div>
 
-    <div class="card-content">
-        <span class="category">ACTION</span>
-        <h2>Flappy</h2>
-        <p>One gap at a time.</p>
-    </div>
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-    <div class="play">
-        PLAY →
-    </div>
+        </a>
 
-</a>
+
+        <a
+            class="game-card"
+            href="./games/pong.html"
+            data-name="pong"
+            data-category="classic"
+        >
 
+            <div class="game-top">
+                <span class="number">05</span>
+                <span class="tag">CLASSIC</span>
+            </div>
 
-<a href="games/launcher.html"
-   class="game-card"
-   data-name="bird launcher"
-   data-category="action">
+            <div class="game-icon cyan">
+                🏓
+            </div>
 
-    <div class="card-number">03</div>
+            <div class="game-info">
+                <h2>Pong</h2>
+                <p>You vs the machine.</p>
+            </div>
 
-    <div class="game-art red">
-        🐦
-    </div>
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-    <div class="card-content">
-        <span class="category">PHYSICS</span>
-        <h2>Bird Launcher</h2>
-        <p>Pull. Aim. Destroy.</p>
-    </div>
+        </a>
 
-    <div class="play">
-        PLAY →
-    </div>
+
+        <a
+            class="game-card"
+            href="./games/breakout.html"
+            data-name="breakout"
+            data-category="classic"
+        >
 
-</a>
+            <div class="game-top">
+                <span class="number">06</span>
+                <span class="tag">CLASSIC</span>
+            </div>
 
+            <div class="game-icon orange">
+                🧱
+            </div>
 
-<a href="games/tetris.html"
-   class="game-card"
-   data-name="tetris blocks"
-   data-category="puzzle">
+            <div class="game-info">
+                <h2>Breakout</h2>
+                <p>Smash every brick.</p>
+            </div>
 
-    <div class="card-number">04</div>
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-    <div class="game-art purple">
-        🧱
-    </div>
+        </a>
 
-    <div class="card-content">
-        <span class="category">PUZZLE</span>
-        <h2>Block Drop</h2>
-        <p>Clear the lines.</p>
-    </div>
+
+        <a
+            class="game-card"
+            href="./games/invaders.html"
+            data-name="space attack invaders"
+            data-category="action"
+        >
 
-    <div class="play">
-        PLAY →
-    </div>
+            <div class="game-top">
+                <span class="number">07</span>
+                <span class="tag">ACTION</span>
+            </div>
 
-</a>
+            <div class="game-icon purple">
+                👾
+            </div>
 
+            <div class="game-info">
+                <h2>Space Attack</h2>
+                <p>Defend the galaxy.</p>
+            </div>
 
-<a href="games/pong.html"
-   class="game-card"
-   data-name="pong"
-   data-category="classic">
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-    <div class="card-number">05</div>
+        </a>
 
-    <div class="game-art blue">
-        🏓
-    </div>
+
+        <a
+            class="game-card"
+            href="./games/runner.html"
+            data-name="dino runner"
+            data-category="action"
+        >
 
-    <div class="card-content">
-        <span class="category">CLASSIC</span>
-        <h2>Pong</h2>
-        <p>You vs the machine.</p>
-    </div>
+            <div class="game-top">
+                <span class="number">08</span>
+                <span class="tag">ACTION</span>
+            </div>
 
-    <div class="play">
-        PLAY →
-    </div>
+            <div class="game-icon green">
+                🦖
+            </div>
 
-</a>
+            <div class="game-info">
+                <h2>Runner</h2>
+                <p>Jump. Duck. Run.</p>
+            </div>
 
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-<a href="games/breakout.html"
-   class="game-card"
-   data-name="breakout"
-   data-category="classic">
+        </a>
 
-    <div class="card-number">06</div>
+
+        <a
+            class="game-card"
+            href="./games/game2048.html"
+            data-name="2048"
+            data-category="puzzle"
+        >
 
-    <div class="game-art orange">
-        🟧
-    </div>
+            <div class="game-top">
+                <span class="number">09</span>
+                <span class="tag">PUZZLE</span>
+            </div>
 
-    <div class="card-content">
-        <span class="category">CLASSIC</span>
-        <h2>Breakout</h2>
-        <p>Smash every brick.</p>
-    </div>
+            <div class="game-icon amber text-icon">
+                2048
+            </div>
 
-    <div class="play">
-        PLAY →
-    </div>
+            <div class="game-info">
+                <h2>2048</h2>
+                <p>Merge to victory.</p>
+            </div>
 
-</a>
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
+        </a>
 
-<a href="games/invaders.html"
-   class="game-card"
-   data-name="space invaders"
-   data-category="action">
+
+        <a
+            class="game-card"
+            href="./games/minesweeper.html"
+            data-name="minesweeper"
+            data-category="puzzle"
+        >
 
-    <div class="card-number">07</div>
+            <div class="game-top">
+                <span class="number">10</span>
+                <span class="tag">PUZZLE</span>
+            </div>
 
-    <div class="game-art purple">
-        👾
-    </div>
+            <div class="game-icon red">
+                💣
+            </div>
 
-    <div class="card-content">
-        <span class="category">ACTION</span>
-        <h2>Space Attack</h2>
-        <p>Defend the planet.</p>
-    </div>
+            <div class="game-info">
+                <h2>Minesweeper</h2>
+                <p>Don't hit the mines.</p>
+            </div>
 
-    <div class="play">
-        PLAY →
-    </div>
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-</a>
+        </a>
 
+
+        <a
+            class="game-card"
+            href="./games/maze.html"
+            data-name="maze chase"
+            data-category="classic"
+        >
 
-<a href="games/runner.html"
-   class="game-card"
-   data-name="dino runner"
-   data-category="action">
+            <div class="game-top">
+                <span class="number">11</span>
+                <span class="tag">CLASSIC</span>
+            </div>
 
-    <div class="card-number">08</div>
+            <div class="game-icon yellow">
+                🟡
+            </div>
 
-    <div class="game-art green">
-        🦖
-    </div>
+            <div class="game-info">
+                <h2>Maze Chase</h2>
+                <p>Collect. Escape. Repeat.</p>
+            </div>
 
-    <div class="card-content">
-        <span class="category">ACTION</span>
-        <h2>Runner</h2>
-        <p>Jump. Duck. Run.</p>
-    </div>
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-    <div class="play">
-        PLAY →
-    </div>
+        </a>
 
-</a>
+
+        <a
+            class="game-card"
+            href="./games/asteroids.html"
+            data-name="asteroids space"
+            data-category="action"
+        >
 
+            <div class="game-top">
+                <span class="number">12</span>
+                <span class="tag">ACTION</span>
+            </div>
 
-<a href="games/game2048.html"
-   class="game-card"
-   data-name="2048"
-   data-category="puzzle">
+            <div class="game-icon cyan">
+                🚀
+            </div>
 
-    <div class="card-number">09</div>
+            <div class="game-info">
+                <h2>Asteroids</h2>
+                <p>Survive deep space.</p>
+            </div>
 
-    <div class="game-art orange">
-        2048
-    </div>
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-    <div class="card-content">
-        <span class="category">PUZZLE</span>
-        <h2>2048</h2>
-        <p>Merge your way to 2048.</p>
-    </div>
+        </a>
 
-    <div class="play">
-        PLAY →
-    </div>
 
-</a>
+        <a
+            class="game-card"
+            href="./games/reaction.html"
+            data-name="reaction time"
+            data-category="puzzle"
+        >
 
+            <div class="game-top">
+                <span class="number">13</span>
+                <span class="tag">SKILL</span>
+            </div>
 
-<a href="games/minesweeper.html"
-   class="game-card"
-   data-name="minesweeper mines"
-   data-category="puzzle">
+            <div class="game-icon green">
+                ⚡
+            </div>
 
-    <div class="card-number">10</div>
+            <div class="game-info">
+                <h2>Reaction</h2>
+                <p>Test your speed.</p>
+            </div>
 
-    <div class="game-art red">
-        💣
-    </div>
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-    <div class="card-content">
-        <span class="category">PUZZLE</span>
-        <h2>Minesweeper</h2>
-        <p>Think before you click.</p>
-    </div>
+        </a>
 
-    <div class="play">
-        PLAY →
-    </div>
 
-</a>
+        <a
+            class="game-card"
+            href="./games/penalties.html"
+            data-name="penalty football"
+            data-category="sports"
+        >
 
+            <div class="game-top">
+                <span class="number">14</span>
+                <span class="tag">SPORTS</span>
+            </div>
 
-<a href="games/maze.html"
-   class="game-card"
-   data-name="maze chase"
-   data-category="classic">
+            <div class="game-icon green">
+                ⚽
+            </div>
 
-    <div class="card-number">11</div>
+            <div class="game-info">
+                <h2>Penalties</h2>
+                <p>Beat the keeper.</p>
+            </div>
 
-    <div class="game-art yellow">
-        🟡
-    </div>
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-    <div class="card-content">
-        <span class="category">CLASSIC</span>
-        <h2>Maze Chase</h2>
-        <p>Eat dots. Avoid ghosts.</p>
-    </div>
+        </a>
 
-    <div class="play">
-        PLAY →
-    </div>
 
-</a>
+        <a
+            class="game-card"
+            href="./games/racing.html"
+            data-name="neon racer racing"
+            data-category="sports"
+        >
 
+            <div class="game-top">
+                <span class="number">15</span>
+                <span class="tag">RACING</span>
+            </div>
 
-<a href="games/asteroids.html"
-   class="game-card"
-   data-name="asteroids space"
-   data-category="action">
+            <div class="game-icon pink">
+                🏎️
+            </div>
 
-    <div class="card-number">12</div>
+            <div class="game-info">
+                <h2>Neon Racer</h2>
+                <p>Dodge the traffic.</p>
+            </div>
 
-    <div class="game-art blue">
-        🚀
-    </div>
+            <div class="play">
+                PLAY <span>→</span>
+            </div>
 
-    <div class="card-content">
-        <span class="category">ACTION</span>
-        <h2>Asteroids</h2>
-        <p>Survive deep space.</p>
-    </div>
+        </a>
 
-    <div class="play">
-        PLAY →
-    </div>
+    </main>
 
-</a>
 
+    <footer>
 
-<a href="games/reaction.html"
-   class="game-card"
-   data-name="reaction time"
-   data-category="puzzle">
+        <div class="footer-logo">
+            S&H
+        </div>
 
-    <div class="card-number">13</div>
+        <p>
+            SARA'S & HAIDAR'S DASHBOARD
+        </p>
 
-    <div class="game-art green">
-        ⚡
-    </div>
+        <span>
+            15 GAMES • BUILT FOR FUN
+        </span>
 
-    <div class="card-content">
-        <span class="category">SKILL</span>
-        <h2>Reaction</h2>
-        <p>How fast are you?</p>
-    </div>
+    </footer>
 
-    <div class="play">
-        PLAY →
-    </div>
+</div>
 
-</a>
-
-
-<a href="games/penalties.html"
-   class="game-card"
-   data-name="penalty shootout football"
-   data-category="sports">
-
-    <div class="card-number">14</div>
-
-    <div class="game-art green">
-        ⚽
-    </div>
-
-    <div class="card-content">
-        <span class="category">SPORTS</span>
-        <h2>Penalties</h2>
-        <p>Beat the keeper.</p>
-    </div>
-
-    <div class="play">
-        PLAY →
-    </div>
-
-</a>
-
-
-<a href="games/racing.html"
-   class="game-card"
-   data-name="racing car"
-   data-category="sports">
-
-    <div class="card-number">15</div>
-
-    <div class="game-art red">
-        🏎️
-    </div>
-
-    <div class="card-content">
-        <span class="category">RACING</span>
-        <h2>Neon Racer</h2>
-        <p>Don't hit the traffic.</p>
-    </div>
-
-    <div class="play">
-        PLAY →
-    </div>
-
-</a>
-
-
-</main>
-
-
-<footer>
-
-    <div>
-        S&H
-    </div>
-
-    <p>
-        SARA'S & HAIDAR'S DASHBOARD
-    </p>
-
-    <span>
-        BUILT FOR FUN • 2026
-    </span>
-
-</footer>
-
-
-<script src="js/dashboard.js"></script>
+<script src="./js/dashboard.js"></script>
 
 </body>
 </html>
