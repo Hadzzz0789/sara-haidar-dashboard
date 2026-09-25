@@ -1,17 +1,20 @@
 /* ============================================================
    SARA'S & HAIDAR'S ARCADE
-   UNIVERSAL GAME ENGINE
+   COMPLETE ARCADE.JS
    ============================================================ */
+
+"use strict";
 
 
 /* ============================================================
-   AUTOMATICALLY DETECT THE GAME FROM THE HTML FILE
+   GAME DETECTION
    ============================================================ */
 
 const fileName = window.location.pathname
     .split("/")
     .pop()
     .toLowerCase();
+
 
 const GAME_MAP = {
     "snake.html": "snake",
@@ -31,7 +34,12 @@ const GAME_MAP = {
     "racing.html": "racing"
 };
 
-const GAME = GAME_MAP[fileName];
+
+const GAME =
+    window.GAME ||
+    document.body.dataset.game ||
+    GAME_MAP[fileName];
+
 
 console.log("S&H Arcade loading:", GAME);
 
@@ -40,23 +48,34 @@ console.log("S&H Arcade loading:", GAME);
    SHARED ELEMENTS
    ============================================================ */
 
-const canvas = document.getElementById("game");
+const canvas =
+    document.getElementById("game");
 
-const ctx = canvas
-    ? canvas.getContext("2d")
-    : null;
+
+const ctx =
+    canvas
+        ? canvas.getContext("2d")
+        : null;
+
 
 const scoreElement =
     document.getElementById("score");
 
+
 const bestElement =
     document.getElementById("best");
+
 
 const helpElement =
     document.getElementById("help");
 
 
+const domGame =
+    document.getElementById("domgame");
+
+
 let score = 0;
+
 
 let best =
     Number(
@@ -71,27 +90,43 @@ if (bestElement) {
 }
 
 
-function updateScore(newScore) {
+/* ============================================================
+   SHARED FUNCTIONS
+   ============================================================ */
 
-    score = newScore;
+function updateScore(value) {
+
+    score = value;
+
 
     if (scoreElement) {
         scoreElement.textContent = score;
     }
 
+
     if (score > best) {
 
         best = score;
 
+
         localStorage.setItem(
             "sh_best_" + GAME,
-            best
+            String(best)
         );
+
 
         if (bestElement) {
             bestElement.textContent = best;
         }
     }
+}
+
+
+function addScore(amount) {
+
+    updateScore(
+        score + amount
+    );
 }
 
 
@@ -103,16 +138,40 @@ function showHelp(message) {
 }
 
 
-function showGameOver(
-    title = "GAME OVER"
+function clearCanvas(
+    colour = "#070b14"
 ) {
 
     if (!ctx || !canvas) {
         return;
     }
 
+
+    ctx.fillStyle = colour;
+
+
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+}
+
+
+function showGameOver(
+    title = "GAME OVER",
+    subtitle = "Press Restart to play again"
+) {
+
+    if (!ctx || !canvas) {
+        return;
+    }
+
+
     ctx.fillStyle =
-        "rgba(3, 6, 15, 0.82)";
+        "rgba(3, 6, 15, 0.86)";
+
 
     ctx.fillRect(
         0,
@@ -121,29 +180,35 @@ function showGameOver(
         canvas.height
     );
 
+
     ctx.textAlign = "center";
+
 
     ctx.fillStyle = "#ffffff";
 
+
     ctx.font =
-        "700 46px Arial";
+        "900 44px Arial";
+
 
     ctx.fillText(
         title,
         canvas.width / 2,
-        canvas.height / 2
+        canvas.height / 2 - 5
     );
 
-    ctx.font =
-        "18px Arial";
 
-    ctx.fillStyle =
-        "#9ca9c9";
+    ctx.fillStyle = "#9ca9c9";
+
+
+    ctx.font =
+        "600 17px Arial";
+
 
     ctx.fillText(
-        "Press Restart to play again",
+        subtitle,
         canvas.width / 2,
-        canvas.height / 2 + 45
+        canvas.height / 2 + 38
     );
 }
 
@@ -158,23 +223,26 @@ if (GAME === "snake") {
         "Arrow Keys / WASD"
     );
 
+
     const GRID = 20;
 
+
     const COLS =
-        canvas.width / GRID;
+        Math.floor(
+            canvas.width / GRID
+        );
+
 
     const ROWS =
-        canvas.height / GRID;
+        Math.floor(
+            canvas.height / GRID
+        );
 
 
     let snake = [
-
         { x: 15, y: 12 },
-
         { x: 14, y: 12 },
-
         { x: 13, y: 12 }
-
     ];
 
 
@@ -191,6 +259,7 @@ if (GAME === "snake") {
 
 
     let food;
+
 
     let dead = false;
 
@@ -228,19 +297,14 @@ if (GAME === "snake") {
 
     function drawSnakeBackground() {
 
-        ctx.fillStyle =
-            "#090d18";
-
-        ctx.fillRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
+        clearCanvas(
+            "#080d18"
         );
 
 
         ctx.strokeStyle =
-            "rgba(255,255,255,0.035)";
+            "rgba(255,255,255,.035)";
+
 
         ctx.lineWidth = 1;
 
@@ -300,12 +364,16 @@ if (GAME === "snake") {
         ctx.fillStyle =
             "#ff4f87";
 
+
         ctx.shadowColor =
             "#ff4f87";
 
+
         ctx.shadowBlur = 15;
 
+
         ctx.beginPath();
+
 
         ctx.arc(
 
@@ -320,9 +388,12 @@ if (GAME === "snake") {
             0,
 
             Math.PI * 2
+
         );
 
+
         ctx.fill();
+
 
         ctx.shadowBlur = 0;
 
@@ -332,26 +403,20 @@ if (GAME === "snake") {
         snake.forEach(
             (segment, index) => {
 
-                if (index === 0) {
+                ctx.fillStyle =
+                    index === 0
+                        ? "#ffffff"
+                        : "#55e8ff";
 
-                    ctx.fillStyle =
-                        "#ffffff";
 
-                    ctx.shadowColor =
-                        "#57e9ff";
+                ctx.shadowColor =
+                    "#55e8ff";
 
-                    ctx.shadowBlur = 15;
 
-                } else {
-
-                    ctx.fillStyle =
-                        "#57e9ff";
-
-                    ctx.shadowColor =
-                        "#57e9ff";
-
-                    ctx.shadowBlur = 6;
-                }
+                ctx.shadowBlur =
+                    index === 0
+                        ? 14
+                        : 6;
 
 
                 ctx.fillRect(
@@ -367,6 +432,7 @@ if (GAME === "snake") {
                     GRID - 4,
 
                     GRID - 4
+
                 );
 
 
@@ -387,7 +453,7 @@ if (GAME === "snake") {
             nextDirection;
 
 
-        const newHead = {
+        const head = {
 
             x:
                 snake[0].x +
@@ -399,39 +465,20 @@ if (GAME === "snake") {
         };
 
 
-        /* WALL COLLISION */
-
         if (
 
-            newHead.x < 0 ||
+            head.x < 0 ||
 
-            newHead.x >= COLS ||
+            head.x >= COLS ||
 
-            newHead.y < 0 ||
+            head.y < 0 ||
 
-            newHead.y >= ROWS
-
-        ) {
-
-            dead = true;
-
-            showGameOver();
-
-            return;
-        }
-
-
-        /* BODY COLLISION */
-
-        if (
+            head.y >= ROWS ||
 
             snake.some(
                 segment =>
-                    segment.x ===
-                        newHead.x &&
-
-                    segment.y ===
-                        newHead.y
+                    segment.x === head.x &&
+                    segment.y === head.y
             )
 
         ) {
@@ -445,25 +492,18 @@ if (GAME === "snake") {
 
 
         snake.unshift(
-            newHead
+            head
         );
 
 
-        /* FOOD COLLISION */
-
         if (
 
-            newHead.x ===
-                food.x &&
-
-            newHead.y ===
-                food.y
+            head.x === food.x &&
+            head.y === food.y
 
         ) {
 
-            updateScore(
-                score + 1
-            );
+            addScore(1);
 
             createFood();
 
@@ -499,14 +539,11 @@ if (GAME === "snake") {
 
 
             if (
-
                 (
                     key === "arrowup" ||
                     key === "w"
                 ) &&
-
                 direction.y !== 1
-
             ) {
 
                 nextDirection = {
@@ -517,14 +554,11 @@ if (GAME === "snake") {
 
 
             else if (
-
                 (
                     key === "arrowdown" ||
                     key === "s"
                 ) &&
-
                 direction.y !== -1
-
             ) {
 
                 nextDirection = {
@@ -535,14 +569,11 @@ if (GAME === "snake") {
 
 
             else if (
-
                 (
                     key === "arrowleft" ||
                     key === "a"
                 ) &&
-
                 direction.x !== 1
-
             ) {
 
                 nextDirection = {
@@ -553,14 +584,11 @@ if (GAME === "snake") {
 
 
             else if (
-
                 (
                     key === "arrowright" ||
                     key === "d"
                 ) &&
-
                 direction.x !== -1
-
             ) {
 
                 nextDirection = {
@@ -595,30 +623,31 @@ else if (GAME === "flappy") {
     );
 
 
-    let bird = {
-
+    const bird = {
         x: 150,
-
         y: 250,
-
         radius: 17,
-
         velocity: 0
     };
 
 
     let pipes = [];
 
+
     let frame = 0;
+
 
     let dead = false;
 
 
     const gravity = 0.42;
 
+
     const flapStrength = -7.5;
 
+
     const pipeGap = 160;
+
 
     const pipeWidth = 70;
 
@@ -626,7 +655,6 @@ else if (GAME === "flappy") {
     function flap() {
 
         if (!dead) {
-
             bird.velocity =
                 flapStrength;
         }
@@ -657,31 +685,110 @@ else if (GAME === "flappy") {
 
     function addPipe() {
 
-        const minimum = 70;
-
-        const maximum = 270;
-
-
-        const height =
-
-            minimum +
-
+        const top =
+            70 +
             Math.random() *
-
-            (
-                maximum -
-                minimum
-            );
+            200;
 
 
         pipes.push({
-
             x: canvas.width,
-
-            top: height,
-
+            top,
             passed: false
         });
+    }
+
+
+    function drawFlappy() {
+
+        const gradient =
+            ctx.createLinearGradient(
+                0,
+                0,
+                0,
+                canvas.height
+            );
+
+
+        gradient.addColorStop(
+            0,
+            "#07192d"
+        );
+
+
+        gradient.addColorStop(
+            1,
+            "#153f5d"
+        );
+
+
+        ctx.fillStyle =
+            gradient;
+
+
+        ctx.fillRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+        /* PIPES */
+
+        pipes.forEach(pipe => {
+
+            ctx.fillStyle =
+                "#42d67d";
+
+
+            ctx.fillRect(
+                pipe.x,
+                0,
+                pipeWidth,
+                pipe.top
+            );
+
+
+            ctx.fillRect(
+                pipe.x,
+                pipe.top +
+                    pipeGap,
+                pipeWidth,
+                canvas.height
+            );
+        });
+
+
+        /* BIRD */
+
+        ctx.fillStyle =
+            "#ffd447";
+
+
+        ctx.shadowColor =
+            "#ffd447";
+
+
+        ctx.shadowBlur = 15;
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+            bird.x,
+            bird.y,
+            bird.radius,
+            0,
+            Math.PI * 2
+        );
+
+
+        ctx.fill();
+
+
+        ctx.shadowBlur = 0;
     }
 
 
@@ -698,6 +805,7 @@ else if (GAME === "flappy") {
         bird.velocity +=
             gravity;
 
+
         bird.y +=
             bird.velocity;
 
@@ -710,64 +818,59 @@ else if (GAME === "flappy") {
         }
 
 
-        pipes.forEach(
-            pipe => {
+        pipes.forEach(pipe => {
 
-                pipe.x -= 3;
-
-
-                if (
-
-                    !pipe.passed &&
-
-                    pipe.x +
-                        pipeWidth <
-                        bird.x
-
-                ) {
-
-                    pipe.passed =
-                        true;
-
-                    updateScore(
-                        score + 1
-                    );
-                }
+            pipe.x -= 3;
 
 
-                const insidePipe =
+            if (
 
-                    bird.x +
-                        bird.radius >
-                        pipe.x &&
+                !pipe.passed &&
 
-                    bird.x -
-                        bird.radius <
-                        pipe.x +
-                        pipeWidth;
+                pipe.x +
+                    pipeWidth <
+                    bird.x
 
+            ) {
 
-                const collision =
+                pipe.passed = true;
 
-                    bird.y -
-                        bird.radius <
-                        pipe.top ||
-
-                    bird.y +
-                        bird.radius >
-                        pipe.top +
-                        pipeGap;
-
-
-                if (
-                    insidePipe &&
-                    collision
-                ) {
-
-                    dead = true;
-                }
+                addScore(1);
             }
-        );
+
+
+            const insidePipe =
+
+                bird.x +
+                    bird.radius >
+                    pipe.x &&
+
+                bird.x -
+                    bird.radius <
+                    pipe.x +
+                    pipeWidth;
+
+
+            const hitsPipe =
+
+                bird.y -
+                    bird.radius <
+                    pipe.top ||
+
+                bird.y +
+                    bird.radius >
+                    pipe.top +
+                    pipeGap;
+
+
+            if (
+                insidePipe &&
+                hitsPipe
+            ) {
+
+                dead = true;
+            }
+        });
 
 
         pipes =
@@ -795,7 +898,248 @@ else if (GAME === "flappy") {
         }
 
 
-        /* BACKGROUND */
+        drawFlappy();
+
+
+        if (dead) {
+
+            showGameOver();
+
+            return;
+        }
+
+
+        requestAnimationFrame(
+            flappyLoop
+        );
+    }
+
+
+    flappyLoop();
+}
+
+
+/* ============================================================
+   BIRD LAUNCHER
+   ============================================================ */
+
+else if (GAME === "launcher") {
+
+    showHelp(
+        "Drag the bird backwards and release"
+    );
+
+
+    const start = {
+        x: 150,
+        y: 365
+    };
+
+
+    const bird = {
+        x: start.x,
+        y: start.y,
+        radius: 18,
+        vx: 0,
+        vy: 0
+    };
+
+
+    const targets = [
+
+        {
+            x: 590,
+            y: 390,
+            radius: 24,
+            alive: true
+        },
+
+        {
+            x: 650,
+            y: 390,
+            radius: 24,
+            alive: true
+        },
+
+        {
+            x: 620,
+            y: 330,
+            radius: 24,
+            alive: true
+        }
+
+    ];
+
+
+    let dragging = false;
+
+
+    let launched = false;
+
+
+    let finished = false;
+
+
+    canvas.addEventListener(
+        "mousedown",
+        event => {
+
+            if (
+                launched ||
+                finished
+            ) {
+                return;
+            }
+
+
+            const rect =
+                canvas.getBoundingClientRect();
+
+
+            const x =
+                (
+                    event.clientX -
+                    rect.left
+                ) *
+                canvas.width /
+                rect.width;
+
+
+            const y =
+                (
+                    event.clientY -
+                    rect.top
+                ) *
+                canvas.height /
+                rect.height;
+
+
+            if (
+                Math.hypot(
+                    x - bird.x,
+                    y - bird.y
+                ) <
+                35
+            ) {
+
+                dragging = true;
+            }
+        }
+    );
+
+
+    canvas.addEventListener(
+        "mousemove",
+        event => {
+
+            if (!dragging) {
+                return;
+            }
+
+
+            const rect =
+                canvas.getBoundingClientRect();
+
+
+            let x =
+                (
+                    event.clientX -
+                    rect.left
+                ) *
+                canvas.width /
+                rect.width;
+
+
+            let y =
+                (
+                    event.clientY -
+                    rect.top
+                ) *
+                canvas.height /
+                rect.height;
+
+
+            const dx =
+                x - start.x;
+
+
+            const dy =
+                y - start.y;
+
+
+            const distance =
+                Math.hypot(
+                    dx,
+                    dy
+                );
+
+
+            const maxPull = 100;
+
+
+            if (
+                distance >
+                maxPull
+            ) {
+
+                x =
+                    start.x +
+                    dx /
+                    distance *
+                    maxPull;
+
+
+                y =
+                    start.y +
+                    dy /
+                    distance *
+                    maxPull;
+            }
+
+
+            bird.x = x;
+
+            bird.y = y;
+
+
+            drawLauncher();
+        }
+    );
+
+
+    window.addEventListener(
+        "mouseup",
+        () => {
+
+            if (!dragging) {
+                return;
+            }
+
+
+            dragging = false;
+
+            launched = true;
+
+
+            bird.vx =
+                (
+                    start.x -
+                    bird.x
+                ) *
+                0.12;
+
+
+            bird.vy =
+                (
+                    start.y -
+                    bird.y
+                ) *
+                0.12;
+        }
+    );
+
+
+    function drawLauncher() {
 
         const gradient =
             ctx.createLinearGradient(
@@ -808,17 +1152,19 @@ else if (GAME === "flappy") {
 
         gradient.addColorStop(
             0,
-            "#07192d"
+            "#132846"
         );
+
 
         gradient.addColorStop(
             1,
-            "#153f5d"
+            "#294f69"
         );
 
 
         ctx.fillStyle =
             gradient;
+
 
         ctx.fillRect(
             0,
@@ -828,46 +1174,147 @@ else if (GAME === "flappy") {
         );
 
 
-        /* PIPES */
+        /* GROUND */
 
-        pipes.forEach(
-            pipe => {
-
-                ctx.fillStyle =
-                    "#42d67d";
+        ctx.fillStyle =
+            "#223c28";
 
 
-                ctx.fillRect(
-                    pipe.x,
-                    0,
-                    pipeWidth,
-                    pipe.top
-                );
-
-
-                ctx.fillRect(
-                    pipe.x,
-                    pipe.top +
-                        pipeGap,
-                    pipeWidth,
-                    canvas.height
-                );
-            }
+        ctx.fillRect(
+            0,
+            420,
+            canvas.width,
+            80
         );
+
+
+        /* SLINGSHOT */
+
+        ctx.strokeStyle =
+            "#8b5a2b";
+
+
+        ctx.lineWidth = 12;
+
+
+        ctx.beginPath();
+
+
+        ctx.moveTo(
+            140,
+            420
+        );
+
+
+        ctx.lineTo(
+            140,
+            345
+        );
+
+
+        ctx.stroke();
+
+
+        if (dragging) {
+
+            ctx.strokeStyle =
+                "#33200f";
+
+
+            ctx.lineWidth = 5;
+
+
+            ctx.beginPath();
+
+
+            ctx.moveTo(
+                140,
+                350
+            );
+
+
+            ctx.lineTo(
+                bird.x,
+                bird.y
+            );
+
+
+            ctx.stroke();
+        }
+
+
+        /* TARGETS */
+
+        targets.forEach(target => {
+
+            if (!target.alive) {
+                return;
+            }
+
+
+            ctx.fillStyle =
+                "#58e99b";
+
+
+            ctx.beginPath();
+
+
+            ctx.arc(
+                target.x,
+                target.y,
+                target.radius,
+                0,
+                Math.PI * 2
+            );
+
+
+            ctx.fill();
+
+
+            ctx.fillStyle =
+                "#07100b";
+
+
+            ctx.beginPath();
+
+
+            ctx.arc(
+                target.x - 8,
+                target.y - 5,
+                3,
+                0,
+                Math.PI * 2
+            );
+
+
+            ctx.arc(
+                target.x + 8,
+                target.y - 5,
+                3,
+                0,
+                Math.PI * 2
+            );
+
+
+            ctx.fill();
+        });
 
 
         /* BIRD */
 
         ctx.fillStyle =
-            "#ffd447";
+            "#ff4f57";
+
 
         ctx.shadowColor =
-            "#ffd447";
+            "#ff4f57";
 
-        ctx.shadowBlur = 15;
+
+        ctx.shadowBlur = 12;
 
 
         ctx.beginPath();
+
 
         ctx.arc(
             bird.x,
@@ -877,26 +1324,759 @@ else if (GAME === "flappy") {
             Math.PI * 2
         );
 
+
         ctx.fill();
 
 
         ctx.shadowBlur = 0;
+    }
 
 
-        if (dead) {
+    function launcherLoop() {
 
-            showGameOver();
+        if (finished) {
+            return;
+        }
 
-        } else {
 
-            requestAnimationFrame(
-                flappyLoop
+        if (launched) {
+
+            bird.vy += 0.35;
+
+
+            bird.x += bird.vx;
+
+
+            bird.y += bird.vy;
+
+
+            targets.forEach(target => {
+
+                if (
+                    target.alive &&
+                    Math.hypot(
+                        bird.x -
+                        target.x,
+
+                        bird.y -
+                        target.y
+                    ) <
+                    bird.radius +
+                    target.radius
+                ) {
+
+                    target.alive = false;
+
+                    addScore(1);
+                }
+            });
+
+
+            if (
+                targets.every(
+                    target =>
+                        !target.alive
+                )
+            ) {
+
+                finished = true;
+
+                drawLauncher();
+
+                showGameOver(
+                    "ALL TARGETS DOWN!"
+                );
+
+                return;
+            }
+
+
+            if (
+
+                bird.x >
+                    canvas.width + 80 ||
+
+                bird.y >
+                    canvas.height + 80 ||
+
+                bird.x < -80
+
+            ) {
+
+                bird.x =
+                    start.x;
+
+                bird.y =
+                    start.y;
+
+                bird.vx = 0;
+
+                bird.vy = 0;
+
+                launched = false;
+            }
+        }
+
+
+        drawLauncher();
+
+
+        requestAnimationFrame(
+            launcherLoop
+        );
+    }
+
+
+    drawLauncher();
+
+    launcherLoop();
+}
+
+
+/* ============================================================
+   TETRIS / BLOCK DROP
+   ============================================================ */
+
+else if (GAME === "tetris") {
+
+    showHelp(
+        "← → Move • ↓ Drop • ↑ Rotate • SPACE Hard Drop"
+    );
+
+
+    const COLS = 10;
+
+
+    const ROWS = 20;
+
+
+    const BLOCK =
+        canvas.width /
+        COLS;
+
+
+    const board =
+        Array.from(
+            {
+                length: ROWS
+            },
+            () =>
+                Array(
+                    COLS
+                ).fill(0)
+        );
+
+
+    const colours = [
+        null,
+        "#55e8ff",
+        "#ffd447",
+        "#a879ff",
+        "#58e99b",
+        "#ff4f87",
+        "#ff8c42",
+        "#5271ff"
+    ];
+
+
+    const pieces = [
+
+        [
+            [1, 1, 1, 1]
+        ],
+
+        [
+            [2, 2],
+            [2, 2]
+        ],
+
+        [
+            [0, 3, 0],
+            [3, 3, 3]
+        ],
+
+        [
+            [0, 4, 4],
+            [4, 4, 0]
+        ],
+
+        [
+            [5, 5, 0],
+            [0, 5, 5]
+        ],
+
+        [
+            [6, 0, 0],
+            [6, 6, 6]
+        ],
+
+        [
+            [0, 0, 7],
+            [7, 7, 7]
+        ]
+
+    ];
+
+
+    let current;
+
+
+    let dropCounter = 0;
+
+
+    let lastTime = 0;
+
+
+    let dead = false;
+
+
+    function randomPiece() {
+
+        const matrix =
+            pieces[
+                Math.floor(
+                    Math.random() *
+                    pieces.length
+                )
+            ];
+
+
+        current = {
+
+            matrix:
+                matrix.map(
+                    row =>
+                        [...row]
+                ),
+
+            x:
+                Math.floor(
+                    COLS / 2
+                ) -
+                Math.floor(
+                    matrix[0].length /
+                    2
+                ),
+
+            y: 0
+        };
+
+
+        if (
+            collides(
+                current.matrix,
+                current.x,
+                current.y
+            )
+        ) {
+
+            dead = true;
+        }
+    }
+
+
+    function collides(
+        matrix,
+        offsetX,
+        offsetY
+    ) {
+
+        for (
+            let y = 0;
+            y < matrix.length;
+            y++
+        ) {
+
+            for (
+                let x = 0;
+                x < matrix[y].length;
+                x++
+            ) {
+
+                if (
+                    matrix[y][x] === 0
+                ) {
+                    continue;
+                }
+
+
+                const boardX =
+                    offsetX + x;
+
+
+                const boardY =
+                    offsetY + y;
+
+
+                if (
+
+                    boardX < 0 ||
+
+                    boardX >= COLS ||
+
+                    boardY >= ROWS ||
+
+                    (
+                        boardY >= 0 &&
+                        board[boardY][boardX]
+                    )
+
+                ) {
+
+                    return true;
+                }
+            }
+        }
+
+
+        return false;
+    }
+
+
+    function mergePiece() {
+
+        current.matrix.forEach(
+            (row, y) => {
+
+                row.forEach(
+                    (value, x) => {
+
+                        if (value) {
+
+                            board[
+                                current.y + y
+                            ][
+                                current.x + x
+                            ] = value;
+                        }
+                    }
+                );
+            }
+        );
+    }
+
+
+    function clearLines() {
+
+        let lines = 0;
+
+
+        outer:
+
+        for (
+            let y =
+                ROWS - 1;
+
+            y >= 0;
+
+            y--
+        ) {
+
+            for (
+                let x = 0;
+                x < COLS;
+                x++
+            ) {
+
+                if (
+                    board[y][x] === 0
+                ) {
+
+                    continue outer;
+                }
+            }
+
+
+            const row =
+                board.splice(
+                    y,
+                    1
+                )[0];
+
+
+            row.fill(0);
+
+
+            board.unshift(
+                row
+            );
+
+
+            y++;
+
+            lines++;
+        }
+
+
+        if (lines > 0) {
+
+            const points = [
+                0,
+                100,
+                300,
+                500,
+                800
+            ];
+
+
+            addScore(
+                points[lines] ||
+                lines * 200
             );
         }
     }
 
 
-    flappyLoop();
+    function playerDrop() {
+
+        current.y++;
+
+
+        if (
+            collides(
+                current.matrix,
+                current.x,
+                current.y
+            )
+        ) {
+
+            current.y--;
+
+            mergePiece();
+
+            clearLines();
+
+            randomPiece();
+        }
+
+
+        dropCounter = 0;
+    }
+
+
+    function hardDrop() {
+
+        while (
+            !collides(
+                current.matrix,
+                current.x,
+                current.y + 1
+            )
+        ) {
+
+            current.y++;
+        }
+
+
+        playerDrop();
+    }
+
+
+    function rotateMatrix(
+        matrix
+    ) {
+
+        return matrix[0].map(
+            (_, index) =>
+                matrix.map(
+                    row =>
+                        row[index]
+                ).reverse()
+        );
+    }
+
+
+    function rotatePiece() {
+
+        const rotated =
+            rotateMatrix(
+                current.matrix
+            );
+
+
+        if (
+            !collides(
+                rotated,
+                current.x,
+                current.y
+            )
+        ) {
+
+            current.matrix =
+                rotated;
+        }
+    }
+
+
+    function drawTetrisBlock(
+        x,
+        y,
+        value
+    ) {
+
+        ctx.fillStyle =
+            colours[value];
+
+
+        ctx.fillRect(
+
+            x * BLOCK + 1,
+
+            y * BLOCK + 1,
+
+            BLOCK - 2,
+
+            BLOCK - 2
+
+        );
+    }
+
+
+    function drawTetris() {
+
+        clearCanvas(
+            "#080d18"
+        );
+
+
+        ctx.strokeStyle =
+            "rgba(255,255,255,.035)";
+
+
+        for (
+            let x = 0;
+            x <= canvas.width;
+            x += BLOCK
+        ) {
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                x,
+                0
+            );
+
+            ctx.lineTo(
+                x,
+                canvas.height
+            );
+
+            ctx.stroke();
+        }
+
+
+        for (
+            let y = 0;
+            y <= canvas.height;
+            y += BLOCK
+        ) {
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                0,
+                y
+            );
+
+            ctx.lineTo(
+                canvas.width,
+                y
+            );
+
+            ctx.stroke();
+        }
+
+
+        board.forEach(
+            (row, y) => {
+
+                row.forEach(
+                    (value, x) => {
+
+                        if (value) {
+
+                            drawTetrisBlock(
+                                x,
+                                y,
+                                value
+                            );
+                        }
+                    }
+                );
+            }
+        );
+
+
+        current.matrix.forEach(
+            (row, y) => {
+
+                row.forEach(
+                    (value, x) => {
+
+                        if (value) {
+
+                            drawTetrisBlock(
+
+                                current.x +
+                                    x,
+
+                                current.y +
+                                    y,
+
+                                value
+
+                            );
+                        }
+                    }
+                );
+            }
+        );
+    }
+
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (dead) {
+                return;
+            }
+
+
+            if (
+                [
+                    "ArrowLeft",
+                    "ArrowRight",
+                    "ArrowDown",
+                    "ArrowUp",
+                    "Space"
+                ].includes(
+                    event.code
+                )
+            ) {
+
+                event.preventDefault();
+            }
+
+
+            if (
+                event.code ===
+                "ArrowLeft"
+            ) {
+
+                current.x--;
+
+
+                if (
+                    collides(
+                        current.matrix,
+                        current.x,
+                        current.y
+                    )
+                ) {
+
+                    current.x++;
+                }
+            }
+
+
+            else if (
+                event.code ===
+                "ArrowRight"
+            ) {
+
+                current.x++;
+
+
+                if (
+                    collides(
+                        current.matrix,
+                        current.x,
+                        current.y
+                    )
+                ) {
+
+                    current.x--;
+                }
+            }
+
+
+            else if (
+                event.code ===
+                "ArrowDown"
+            ) {
+
+                playerDrop();
+            }
+
+
+            else if (
+                event.code ===
+                "ArrowUp"
+            ) {
+
+                rotatePiece();
+            }
+
+
+            else if (
+                event.code ===
+                "Space"
+            ) {
+
+                hardDrop();
+            }
+        }
+    );
+
+
+    function tetrisLoop(
+        time = 0
+    ) {
+
+        if (dead) {
+
+            drawTetris();
+
+            showGameOver();
+
+            return;
+        }
+
+
+        const delta =
+            time -
+            lastTime;
+
+
+        lastTime = time;
+
+
+        dropCounter +=
+            delta;
+
+
+        if (
+            dropCounter >
+            650
+        ) {
+
+            playerDrop();
+        }
+
+
+        drawTetris();
+
+
+        requestAnimationFrame(
+            tetrisLoop
+        );
+    }
+
+
+    randomPiece();
+
+    tetrisLoop();
 }
 
 
@@ -907,28 +2087,32 @@ else if (GAME === "flappy") {
 else if (GAME === "pong") {
 
     showHelp(
-        "Move mouse over the court or use W / S"
+        "Mouse or W / S"
     );
 
 
     let playerY = 205;
 
-    let computerY = 205;
+
+    let cpuY = 205;
 
 
-    let ball = {
+    const paddleHeight = 90;
 
+
+    const ball = {
         x: 400,
-
         y: 250,
-
         vx: 5,
-
-        vy: 3
+        vy: 3,
+        radius: 9
     };
 
 
     const keys = {};
+
+
+    let finished = false;
 
 
     document.addEventListener(
@@ -971,16 +2155,104 @@ else if (GAME === "pong") {
                 canvas.height /
                 rect.height -
 
-                45;
+                paddleHeight /
+                2;
         }
     );
 
 
+    function drawPong() {
+
+        clearCanvas(
+            "#070b14"
+        );
+
+
+        ctx.strokeStyle =
+            "rgba(255,255,255,.15)";
+
+
+        ctx.setLineDash(
+            [10, 15]
+        );
+
+
+        ctx.beginPath();
+
+
+        ctx.moveTo(
+            canvas.width / 2,
+            0
+        );
+
+
+        ctx.lineTo(
+            canvas.width / 2,
+            canvas.height
+        );
+
+
+        ctx.stroke();
+
+
+        ctx.setLineDash([]);
+
+
+        ctx.fillStyle =
+            "#55e8ff";
+
+
+        ctx.fillRect(
+            30,
+            playerY,
+            12,
+            paddleHeight
+        );
+
+
+        ctx.fillStyle =
+            "#ff4f87";
+
+
+        ctx.fillRect(
+            canvas.width - 42,
+            cpuY,
+            12,
+            paddleHeight
+        );
+
+
+        ctx.fillStyle =
+            "#ffffff";
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+            ball.x,
+            ball.y,
+            ball.radius,
+            0,
+            Math.PI * 2
+        );
+
+
+        ctx.fill();
+    }
+
+
     function pongLoop() {
+
+        if (finished) {
+            return;
+        }
+
 
         if (keys.w) {
             playerY -= 7;
         }
+
 
         if (keys.s) {
             playerY += 7;
@@ -991,21 +2263,22 @@ else if (GAME === "pong") {
             Math.max(
                 0,
                 Math.min(
-                    410,
+                    canvas.height -
+                    paddleHeight,
                     playerY
                 )
             );
 
 
-        computerY +=
+        cpuY +=
 
             Math.sign(
 
                 ball.y -
 
                 (
-                    computerY +
-                    45
+                    cpuY +
+                    paddleHeight / 2
                 )
 
             ) *
@@ -1013,8 +2286,20 @@ else if (GAME === "pong") {
             3.3;
 
 
+        cpuY =
+            Math.max(
+                0,
+                Math.min(
+                    canvas.height -
+                    paddleHeight,
+                    cpuY
+                )
+            );
+
+
         ball.x +=
             ball.vx;
+
 
         ball.y +=
             ball.vy;
@@ -1022,10 +2307,13 @@ else if (GAME === "pong") {
 
         if (
 
-            ball.y <= 8 ||
+            ball.y -
+                ball.radius <=
+                0 ||
 
-            ball.y >=
-                canvas.height - 8
+            ball.y +
+                ball.radius >=
+                canvas.height
 
         ) {
 
@@ -1035,15 +2323,21 @@ else if (GAME === "pong") {
 
         if (
 
-            ball.x < 50 &&
+            ball.x -
+                ball.radius <
+                42 &&
 
-            ball.x > 25 &&
+            ball.x >
+                25 &&
 
             ball.y >
                 playerY &&
 
             ball.y <
-                playerY + 90
+                playerY +
+                paddleHeight &&
+
+            ball.vx < 0
 
         ) {
 
@@ -1054,25 +2348,29 @@ else if (GAME === "pong") {
                 1.03;
 
 
-            updateScore(
-                score + 1
-            );
+            addScore(1);
         }
 
 
         if (
 
-            ball.x >
-                canvas.width - 50 &&
+            ball.x +
+                ball.radius >
+                canvas.width -
+                42 &&
 
             ball.x <
-                canvas.width - 20 &&
+                canvas.width -
+                25 &&
 
             ball.y >
-                computerY &&
+                cpuY &&
 
             ball.y <
-                computerY + 90
+                cpuY +
+                paddleHeight &&
+
+            ball.vx > 0
 
         ) {
 
@@ -1085,8 +2383,12 @@ else if (GAME === "pong") {
 
 
         if (
-            ball.x < 0
+            ball.x < -20
         ) {
+
+            finished = true;
+
+            drawPong();
 
             showGameOver(
                 "CPU WINS"
@@ -1098,7 +2400,7 @@ else if (GAME === "pong") {
 
         if (
             ball.x >
-            canvas.width
+            canvas.width + 20
         ) {
 
             ball.x = 400;
@@ -1111,78 +2413,7 @@ else if (GAME === "pong") {
         }
 
 
-        ctx.fillStyle =
-            "#070b14";
-
-        ctx.fillRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
-
-
-        ctx.strokeStyle =
-            "rgba(255,255,255,.15)";
-
-        ctx.setLineDash(
-            [10, 15]
-        );
-
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            canvas.width / 2,
-            0
-        );
-
-        ctx.lineTo(
-            canvas.width / 2,
-            canvas.height
-        );
-
-        ctx.stroke();
-
-        ctx.setLineDash([]);
-
-
-        ctx.fillStyle =
-            "#55e8ff";
-
-        ctx.fillRect(
-            30,
-            playerY,
-            12,
-            90
-        );
-
-
-        ctx.fillStyle =
-            "#ff4f87";
-
-        ctx.fillRect(
-            canvas.width - 42,
-            computerY,
-            12,
-            90
-        );
-
-
-        ctx.fillStyle =
-            "#ffffff";
-
-        ctx.beginPath();
-
-        ctx.arc(
-            ball.x,
-            ball.y,
-            9,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fill();
+        drawPong();
 
 
         requestAnimationFrame(
@@ -1190,6 +2421,8 @@ else if (GAME === "pong") {
         );
     }
 
+
+    drawPong();
 
     pongLoop();
 }
@@ -1201,7 +2434,10 @@ else if (GAME === "pong") {
 
 else if (GAME === "breakout") {
 
-    showHelp("Mouse or ← → to move");
+    showHelp(
+        "Mouse or ← → to move"
+    );
+
 
     const paddle = {
         x: 330,
@@ -1209,6 +2445,7 @@ else if (GAME === "breakout") {
         width: 140,
         height: 14
     };
+
 
     const ball = {
         x: 400,
@@ -1218,70 +2455,180 @@ else if (GAME === "breakout") {
         vy: -4
     };
 
+
     const bricks = [];
 
+
     const keys = {};
+
 
     let finished = false;
 
 
-    /* CREATE BRICKS */
+    for (
+        let row = 0;
+        row < 5;
+        row++
+    ) {
 
-    for (let row = 0; row < 5; row++) {
-
-        for (let col = 0; col < 10; col++) {
+        for (
+            let col = 0;
+            col < 10;
+            col++
+        ) {
 
             bricks.push({
-                x: 42 + col * 72,
-                y: 55 + row * 34,
+
+                x:
+                    42 +
+                    col * 72,
+
+                y:
+                    55 +
+                    row * 34,
+
                 width: 64,
+
                 height: 24,
+
                 alive: true,
-                hue: 185 + row * 25
+
+                hue:
+                    185 +
+                    row * 25
+
             });
         }
     }
 
 
-    /* KEYBOARD */
+    document.addEventListener(
+        "keydown",
+        event => {
 
-    document.addEventListener("keydown", event => {
+            keys[event.key] =
+                true;
 
-        keys[event.key] = true;
 
-        if (
-            event.key === "ArrowLeft" ||
-            event.key === "ArrowRight"
-        ) {
-            event.preventDefault();
+            if (
+                event.key ===
+                    "ArrowLeft" ||
+
+                event.key ===
+                    "ArrowRight"
+            ) {
+
+                event.preventDefault();
+            }
         }
-    });
+    );
 
 
-    document.addEventListener("keyup", event => {
+    document.addEventListener(
+        "keyup",
+        event => {
 
-        keys[event.key] = false;
+            keys[event.key] =
+                false;
+        }
+    );
 
-    });
+
+    canvas.addEventListener(
+        "mousemove",
+        event => {
+
+            const rect =
+                canvas.getBoundingClientRect();
 
 
-    /* MOUSE */
+            const mouseX =
 
-    canvas.addEventListener("mousemove", event => {
+                (
+                    event.clientX -
+                    rect.left
+                ) *
 
-        const rect =
-            canvas.getBoundingClientRect();
+                canvas.width /
+                rect.width;
 
-        const mouseX =
-            (event.clientX - rect.left) *
-            canvas.width /
-            rect.width;
 
-        paddle.x =
-            mouseX -
-            paddle.width / 2;
+            paddle.x =
+                mouseX -
+                paddle.width / 2;
+        }
+    );
 
-    });
+
+    function drawBreakout() {
+
+        clearCanvas(
+            "#070b14"
+        );
+
+
+        bricks.forEach(
+            brick => {
+
+                if (!brick.alive) {
+                    return;
+                }
+
+
+                ctx.fillStyle =
+                    `hsl(${brick.hue} 80% 60%)`;
+
+
+                ctx.shadowColor =
+                    ctx.fillStyle;
+
+
+                ctx.shadowBlur = 8;
+
+
+                ctx.fillRect(
+                    brick.x,
+                    brick.y,
+                    brick.width,
+                    brick.height
+                );
+
+
+                ctx.shadowBlur = 0;
+            }
+        );
+
+
+        ctx.fillStyle =
+            "#55e8ff";
+
+
+        ctx.fillRect(
+            paddle.x,
+            paddle.y,
+            paddle.width,
+            paddle.height
+        );
+
+
+        ctx.fillStyle =
+            "#ffffff";
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+            ball.x,
+            ball.y,
+            ball.radius,
+            0,
+            Math.PI * 2
+        );
+
+
+        ctx.fill();
+    }
 
 
     function breakoutLoop() {
@@ -1291,13 +2638,18 @@ else if (GAME === "breakout") {
         }
 
 
-        /* PADDLE MOVEMENT */
+        if (
+            keys.ArrowLeft
+        ) {
 
-        if (keys.ArrowLeft) {
             paddle.x -= 8;
         }
 
-        if (keys.ArrowRight) {
+
+        if (
+            keys.ArrowRight
+        ) {
+
             paddle.x += 8;
         }
 
@@ -1313,97 +2665,138 @@ else if (GAME === "breakout") {
             );
 
 
-        /* BALL */
-
         ball.x += ball.vx;
+
         ball.y += ball.vy;
 
 
-        /* SIDE WALLS */
-
         if (
-            ball.x - ball.radius <= 0 ||
-            ball.x + ball.radius >= canvas.width
+
+            ball.x -
+                ball.radius <=
+                0 ||
+
+            ball.x +
+                ball.radius >=
+                canvas.width
+
         ) {
 
             ball.vx *= -1;
         }
 
 
-        /* TOP WALL */
-
         if (
-            ball.y - ball.radius <= 0
+            ball.y -
+                ball.radius <=
+                0
         ) {
 
             ball.vy =
-                Math.abs(ball.vy);
+                Math.abs(
+                    ball.vy
+                );
         }
 
 
-        /* PADDLE */
-
         if (
-            ball.y + ball.radius >= paddle.y &&
-            ball.y - ball.radius <= paddle.y + paddle.height &&
-            ball.x >= paddle.x &&
-            ball.x <= paddle.x + paddle.width &&
+
+            ball.y +
+                ball.radius >=
+                paddle.y &&
+
+            ball.y -
+                ball.radius <=
+                paddle.y +
+                paddle.height &&
+
+            ball.x >=
+                paddle.x &&
+
+            ball.x <=
+                paddle.x +
+                paddle.width &&
+
             ball.vy > 0
+
         ) {
 
-            const hitPosition =
+            const hit =
+
                 (
                     ball.x -
+
                     (
                         paddle.x +
-                        paddle.width / 2
+                        paddle.width /
+                        2
                     )
+
                 ) /
+
                 (
-                    paddle.width / 2
+                    paddle.width /
+                    2
                 );
 
 
             ball.vx =
-                hitPosition * 6;
+                hit * 6;
+
 
             ball.vy =
-                -Math.abs(ball.vy);
+                -Math.abs(
+                    ball.vy
+                );
         }
 
 
-        /* BRICKS */
+        bricks.forEach(
+            brick => {
 
-        bricks.forEach(brick => {
+                if (!brick.alive) {
+                    return;
+                }
 
-            if (!brick.alive) {
-                return;
+
+                if (
+
+                    ball.x +
+                        ball.radius >
+                        brick.x &&
+
+                    ball.x -
+                        ball.radius <
+                        brick.x +
+                        brick.width &&
+
+                    ball.y +
+                        ball.radius >
+                        brick.y &&
+
+                    ball.y -
+                        ball.radius <
+                        brick.y +
+                        brick.height
+
+                ) {
+
+                    brick.alive =
+                        false;
+
+
+                    ball.vy *= -1;
+
+
+                    addScore(10);
+                }
             }
+        );
 
-
-            if (
-                ball.x + ball.radius > brick.x &&
-                ball.x - ball.radius < brick.x + brick.width &&
-                ball.y + ball.radius > brick.y &&
-                ball.y - ball.radius < brick.y + brick.height
-            ) {
-
-                brick.alive = false;
-
-                ball.vy *= -1;
-
-                updateScore(
-                    score + 10
-                );
-            }
-        });
-
-
-        /* LOST BALL */
 
         if (
-            ball.y - ball.radius >
-            canvas.height
+            ball.y >
+            canvas.height + 20
         ) {
 
             finished = true;
@@ -1415,8 +2808,6 @@ else if (GAME === "breakout") {
             return;
         }
 
-
-        /* WIN */
 
         if (
             bricks.every(
@@ -1439,90 +2830,10 @@ else if (GAME === "breakout") {
 
         drawBreakout();
 
+
         requestAnimationFrame(
             breakoutLoop
         );
-    }
-
-
-    function drawBreakout() {
-
-        ctx.fillStyle = "#070b14";
-
-        ctx.fillRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
-
-
-        /* BRICKS */
-
-        bricks.forEach(brick => {
-
-            if (!brick.alive) {
-                return;
-            }
-
-
-            ctx.fillStyle =
-                `hsl(${brick.hue} 80% 60%)`;
-
-            ctx.shadowColor =
-                `hsl(${brick.hue} 80% 60%)`;
-
-            ctx.shadowBlur = 8;
-
-
-            ctx.fillRect(
-                brick.x,
-                brick.y,
-                brick.width,
-                brick.height
-            );
-
-
-            ctx.shadowBlur = 0;
-
-        });
-
-
-        /* PADDLE */
-
-        ctx.fillStyle = "#55e8ff";
-
-        ctx.shadowColor = "#55e8ff";
-
-        ctx.shadowBlur = 12;
-
-
-        ctx.fillRect(
-            paddle.x,
-            paddle.y,
-            paddle.width,
-            paddle.height
-        );
-
-
-        ctx.shadowBlur = 0;
-
-
-        /* BALL */
-
-        ctx.fillStyle = "#ffffff";
-
-        ctx.beginPath();
-
-        ctx.arc(
-            ball.x,
-            ball.y,
-            ball.radius,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fill();
     }
 
 
@@ -1544,7 +2855,7 @@ else if (GAME === "invaders") {
 
 
     const player = {
-        x: 380,
+        x: 378,
         y: 450,
         width: 44,
         height: 24
@@ -1553,72 +2864,241 @@ else if (GAME === "invaders") {
 
     const keys = {};
 
+
     const aliens = [];
+
 
     let bullets = [];
 
+
     let alienDirection = 1;
 
+
     let alienTimer = 0;
+
 
     let finished = false;
 
 
-    /* CREATE ALIENS */
+    for (
+        let row = 0;
+        row < 4;
+        row++
+    ) {
 
-    for (let row = 0; row < 4; row++) {
-
-        for (let col = 0; col < 9; col++) {
+        for (
+            let col = 0;
+            col < 9;
+            col++
+        ) {
 
             aliens.push({
-                x: 90 + col * 70,
-                y: 60 + row * 48,
+
+                x:
+                    90 +
+                    col * 70,
+
+                y:
+                    60 +
+                    row * 48,
+
                 width: 36,
+
                 height: 25,
+
                 alive: true
+
             });
         }
     }
 
 
-    document.addEventListener("keydown", event => {
+    document.addEventListener(
+        "keydown",
+        event => {
 
-        keys[event.code] = true;
-
-
-        if (
-            event.code === "Space"
-        ) {
-
-            event.preventDefault();
+            keys[event.code] =
+                true;
 
 
             if (
-                bullets.length < 5
+                event.code ===
+                "Space"
             ) {
 
-                bullets.push({
-                    x:
-                        player.x +
-                        player.width / 2 -
-                        2,
+                event.preventDefault();
 
-                    y:
-                        player.y,
 
-                    width: 4,
-                    height: 12
-                });
+                if (
+                    !event.repeat &&
+                    bullets.length < 5
+                ) {
+
+                    bullets.push({
+
+                        x:
+                            player.x +
+                            player.width /
+                            2 -
+                            2,
+
+                        y:
+                            player.y,
+
+                        width: 4,
+
+                        height: 12
+
+                    });
+                }
             }
         }
-    });
+    );
 
 
-    document.addEventListener("keyup", event => {
+    document.addEventListener(
+        "keyup",
+        event => {
 
-        keys[event.code] = false;
+            keys[event.code] =
+                false;
+        }
+    );
 
-    });
+
+    function drawInvaders() {
+
+        clearCanvas(
+            "#040711"
+        );
+
+
+        ctx.fillStyle =
+            "rgba(255,255,255,.25)";
+
+
+        for (
+            let i = 0;
+            i < 40;
+            i++
+        ) {
+
+            ctx.fillRect(
+
+                (
+                    i * 97
+                ) %
+                canvas.width,
+
+                (
+                    i * 53
+                ) %
+                canvas.height,
+
+                2,
+
+                2
+
+            );
+        }
+
+
+        /* PLAYER */
+
+        ctx.fillStyle =
+            "#55e8ff";
+
+
+        ctx.beginPath();
+
+
+        ctx.moveTo(
+            player.x +
+                player.width / 2,
+            player.y
+        );
+
+
+        ctx.lineTo(
+            player.x,
+            player.y +
+                player.height
+        );
+
+
+        ctx.lineTo(
+            player.x +
+                player.width,
+            player.y +
+                player.height
+        );
+
+
+        ctx.closePath();
+
+        ctx.fill();
+
+
+        /* ALIENS */
+
+        aliens.forEach(
+            alien => {
+
+                if (!alien.alive) {
+                    return;
+                }
+
+
+                ctx.fillStyle =
+                    "#a879ff";
+
+
+                ctx.fillRect(
+                    alien.x,
+                    alien.y,
+                    alien.width,
+                    alien.height
+                );
+
+
+                ctx.fillStyle =
+                    "#050812";
+
+
+                ctx.fillRect(
+                    alien.x + 8,
+                    alien.y + 7,
+                    5,
+                    5
+                );
+
+
+                ctx.fillRect(
+                    alien.x + 23,
+                    alien.y + 7,
+                    5,
+                    5
+                );
+            }
+        );
+
+
+        ctx.fillStyle =
+            "#ffffff";
+
+
+        bullets.forEach(
+            bullet => {
+
+                ctx.fillRect(
+                    bullet.x,
+                    bullet.y,
+                    bullet.width,
+                    bullet.height
+                );
+            }
+        );
+    }
 
 
     function invadersLoop() {
@@ -1627,8 +3107,6 @@ else if (GAME === "invaders") {
             return;
         }
 
-
-        /* PLAYER */
 
         if (
             keys.ArrowLeft ||
@@ -1659,13 +3137,12 @@ else if (GAME === "invaders") {
             );
 
 
-        /* BULLETS */
+        bullets.forEach(
+            bullet => {
 
-        bullets.forEach(bullet => {
-
-            bullet.y -= 8;
-
-        });
+                bullet.y -= 8;
+            }
+        );
 
 
         bullets =
@@ -1674,8 +3151,6 @@ else if (GAME === "invaders") {
                     bullet.y > -20
             );
 
-
-        /* ALIEN MOVEMENT */
 
         alienTimer++;
 
@@ -1687,99 +3162,120 @@ else if (GAME === "invaders") {
             alienTimer = 0;
 
 
-            let hitEdge = false;
+            let edge = false;
 
 
-            aliens.forEach(alien => {
+            aliens.forEach(
+                alien => {
 
-                if (!alien.alive) {
-                    return;
+                    if (!alien.alive) {
+                        return;
+                    }
+
+
+                    const nextX =
+
+                        alien.x +
+
+                        16 *
+                        alienDirection;
+
+
+                    if (
+
+                        nextX <= 15 ||
+
+                        nextX +
+                            alien.width >=
+                            canvas.width -
+                            15
+
+                    ) {
+
+                        edge = true;
+                    }
                 }
+            );
 
 
-                const nextX =
-                    alien.x +
-                    16 *
-                    alienDirection;
-
-
-                if (
-                    nextX <= 15 ||
-                    nextX +
-                    alien.width >=
-                    canvas.width - 15
-                ) {
-
-                    hitEdge = true;
-                }
-            });
-
-
-            if (hitEdge) {
+            if (edge) {
 
                 alienDirection *= -1;
 
 
-                aliens.forEach(alien => {
+                aliens.forEach(
+                    alien => {
 
-                    if (alien.alive) {
-                        alien.y += 18;
+                        if (alien.alive) {
+                            alien.y += 18;
+                        }
                     }
-
-                });
+                );
 
             } else {
 
-                aliens.forEach(alien => {
+                aliens.forEach(
+                    alien => {
 
-                    if (alien.alive) {
+                        if (alien.alive) {
 
-                        alien.x +=
-                            16 *
-                            alienDirection;
+                            alien.x +=
+
+                                16 *
+                                alienDirection;
+                        }
                     }
-
-                });
+                );
             }
         }
 
 
-        /* BULLET COLLISION */
+        bullets.forEach(
+            bullet => {
 
-        bullets.forEach(bullet => {
+                aliens.forEach(
+                    alien => {
 
-            aliens.forEach(alien => {
+                        if (
+                            !alien.alive
+                        ) {
+                            return;
+                        }
 
-                if (
-                    alien.alive &&
 
-                    bullet.x <
-                        alien.x +
-                        alien.width &&
+                        if (
 
-                    bullet.x +
-                        bullet.width >
-                        alien.x &&
+                            bullet.x <
+                                alien.x +
+                                alien.width &&
 
-                    bullet.y <
-                        alien.y +
-                        alien.height &&
+                            bullet.x +
+                                bullet.width >
+                                alien.x &&
 
-                    bullet.y +
-                        bullet.height >
-                        alien.y
-                ) {
+                            bullet.y <
+                                alien.y +
+                                alien.height &&
 
-                    alien.alive = false;
+                            bullet.y +
+                                bullet.height >
+                                alien.y
 
-                    bullet.y = -100;
+                        ) {
 
-                    updateScore(
-                        score + 10
-                    );
-                }
-            });
-        });
+                            alien.alive =
+                                false;
+
+
+                            bullet.y = -100;
+
+
+                            addScore(10);
+                        }
+                    }
+                );
+            }
+        );
 
 
         bullets =
@@ -1788,8 +3284,6 @@ else if (GAME === "invaders") {
                     bullet.y > -20
             );
 
-
-        /* GAME OVER */
 
         if (
             aliens.some(
@@ -1810,8 +3304,6 @@ else if (GAME === "invaders") {
             return;
         }
 
-
-        /* WIN */
 
         if (
             aliens.every(
@@ -1834,150 +3326,10 @@ else if (GAME === "invaders") {
 
         drawInvaders();
 
+
         requestAnimationFrame(
             invadersLoop
         );
-    }
-
-
-    function drawInvaders() {
-
-        ctx.fillStyle = "#040711";
-
-        ctx.fillRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
-
-
-        /* STARS */
-
-        ctx.fillStyle =
-            "rgba(255,255,255,.25)";
-
-
-        for (
-            let i = 0;
-            i < 40;
-            i++
-        ) {
-
-            const x =
-                (
-                    i * 97
-                ) %
-                canvas.width;
-
-            const y =
-                (
-                    i * 53
-                ) %
-                canvas.height;
-
-
-            ctx.fillRect(
-                x,
-                y,
-                2,
-                2
-            );
-        }
-
-
-        /* PLAYER */
-
-        ctx.fillStyle = "#55e8ff";
-
-        ctx.shadowColor = "#55e8ff";
-
-        ctx.shadowBlur = 14;
-
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            player.x +
-            player.width / 2,
-            player.y
-        );
-
-        ctx.lineTo(
-            player.x,
-            player.y +
-            player.height
-        );
-
-        ctx.lineTo(
-            player.x +
-            player.width,
-            player.y +
-            player.height
-        );
-
-        ctx.closePath();
-
-        ctx.fill();
-
-
-        ctx.shadowBlur = 0;
-
-
-        /* ALIENS */
-
-        aliens.forEach(alien => {
-
-            if (!alien.alive) {
-                return;
-            }
-
-
-            ctx.fillStyle = "#a879ff";
-
-            ctx.fillRect(
-                alien.x,
-                alien.y,
-                alien.width,
-                alien.height
-            );
-
-
-            ctx.fillStyle = "#050812";
-
-
-            ctx.fillRect(
-                alien.x + 8,
-                alien.y + 7,
-                5,
-                5
-            );
-
-
-            ctx.fillRect(
-                alien.x + 23,
-                alien.y + 7,
-                5,
-                5
-            );
-        });
-
-
-        /* BULLETS */
-
-        ctx.fillStyle = "#ffffff";
-
-
-        bullets.forEach(bullet => {
-
-            ctx.fillRect(
-                bullet.x,
-                bullet.y,
-                bullet.width,
-                bullet.height
-            );
-
-        });
     }
 
 
@@ -2012,7 +3364,9 @@ else if (GAME === "runner") {
 
     let obstacles = [];
 
+
     let frame = 0;
+
 
     let finished = false;
 
@@ -2031,24 +3385,153 @@ else if (GAME === "runner") {
     }
 
 
-    document.addEventListener("keydown", event => {
+    document.addEventListener(
+        "keydown",
+        event => {
 
-        if (
-            event.code === "Space" ||
-            event.code === "ArrowUp"
-        ) {
+            if (
 
-            event.preventDefault();
+                event.code ===
+                    "Space" ||
 
-            jump();
+                event.code ===
+                    "ArrowUp"
+
+            ) {
+
+                event.preventDefault();
+
+                jump();
+            }
         }
-    });
+    );
 
 
     canvas.addEventListener(
         "click",
         jump
     );
+
+
+    function drawRunner() {
+
+        const gradient =
+            ctx.createLinearGradient(
+                0,
+                0,
+                0,
+                canvas.height
+            );
+
+
+        gradient.addColorStop(
+            0,
+            "#071528"
+        );
+
+
+        gradient.addColorStop(
+            1,
+            "#10253a"
+        );
+
+
+        ctx.fillStyle =
+            gradient;
+
+
+        ctx.fillRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+        ctx.fillStyle =
+            "rgba(255,255,255,.12)";
+
+
+        ctx.beginPath();
+
+
+        ctx.arc(
+            670,
+            100,
+            55,
+            0,
+            Math.PI * 2
+        );
+
+
+        ctx.fill();
+
+
+        ctx.fillStyle =
+            "#162b25";
+
+
+        ctx.fillRect(
+            0,
+            groundY,
+            canvas.width,
+            canvas.height -
+                groundY
+        );
+
+
+        ctx.fillStyle =
+            "#58e99b";
+
+
+        ctx.fillRect(
+            0,
+            groundY,
+            canvas.width,
+            4
+        );
+
+
+        ctx.fillStyle =
+            "#55e8ff";
+
+
+        ctx.fillRect(
+            player.x,
+            player.y,
+            player.width,
+            player.height
+        );
+
+
+        ctx.fillStyle =
+            "#050812";
+
+
+        ctx.fillRect(
+            player.x + 29,
+            player.y + 11,
+            6,
+            6
+        );
+
+
+        ctx.fillStyle =
+            "#ff4f87";
+
+
+        obstacles.forEach(
+            obstacle => {
+
+                ctx.fillRect(
+                    obstacle.x,
+                    obstacle.y,
+                    obstacle.width,
+                    obstacle.height
+                );
+            }
+        );
+    }
 
 
     function runnerLoop() {
@@ -2061,11 +3544,10 @@ else if (GAME === "runner") {
         frame++;
 
 
-        /* GRAVITY */
-
         player.vy += 0.7;
 
-        player.y += player.vy;
+        player.y +=
+            player.vy;
 
 
         if (
@@ -2078,11 +3560,10 @@ else if (GAME === "runner") {
                 groundY -
                 player.height;
 
+
             player.vy = 0;
         }
 
-
-        /* SPAWN */
 
         if (
             frame % 95 === 0
@@ -2095,62 +3576,73 @@ else if (GAME === "runner") {
 
 
             obstacles.push({
-                x: canvas.width + 30,
-                y: groundY - height,
+
+                x:
+                    canvas.width +
+                    30,
+
+                y:
+                    groundY -
+                    height,
+
                 width:
                     24 +
                     Math.random() *
                     22,
+
                 height
+
             });
         }
 
 
-        /* MOVE OBSTACLES */
+        obstacles.forEach(
+            obstacle => {
 
-        obstacles.forEach(obstacle => {
+                obstacle.x -=
 
-            obstacle.x -=
-                6 +
-                Math.min(
-                    score / 300,
-                    3
-                );
+                    6 +
 
-        });
+                    Math.min(
+                        score / 300,
+                        3
+                    );
+            }
+        );
 
 
         obstacles =
             obstacles.filter(
                 obstacle =>
                     obstacle.x +
-                    obstacle.width >
+                        obstacle.width >
                     -20
             );
 
 
-        /* COLLISION */
+        const collision =
+            obstacles.some(
+                obstacle =>
 
-        if (
-            obstacles.some(obstacle =>
+                    player.x <
+                        obstacle.x +
+                        obstacle.width &&
 
-                player.x <
-                    obstacle.x +
-                    obstacle.width &&
+                    player.x +
+                        player.width >
+                        obstacle.x &&
 
-                player.x +
-                    player.width >
-                    obstacle.x &&
+                    player.y <
+                        obstacle.y +
+                        obstacle.height &&
 
-                player.y <
-                    obstacle.y +
-                    obstacle.height &&
+                    player.y +
+                        player.height >
+                        obstacle.y
+            );
 
-                player.y +
-                    player.height >
-                    obstacle.y
-            )
-        ) {
+
+        if (collision) {
 
             finished = true;
 
@@ -2171,130 +3663,766 @@ else if (GAME === "runner") {
 
         drawRunner();
 
+
         requestAnimationFrame(
             runnerLoop
         );
     }
 
 
-    function drawRunner() {
-
-        const gradient =
-            ctx.createLinearGradient(
-                0,
-                0,
-                0,
-                canvas.height
-            );
-
-
-        gradient.addColorStop(
-            0,
-            "#071528"
-        );
-
-        gradient.addColorStop(
-            1,
-            "#10253a"
-        );
-
-
-        ctx.fillStyle =
-            gradient;
-
-
-        ctx.fillRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
-
-
-        /* MOON */
-
-        ctx.fillStyle =
-            "rgba(255,255,255,.12)";
-
-        ctx.beginPath();
-
-        ctx.arc(
-            670,
-            100,
-            55,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fill();
-
-
-        /* GROUND */
-
-        ctx.fillStyle = "#162b25";
-
-        ctx.fillRect(
-            0,
-            groundY,
-            canvas.width,
-            canvas.height -
-            groundY
-        );
-
-
-        ctx.fillStyle = "#58e99b";
-
-        ctx.fillRect(
-            0,
-            groundY,
-            canvas.width,
-            4
-        );
-
-
-        /* PLAYER */
-
-        ctx.fillStyle = "#55e8ff";
-
-        ctx.fillRect(
-            player.x,
-            player.y,
-            player.width,
-            player.height
-        );
-
-
-        ctx.fillStyle = "#050812";
-
-        ctx.fillRect(
-            player.x + 29,
-            player.y + 11,
-            6,
-            6
-        );
-
-
-        /* OBSTACLES */
-
-        ctx.fillStyle = "#ff4f87";
-
-
-        obstacles.forEach(obstacle => {
-
-            ctx.fillRect(
-                obstacle.x,
-                obstacle.y,
-                obstacle.width,
-                obstacle.height
-            );
-
-        });
-    }
-
-
     drawRunner();
 
     runnerLoop();
+}
+
+
+/* ============================================================
+   2048
+   ============================================================ */
+
+else if (GAME === "game2048") {
+
+    showHelp(
+        "Arrow Keys / WASD"
+    );
+
+
+    if (!domGame) {
+
+        console.error(
+            "2048 requires #domgame"
+        );
+
+    } else {
+
+        const size = 4;
+
+
+        let grid =
+            Array.from(
+                {
+                    length: size
+                },
+                () =>
+                    Array(
+                        size
+                    ).fill(0)
+            );
+
+
+        function add2048Tile() {
+
+            const empty = [];
+
+
+            for (
+                let y = 0;
+                y < size;
+                y++
+            ) {
+
+                for (
+                    let x = 0;
+                    x < size;
+                    x++
+                ) {
+
+                    if (
+                        grid[y][x] === 0
+                    ) {
+
+                        empty.push({
+                            x,
+                            y
+                        });
+                    }
+                }
+            }
+
+
+            if (
+                empty.length === 0
+            ) {
+                return;
+            }
+
+
+            const spot =
+                empty[
+                    Math.floor(
+                        Math.random() *
+                        empty.length
+                    )
+                ];
+
+
+            grid[
+                spot.y
+            ][
+                spot.x
+            ] =
+                Math.random() <
+                0.9
+                    ? 2
+                    : 4;
+        }
+
+
+        function render2048() {
+
+            domGame.innerHTML =
+                "";
+
+
+            const board =
+                document.createElement(
+                    "div"
+                );
+
+
+            board.className =
+                "board2048";
+
+
+            grid.flat().forEach(
+                value => {
+
+                    const tile =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    tile.className =
+                        "tile";
+
+
+                    tile.textContent =
+                        value || "";
+
+
+                    if (value) {
+
+                        tile.style.background =
+
+                            value >= 128
+                                ? "rgba(255,79,135,.35)"
+                                : value >= 32
+                                    ? "rgba(168,121,255,.30)"
+                                    : "rgba(85,232,255,.18)";
+                    }
+
+
+                    board.appendChild(
+                        tile
+                    );
+                }
+            );
+
+
+            domGame.appendChild(
+                board
+            );
+        }
+
+
+        function compressLine(
+            line
+        ) {
+
+            const values =
+                line.filter(
+                    value =>
+                        value !== 0
+                );
+
+
+            const result = [];
+
+
+            for (
+                let i = 0;
+                i < values.length;
+                i++
+            ) {
+
+                if (
+                    values[i] ===
+                    values[i + 1]
+                ) {
+
+                    const merged =
+                        values[i] * 2;
+
+
+                    result.push(
+                        merged
+                    );
+
+
+                    addScore(
+                        merged
+                    );
+
+
+                    i++;
+
+                } else {
+
+                    result.push(
+                        values[i]
+                    );
+                }
+            }
+
+
+            while (
+                result.length <
+                size
+            ) {
+
+                result.push(0);
+            }
+
+
+            return result;
+        }
+
+
+        function move2048(
+            direction
+        ) {
+
+            const before =
+                JSON.stringify(
+                    grid
+                );
+
+
+            if (
+                direction === "left"
+            ) {
+
+                grid =
+                    grid.map(
+                        row =>
+                            compressLine(
+                                row
+                            )
+                    );
+            }
+
+
+            else if (
+                direction === "right"
+            ) {
+
+                grid =
+                    grid.map(
+                        row =>
+                            compressLine(
+                                [...row]
+                                    .reverse()
+                            ).reverse()
+                    );
+            }
+
+
+            else if (
+                direction === "up"
+            ) {
+
+                for (
+                    let x = 0;
+                    x < size;
+                    x++
+                ) {
+
+                    const column =
+                        grid.map(
+                            row =>
+                                row[x]
+                        );
+
+
+                    const compressed =
+                        compressLine(
+                            column
+                        );
+
+
+                    for (
+                        let y = 0;
+                        y < size;
+                        y++
+                    ) {
+
+                        grid[y][x] =
+                            compressed[y];
+                    }
+                }
+            }
+
+
+            else if (
+                direction === "down"
+            ) {
+
+                for (
+                    let x = 0;
+                    x < size;
+                    x++
+                ) {
+
+                    const column =
+                        grid.map(
+                            row =>
+                                row[x]
+                        ).reverse();
+
+
+                    const compressed =
+                        compressLine(
+                            column
+                        ).reverse();
+
+
+                    for (
+                        let y = 0;
+                        y < size;
+                        y++
+                    ) {
+
+                        grid[y][x] =
+                            compressed[y];
+                    }
+                }
+            }
+
+
+            if (
+                before !==
+                JSON.stringify(
+                    grid
+                )
+            ) {
+
+                add2048Tile();
+
+                render2048();
+            }
+        }
+
+
+        document.addEventListener(
+            "keydown",
+            event => {
+
+                const key =
+                    event.key.toLowerCase();
+
+
+                const controls = {
+
+                    arrowleft: "left",
+                    a: "left",
+
+                    arrowright: "right",
+                    d: "right",
+
+                    arrowup: "up",
+                    w: "up",
+
+                    arrowdown: "down",
+                    s: "down"
+
+                };
+
+
+                if (
+                    controls[key]
+                ) {
+
+                    event.preventDefault();
+
+                    move2048(
+                        controls[key]
+                    );
+                }
+            }
+        );
+
+
+        add2048Tile();
+
+        add2048Tile();
+
+        render2048();
+    }
+}
+
+
+/* ============================================================
+   MINESWEEPER
+   ============================================================ */
+
+else if (GAME === "minesweeper") {
+
+    showHelp(
+        "Click to reveal • Right-click to flag"
+    );
+
+
+    if (!domGame) {
+
+        console.error(
+            "Minesweeper requires #domgame"
+        );
+
+    } else {
+
+        const width = 10;
+
+
+        const height = 10;
+
+
+        const mineCount = 14;
+
+
+        let ended = false;
+
+
+        const cells =
+            Array.from(
+                {
+                    length:
+                        width *
+                        height
+                },
+                (_, index) => ({
+
+                    index,
+
+                    mine: false,
+
+                    open: false,
+
+                    flag: false,
+
+                    number: 0
+
+                })
+            );
+
+
+        const mineIndexes =
+            new Set();
+
+
+        while (
+            mineIndexes.size <
+            mineCount
+        ) {
+
+            mineIndexes.add(
+                Math.floor(
+                    Math.random() *
+                    cells.length
+                )
+            );
+        }
+
+
+        mineIndexes.forEach(
+            index => {
+
+                cells[index].mine =
+                    true;
+            }
+        );
+
+
+        function neighbours(
+            index
+        ) {
+
+            const x =
+                index %
+                width;
+
+
+            const y =
+                Math.floor(
+                    index /
+                    width
+                );
+
+
+            const result = [];
+
+
+            for (
+                let dy = -1;
+                dy <= 1;
+                dy++
+            ) {
+
+                for (
+                    let dx = -1;
+                    dx <= 1;
+                    dx++
+                ) {
+
+                    if (
+                        dx === 0 &&
+                        dy === 0
+                    ) {
+                        continue;
+                    }
+
+
+                    const nx =
+                        x + dx;
+
+
+                    const ny =
+                        y + dy;
+
+
+                    if (
+
+                        nx >= 0 &&
+                        nx < width &&
+                        ny >= 0 &&
+                        ny < height
+
+                    ) {
+
+                        result.push(
+                            ny *
+                            width +
+                            nx
+                        );
+                    }
+                }
+            }
+
+
+            return result;
+        }
+
+
+        cells.forEach(
+            cell => {
+
+                if (!cell.mine) {
+
+                    cell.number =
+                        neighbours(
+                            cell.index
+                        ).filter(
+                            index =>
+                                cells[index].mine
+                        ).length;
+                }
+            }
+        );
+
+
+        function revealMineCell(
+            index
+        ) {
+
+            const cell =
+                cells[index];
+
+
+            if (
+                cell.open ||
+                cell.flag ||
+                ended
+            ) {
+
+                return;
+            }
+
+
+            cell.open = true;
+
+
+            if (cell.mine) {
+
+                ended = true;
+
+                renderMines();
+
+                setTimeout(
+                    () =>
+                        alert(
+                            "Boom! Restart to try again."
+                        ),
+                    50
+                );
+
+                return;
+            }
+
+
+            addScore(1);
+
+
+            if (
+                cell.number === 0
+            ) {
+
+                neighbours(
+                    index
+                ).forEach(
+                    revealMineCell
+                );
+            }
+
+
+            const safeOpened =
+                cells.filter(
+                    item =>
+                        item.open &&
+                        !item.mine
+                ).length;
+
+
+            if (
+                safeOpened ===
+                cells.length -
+                mineCount
+            ) {
+
+                ended = true;
+            }
+
+
+            renderMines();
+
+
+            if (ended) {
+
+                setTimeout(
+                    () =>
+                        alert(
+                            "Minefield cleared!"
+                        ),
+                    50
+                );
+            }
+        }
+
+
+        function renderMines() {
+
+            domGame.innerHTML =
+                "";
+
+
+            const grid =
+                document.createElement(
+                    "div"
+                );
+
+
+            grid.className =
+                "minegrid";
+
+
+            cells.forEach(
+                cell => {
+
+                    const button =
+                        document.createElement(
+                            "button"
+                        );
+
+
+                    button.className =
+                        "cell";
+
+
+                    if (cell.open) {
+
+                        button.style.background =
+                            "#0c1321";
+
+
+                        if (cell.mine) {
+
+                            button.textContent =
+                                "💣";
+
+                        } else if (
+                            cell.number
+                        ) {
+
+                            button.textContent =
+                                cell.number;
+                        }
+
+                    } else if (
+                        cell.flag
+                    ) {
+
+                        button.textContent =
+                            "🚩";
+                    }
+
+
+                    button.addEventListener(
+                        "click",
+                        () =>
+                            revealMineCell(
+                                cell.index
+                            )
+                    );
+
+
+                    button.addEventListener(
+                        "contextmenu",
+                        event => {
+
+                            event.preventDefault();
+
+
+                            if (
+                                cell.open ||
+                                ended
+                            ) {
+                                return;
+                            }
+
+
+                            cell.flag =
+                                !cell.flag;
+
+
+                            renderMines();
+                        }
+                    );
+
+
+                    grid.appendChild(
+                        button
+                    );
+                }
+            );
+
+
+            domGame.appendChild(
+                grid
+            );
+        }
+
+
+        renderMines();
+    }
 }
 
 
@@ -2331,9 +4459,11 @@ else if (GAME === "maze") {
 
     const CELL = 36;
 
+
     const mazeWidth =
         maze[0].length *
         CELL;
+
 
     const mazeHeight =
         maze.length *
@@ -2366,152 +4496,44 @@ else if (GAME === "maze") {
     };
 
 
-    let totalDots = 0;
+    let remainingDots = 0;
 
 
-    maze.forEach(row => {
+    maze.forEach(
+        row => {
 
-        row.forEach(cell => {
+            row.forEach(
+                cell => {
 
-            if (cell === ".") {
-                totalDots++;
-            }
+                    if (
+                        cell === "."
+                    ) {
 
-        });
-
-    });
-
-
-    function moveMaze(dx, dy) {
-
-        const nextX =
-            player.x + dx;
-
-        const nextY =
-            player.y + dy;
-
-
-        if (
-            !maze[nextY] ||
-            maze[nextY][nextX] === "#"
-        ) {
-
-            return;
-        }
-
-
-        player.x = nextX;
-        player.y = nextY;
-
-
-        if (
-            maze[nextY][nextX] === "."
-        ) {
-
-            maze[nextY][nextX] = " ";
-
-            updateScore(
-                score + 1
+                        remainingDots++;
+                    }
+                }
             );
-
-
-            if (
-                score >=
-                totalDots
-            ) {
-
-                drawMaze();
-
-                showGameOver(
-                    "MAZE CLEARED!"
-                );
-
-                return;
-            }
         }
+    );
 
 
-        drawMaze();
+    if (
+        maze[player.y][player.x] ===
+        "."
+    ) {
+
+        maze[player.y][player.x] =
+            " ";
+
+
+        remainingDots--;
     }
-
-
-    document.addEventListener("keydown", event => {
-
-        const key =
-            event.key.toLowerCase();
-
-
-        if (
-            [
-                "arrowup",
-                "arrowdown",
-                "arrowleft",
-                "arrowright"
-            ].includes(key)
-        ) {
-
-            event.preventDefault();
-        }
-
-
-        if (
-            key === "arrowup" ||
-            key === "w"
-        ) {
-
-            moveMaze(
-                0,
-                -1
-            );
-        }
-
-
-        else if (
-            key === "arrowdown" ||
-            key === "s"
-        ) {
-
-            moveMaze(
-                0,
-                1
-            );
-        }
-
-
-        else if (
-            key === "arrowleft" ||
-            key === "a"
-        ) {
-
-            moveMaze(
-                -1,
-                0
-            );
-        }
-
-
-        else if (
-            key === "arrowright" ||
-            key === "d"
-        ) {
-
-            moveMaze(
-                1,
-                0
-            );
-        }
-    });
 
 
     function drawMaze() {
 
-        ctx.fillStyle = "#050812";
-
-        ctx.fillRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
+        clearCanvas(
+            "#050812"
         );
 
 
@@ -2523,11 +4545,14 @@ else if (GAME === "maze") {
 
                         const px =
                             offsetX +
-                            x * CELL;
+                            x *
+                            CELL;
+
 
                         const py =
                             offsetY +
-                            y * CELL;
+                            y *
+                            CELL;
 
 
                         if (
@@ -2536,6 +4561,7 @@ else if (GAME === "maze") {
 
                             ctx.fillStyle =
                                 "#3048d8";
+
 
                             ctx.fillRect(
                                 px + 1,
@@ -2556,12 +4582,13 @@ else if (GAME === "maze") {
 
                             ctx.beginPath();
 
+
                             ctx.arc(
                                 px +
-                                CELL / 2,
+                                    CELL / 2,
 
                                 py +
-                                CELL / 2,
+                                    CELL / 2,
 
                                 3,
 
@@ -2569,6 +4596,7 @@ else if (GAME === "maze") {
 
                                 Math.PI * 2
                             );
+
 
                             ctx.fill();
                         }
@@ -2578,28 +4606,31 @@ else if (GAME === "maze") {
         );
 
 
-        /* PLAYER */
+        ctx.fillStyle =
+            "#ffd447";
 
-        ctx.fillStyle = "#ffd447";
 
-        ctx.shadowColor = "#ffd447";
+        ctx.shadowColor =
+            "#ffd447";
+
 
         ctx.shadowBlur = 12;
 
 
         ctx.beginPath();
 
+
         ctx.arc(
 
             offsetX +
-            player.x *
-            CELL +
-            CELL / 2,
+                player.x *
+                CELL +
+                CELL / 2,
 
             offsetY +
-            player.y *
-            CELL +
-            CELL / 2,
+                player.y *
+                CELL +
+                CELL / 2,
 
             13,
 
@@ -2609,6 +4640,7 @@ else if (GAME === "maze") {
 
         );
 
+
         ctx.fill();
 
 
@@ -2616,16 +4648,138 @@ else if (GAME === "maze") {
     }
 
 
-    /* REMOVE STARTING DOT */
-
-    if (
-        maze[player.y][player.x] === "."
+    function moveMaze(
+        dx,
+        dy
     ) {
 
-        maze[player.y][player.x] = " ";
+        const nextX =
+            player.x +
+            dx;
 
-        totalDots--;
+
+        const nextY =
+            player.y +
+            dy;
+
+
+        if (
+            !maze[nextY] ||
+            maze[nextY][nextX] ===
+                "#"
+        ) {
+
+            return;
+        }
+
+
+        player.x =
+            nextX;
+
+
+        player.y =
+            nextY;
+
+
+        if (
+            maze[nextY][nextX] ===
+            "."
+        ) {
+
+            maze[nextY][nextX] =
+                " ";
+
+
+            remainingDots--;
+
+
+            addScore(1);
+        }
+
+
+        drawMaze();
+
+
+        if (
+            remainingDots <= 0
+        ) {
+
+            showGameOver(
+                "MAZE CLEARED!"
+            );
+        }
     }
+
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            const key =
+                event.key.toLowerCase();
+
+
+            if (
+                [
+                    "arrowup",
+                    "arrowdown",
+                    "arrowleft",
+                    "arrowright"
+                ].includes(key)
+            ) {
+
+                event.preventDefault();
+            }
+
+
+            if (
+                key === "arrowup" ||
+                key === "w"
+            ) {
+
+                moveMaze(
+                    0,
+                    -1
+                );
+            }
+
+
+            else if (
+                key === "arrowdown" ||
+                key === "s"
+            ) {
+
+                moveMaze(
+                    0,
+                    1
+                );
+            }
+
+
+            else if (
+                key === "arrowleft" ||
+                key === "a"
+            ) {
+
+                moveMaze(
+                    -1,
+                    0
+                );
+            }
+
+
+            else if (
+                key === "arrowright" ||
+                key === "d"
+            ) {
+
+                moveMaze(
+                    1,
+                    0
+                );
+            }
+        }
+    );
 
 
     drawMaze();
@@ -2655,9 +4809,12 @@ else if (GAME === "asteroids") {
 
     const keys = {};
 
+
     let bullets = [];
 
+
     let asteroids = [];
+
 
     let finished = false;
 
@@ -2670,6 +4827,7 @@ else if (GAME === "asteroids") {
         do {
 
             asteroid = {
+
                 x:
                     Math.random() *
                     canvas.width,
@@ -2692,16 +4850,19 @@ else if (GAME === "asteroids") {
                     20 +
                     Math.random() *
                     25
+
             };
 
         } while (
 
             Math.hypot(
+
                 asteroid.x -
-                ship.x,
+                    ship.x,
 
                 asteroid.y -
-                ship.y
+                    ship.y
+
             ) < 130
 
         );
@@ -2723,85 +4884,248 @@ else if (GAME === "asteroids") {
     }
 
 
-    document.addEventListener("keydown", event => {
+    document.addEventListener(
+        "keydown",
+        event => {
 
-        keys[event.code] = true;
+            keys[event.code] =
+                true;
 
+
+            if (
+                event.code ===
+                    "Space" &&
+                !event.repeat
+            ) {
+
+                event.preventDefault();
+
+
+                bullets.push({
+
+                    x:
+                        ship.x +
+                        Math.cos(
+                            ship.angle
+                        ) *
+                        18,
+
+                    y:
+                        ship.y +
+                        Math.sin(
+                            ship.angle
+                        ) *
+                        18,
+
+                    vx:
+                        Math.cos(
+                            ship.angle
+                        ) *
+                        8,
+
+                    vy:
+                        Math.sin(
+                            ship.angle
+                        ) *
+                        8,
+
+                    life: 70
+
+                });
+            }
+        }
+    );
+
+
+    document.addEventListener(
+        "keyup",
+        event => {
+
+            keys[event.code] =
+                false;
+        }
+    );
+
+
+    function wrap(
+        object
+    ) {
 
         if (
-            event.code === "Space" &&
-            !event.repeat
+            object.x < 0
         ) {
 
-            event.preventDefault();
-
-
-            bullets.push({
-
-                x:
-                    ship.x +
-                    Math.cos(
-                        ship.angle
-                    ) *
-                    18,
-
-                y:
-                    ship.y +
-                    Math.sin(
-                        ship.angle
-                    ) *
-                    18,
-
-                vx:
-                    Math.cos(
-                        ship.angle
-                    ) *
-                    8,
-
-                vy:
-                    Math.sin(
-                        ship.angle
-                    ) *
-                    8,
-
-                life: 70
-            });
-        }
-    });
-
-
-    document.addEventListener("keyup", event => {
-
-        keys[event.code] = false;
-
-    });
-
-
-    function wrap(object) {
-
-        if (object.x < 0) {
             object.x =
                 canvas.width;
         }
+
 
         if (
             object.x >
             canvas.width
         ) {
+
             object.x = 0;
         }
 
-        if (object.y < 0) {
+
+        if (
+            object.y < 0
+        ) {
+
             object.y =
                 canvas.height;
         }
+
 
         if (
             object.y >
             canvas.height
         ) {
+
             object.y = 0;
         }
+    }
+
+
+    function drawAsteroids() {
+
+        clearCanvas(
+            "#03050c"
+        );
+
+
+        ctx.fillStyle =
+            "rgba(255,255,255,.28)";
+
+
+        for (
+            let i = 0;
+            i < 50;
+            i++
+        ) {
+
+            ctx.fillRect(
+
+                (
+                    i * 83
+                ) %
+                canvas.width,
+
+                (
+                    i * 47
+                ) %
+                canvas.height,
+
+                1.5,
+
+                1.5
+
+            );
+        }
+
+
+        ctx.strokeStyle =
+            "#ffffff";
+
+
+        ctx.lineWidth = 2;
+
+
+        asteroids.forEach(
+            asteroid => {
+
+                ctx.beginPath();
+
+
+                ctx.arc(
+                    asteroid.x,
+                    asteroid.y,
+                    asteroid.radius,
+                    0,
+                    Math.PI * 2
+                );
+
+
+                ctx.stroke();
+            }
+        );
+
+
+        ctx.save();
+
+
+        ctx.translate(
+            ship.x,
+            ship.y
+        );
+
+
+        ctx.rotate(
+            ship.angle
+        );
+
+
+        ctx.strokeStyle =
+            "#55e8ff";
+
+
+        ctx.beginPath();
+
+
+        ctx.moveTo(
+            18,
+            0
+        );
+
+
+        ctx.lineTo(
+            -12,
+            -11
+        );
+
+
+        ctx.lineTo(
+            -7,
+            0
+        );
+
+
+        ctx.lineTo(
+            -12,
+            11
+        );
+
+
+        ctx.closePath();
+
+        ctx.stroke();
+
+        ctx.restore();
+
+
+        ctx.fillStyle =
+            "#ffffff";
+
+
+        bullets.forEach(
+            bullet => {
+
+                ctx.beginPath();
+
+
+                ctx.arc(
+                    bullet.x,
+                    bullet.y,
+                    3,
+                    0,
+                    Math.PI * 2
+                );
+
+
+                ctx.fill();
+            }
+        );
     }
 
 
@@ -2812,19 +5136,30 @@ else if (GAME === "asteroids") {
         }
 
 
-        if (keys.ArrowLeft) {
-            ship.angle -= 0.065;
+        if (
+            keys.ArrowLeft
+        ) {
+
+            ship.angle -=
+                0.065;
         }
 
 
-        if (keys.ArrowRight) {
-            ship.angle += 0.065;
+        if (
+            keys.ArrowRight
+        ) {
+
+            ship.angle +=
+                0.065;
         }
 
 
-        if (keys.ArrowUp) {
+        if (
+            keys.ArrowUp
+        ) {
 
             ship.vx +=
+
                 Math.cos(
                     ship.angle
                 ) *
@@ -2832,6 +5167,7 @@ else if (GAME === "asteroids") {
 
 
             ship.vy +=
+
                 Math.sin(
                     ship.angle
                 ) *
@@ -2840,39 +5176,55 @@ else if (GAME === "asteroids") {
 
 
         ship.vx *= 0.995;
+
         ship.vy *= 0.995;
 
 
         ship.x += ship.vx;
+
         ship.y += ship.vy;
 
 
         wrap(ship);
 
 
-        asteroids.forEach(asteroid => {
+        asteroids.forEach(
+            asteroid => {
 
-            asteroid.x +=
-                asteroid.vx;
-
-            asteroid.y +=
-                asteroid.vy;
-
-            wrap(asteroid);
-
-        });
+                asteroid.x +=
+                    asteroid.vx;
 
 
-        bullets.forEach(bullet => {
+                asteroid.y +=
+                    asteroid.vy;
 
-            bullet.x += bullet.vx;
-            bullet.y += bullet.vy;
 
-            bullet.life--;
+                wrap(
+                    asteroid
+                );
+            }
+        );
 
-            wrap(bullet);
 
-        });
+        bullets.forEach(
+            bullet => {
+
+                bullet.x +=
+                    bullet.vx;
+
+
+                bullet.y +=
+                    bullet.vy;
+
+
+                bullet.life--;
+
+
+                wrap(
+                    bullet
+                );
+            }
+        );
 
 
         bullets =
@@ -2882,40 +5234,47 @@ else if (GAME === "asteroids") {
             );
 
 
-        /* BULLET / ASTEROID */
+        bullets.forEach(
+            bullet => {
 
-        bullets.forEach(bullet => {
+                asteroids.forEach(
+                    asteroid => {
 
-            asteroids.forEach(asteroid => {
-
-                if (
-                    asteroid.dead
-                ) {
-                    return;
-                }
+                        if (
+                            asteroid.dead
+                        ) {
+                            return;
+                        }
 
 
-                if (
-                    Math.hypot(
-                        bullet.x -
-                        asteroid.x,
+                        if (
 
-                        bullet.y -
-                        asteroid.y
-                    ) <
-                    asteroid.radius
-                ) {
+                            Math.hypot(
 
-                    asteroid.dead = true;
+                                bullet.x -
+                                    asteroid.x,
 
-                    bullet.life = 0;
+                                bullet.y -
+                                    asteroid.y
 
-                    updateScore(
-                        score + 10
-                    );
-                }
-            });
-        });
+                            ) <
+                            asteroid.radius
+
+                        ) {
+
+                            asteroid.dead =
+                                true;
+
+
+                            bullet.life = 0;
+
+
+                            addScore(10);
+                        }
+                    }
+                );
+            }
+        );
 
 
         asteroids =
@@ -2925,23 +5284,26 @@ else if (GAME === "asteroids") {
             );
 
 
-        /* SHIP COLLISION */
-
-        if (
+        const collision =
             asteroids.some(
                 asteroid =>
 
                     Math.hypot(
+
                         ship.x -
-                        asteroid.x,
+                            asteroid.x,
 
                         ship.y -
-                        asteroid.y
+                            asteroid.y
+
                     ) <
+
                     asteroid.radius +
                     ship.radius
-            )
-        ) {
+            );
+
+
+        if (collision) {
 
             finished = true;
 
@@ -2971,146 +5333,10 @@ else if (GAME === "asteroids") {
 
         drawAsteroids();
 
+
         requestAnimationFrame(
             asteroidLoop
         );
-    }
-
-
-    function drawAsteroids() {
-
-        ctx.fillStyle = "#03050c";
-
-        ctx.fillRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
-
-
-        /* STARS */
-
-        ctx.fillStyle =
-            "rgba(255,255,255,.28)";
-
-
-        for (
-            let i = 0;
-            i < 50;
-            i++
-        ) {
-
-            ctx.fillRect(
-                (
-                    i * 83
-                ) %
-                canvas.width,
-
-                (
-                    i * 47
-                ) %
-                canvas.height,
-
-                1.5,
-                1.5
-            );
-        }
-
-
-        /* ASTEROIDS */
-
-        ctx.strokeStyle = "#ffffff";
-
-        ctx.lineWidth = 2;
-
-
-        asteroids.forEach(asteroid => {
-
-            ctx.beginPath();
-
-            ctx.arc(
-                asteroid.x,
-                asteroid.y,
-                asteroid.radius,
-                0,
-                Math.PI * 2
-            );
-
-            ctx.stroke();
-
-        });
-
-
-        /* SHIP */
-
-        ctx.save();
-
-        ctx.translate(
-            ship.x,
-            ship.y
-        );
-
-        ctx.rotate(
-            ship.angle
-        );
-
-
-        ctx.strokeStyle = "#55e8ff";
-
-        ctx.lineWidth = 2;
-
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            18,
-            0
-        );
-
-        ctx.lineTo(
-            -12,
-            -11
-        );
-
-        ctx.lineTo(
-            -7,
-            0
-        );
-
-        ctx.lineTo(
-            -12,
-            11
-        );
-
-        ctx.closePath();
-
-        ctx.stroke();
-
-
-        ctx.restore();
-
-
-        /* BULLETS */
-
-        ctx.fillStyle = "#ffffff";
-
-
-        bullets.forEach(bullet => {
-
-            ctx.beginPath();
-
-            ctx.arc(
-                bullet.x,
-                bullet.y,
-                3,
-                0,
-                Math.PI * 2
-            );
-
-            ctx.fill();
-
-        });
     }
 
 
@@ -3121,33 +5347,206 @@ else if (GAME === "asteroids") {
 
 
 /* ============================================================
+   REACTION TIME
+   ============================================================ */
+
+else if (GAME === "reaction") {
+
+    showHelp(
+        "Wait for green, then click as fast as possible"
+    );
+
+
+    if (!domGame) {
+
+        console.error(
+            "Reaction requires #domgame"
+        );
+
+    } else {
+
+        const area =
+            document.createElement(
+                "div"
+            );
+
+
+        area.className =
+            "reaction";
+
+
+        area.textContent =
+            "Click to start";
+
+
+        domGame.appendChild(
+            area
+        );
+
+
+        let state =
+            "idle";
+
+
+        let timer;
+
+
+        let startTime = 0;
+
+
+        area.addEventListener(
+            "click",
+            () => {
+
+                if (
+                    state === "idle" ||
+                    state === "result" ||
+                    state === "bad"
+                ) {
+
+                    state = "waiting";
+
+
+                    area.className =
+                        "reaction";
+
+
+                    area.textContent =
+                        "Wait for green...";
+
+
+                    const delay =
+
+                        1200 +
+
+                        Math.random() *
+                        2800;
+
+
+                    timer =
+                        setTimeout(
+                            () => {
+
+                                state = "go";
+
+
+                                startTime =
+                                    performance.now();
+
+
+                                area.className =
+                                    "reaction go";
+
+
+                                area.textContent =
+                                    "CLICK!";
+
+                            },
+                            delay
+                        );
+
+
+                    return;
+                }
+
+
+                if (
+                    state === "waiting"
+                ) {
+
+                    clearTimeout(
+                        timer
+                    );
+
+
+                    state = "bad";
+
+
+                    area.className =
+                        "reaction bad";
+
+
+                    area.textContent =
+                        "Too early! Click to retry.";
+
+
+                    return;
+                }
+
+
+                if (
+                    state === "go"
+                ) {
+
+                    const reaction =
+                        Math.round(
+
+                            performance.now() -
+                            startTime
+
+                        );
+
+
+                    state =
+                        "result";
+
+
+                    area.className =
+                        "reaction";
+
+
+                    area.textContent =
+                        `${reaction} ms — click to try again`;
+
+
+                    const reactionScore =
+                        Math.max(
+                            1,
+                            1000 -
+                            reaction
+                        );
+
+
+                    updateScore(
+                        reactionScore
+                    );
+                }
+            }
+        );
+    }
+}
+
+
+/* ============================================================
    PENALTY SHOOTOUT
    ============================================================ */
 
 else if (GAME === "penalties") {
 
     showHelp(
-        "Click inside the goal to shoot • You get 5 penalties"
+        "Click inside the goal to shoot • 5 penalties"
     );
 
 
     let keeperX = 378;
 
+
     let attempts = 0;
 
-    let ball = {
+
+    const ball = {
         x: 400,
         y: 435
     };
 
+
     let message = "";
+
 
     let finished = false;
 
 
     function drawPenalty() {
-
-        /* PITCH */
 
         const gradient =
             ctx.createLinearGradient(
@@ -3162,6 +5561,7 @@ else if (GAME === "penalties") {
             0,
             "#102a1b"
         );
+
 
         gradient.addColorStop(
             1,
@@ -3183,7 +5583,9 @@ else if (GAME === "penalties") {
 
         /* GOAL */
 
-        ctx.strokeStyle = "#ffffff";
+        ctx.strokeStyle =
+            "#ffffff";
+
 
         ctx.lineWidth = 6;
 
@@ -3201,6 +5603,7 @@ else if (GAME === "penalties") {
         ctx.strokeStyle =
             "rgba(255,255,255,.18)";
 
+
         ctx.lineWidth = 1;
 
 
@@ -3212,15 +5615,18 @@ else if (GAME === "penalties") {
 
             ctx.beginPath();
 
+
             ctx.moveTo(
                 x,
                 75
             );
 
+
             ctx.lineTo(
                 x,
                 335
             );
+
 
             ctx.stroke();
         }
@@ -3234,15 +5640,18 @@ else if (GAME === "penalties") {
 
             ctx.beginPath();
 
+
             ctx.moveTo(
                 150,
                 y
             );
 
+
             ctx.lineTo(
                 650,
                 y
             );
+
 
             ctx.stroke();
         }
@@ -3250,7 +5659,8 @@ else if (GAME === "penalties") {
 
         /* KEEPER */
 
-        ctx.fillStyle = "#ffd447";
+        ctx.fillStyle =
+            "#ffd447";
 
 
         ctx.fillRect(
@@ -3263,6 +5673,7 @@ else if (GAME === "penalties") {
 
         ctx.beginPath();
 
+
         ctx.arc(
             keeperX + 22,
             215,
@@ -3271,15 +5682,18 @@ else if (GAME === "penalties") {
             Math.PI * 2
         );
 
+
         ctx.fill();
 
 
         /* BALL */
 
-        ctx.fillStyle = "#ffffff";
+        ctx.fillStyle =
+            "#ffffff";
 
 
         ctx.beginPath();
+
 
         ctx.arc(
             ball.x,
@@ -3289,20 +5703,22 @@ else if (GAME === "penalties") {
             Math.PI * 2
         );
 
+
         ctx.fill();
 
-
-        /* MESSAGE */
 
         if (message) {
 
             ctx.fillStyle =
+
                 message === "GOAL!"
                     ? "#55e8ff"
                     : "#ff4f87";
 
 
-            ctx.textAlign = "center";
+            ctx.textAlign =
+                "center";
+
 
             ctx.font =
                 "900 38px Arial";
@@ -3320,154 +5736,177 @@ else if (GAME === "penalties") {
             "rgba(255,255,255,.7)";
 
 
+        ctx.textAlign =
+            "center";
+
+
         ctx.font =
             "600 15px Arial";
 
 
         ctx.fillText(
+
             `Penalty ${Math.min(
                 attempts + 1,
                 5
             )} of 5`,
+
             canvas.width / 2,
+
             35
+
         );
     }
 
 
-    canvas.addEventListener("click", event => {
+    canvas.addEventListener(
+        "click",
+        event => {
 
-        if (finished) {
-            return;
-        }
-
-
-        const rect =
-            canvas.getBoundingClientRect();
+            if (finished) {
+                return;
+            }
 
 
-        const targetX =
-
-            (
-                event.clientX -
-                rect.left
-            ) *
-
-            canvas.width /
-            rect.width;
+            const rect =
+                canvas.getBoundingClientRect();
 
 
-        const targetY =
+            const targetX =
 
-            (
-                event.clientY -
-                rect.top
-            ) *
+                (
+                    event.clientX -
+                    rect.left
+                ) *
 
-            canvas.height /
-            rect.height;
-
-
-        /* MUST CLICK GOAL */
-
-        if (
-            targetX < 145 ||
-            targetX > 655 ||
-            targetY < 70 ||
-            targetY > 340
-        ) {
-
-            return;
-        }
+                canvas.width /
+                rect.width;
 
 
-        attempts++;
+            const targetY =
+
+                (
+                    event.clientY -
+                    rect.top
+                ) *
+
+                canvas.height /
+                rect.height;
 
 
-        /*
-           Keeper chooses where to dive.
-        */
+            if (
 
-        const keeperTarget =
-            165 +
-            Math.random() *
-            450;
+                targetX < 145 ||
 
+                targetX > 655 ||
 
-        const saved =
-            Math.abs(
-                targetX -
-                keeperTarget
-            ) < 75;
+                targetY < 70 ||
 
+                targetY > 340
 
-        keeperX =
-            keeperTarget - 22;
+            ) {
+
+                return;
+            }
 
 
-        ball.x = targetX;
-        ball.y = targetY;
+            attempts++;
 
 
-        if (saved) {
+            const keeperTarget =
 
-            message = "SAVED!";
+                165 +
 
-        } else {
-
-            message = "GOAL!";
-
-            updateScore(
-                score + 1
-            );
-        }
+                Math.random() *
+                450;
 
 
-        drawPenalty();
+            const saved =
+
+                Math.abs(
+                    targetX -
+                    keeperTarget
+                ) < 75;
 
 
-        if (
-            attempts >= 5
-        ) {
+            keeperX =
+                keeperTarget -
+                22;
 
-            finished = true;
+
+            ball.x =
+                targetX;
+
+
+            ball.y =
+                targetY;
+
+
+            if (saved) {
+
+                message =
+                    "SAVED!";
+
+            } else {
+
+                message =
+                    "GOAL!";
+
+
+                addScore(1);
+            }
+
+
+            drawPenalty();
+
+
+            if (
+                attempts >= 5
+            ) {
+
+                finished = true;
+
+
+                setTimeout(
+                    () => {
+
+                        showGameOver(
+
+                            score >= 3
+                                ? "YOU WIN!"
+                                : "FULL TIME",
+
+                            `Final score: ${score}/5`
+
+                        );
+
+                    },
+                    650
+                );
+
+
+                return;
+            }
 
 
             setTimeout(
                 () => {
 
-                    showGameOver(
-                        score >= 3
-                            ? "YOU WIN!"
-                            : "FULL TIME"
-                    );
+                    ball.x = 400;
+
+                    ball.y = 435;
+
+                    message = "";
+
+                    keeperX = 378;
+
+                    drawPenalty();
 
                 },
                 650
             );
-
-
-            return;
         }
-
-
-        setTimeout(
-            () => {
-
-                ball.x = 400;
-                ball.y = 435;
-
-                message = "";
-
-                keeperX =
-                    378;
-
-                drawPenalty();
-
-            },
-            650
-        );
-    });
+    );
 
 
     drawPenalty();
@@ -3486,6 +5925,8 @@ else if (GAME === "racing") {
 
 
     const roadLeft = 205;
+
+
     const roadRight = 595;
 
 
@@ -3499,184 +5940,48 @@ else if (GAME === "racing") {
 
     const keys = {};
 
+
     let traffic = [];
 
+
     let frame = 0;
+
 
     let finished = false;
 
 
-    document.addEventListener("keydown", event => {
+    document.addEventListener(
+        "keydown",
+        event => {
 
-        keys[event.code] = true;
+            keys[event.code] =
+                true;
 
 
-        if (
-            event.code === "ArrowLeft" ||
-            event.code === "ArrowRight"
-        ) {
+            if (
 
-            event.preventDefault();
+                event.code ===
+                    "ArrowLeft" ||
+
+                event.code ===
+                    "ArrowRight"
+
+            ) {
+
+                event.preventDefault();
+            }
         }
-    });
+    );
 
 
-    document.addEventListener("keyup", event => {
+    document.addEventListener(
+        "keyup",
+        event => {
 
-        keys[event.code] = false;
-
-    });
-
-
-    function racingLoop() {
-
-        if (finished) {
-            return;
+            keys[event.code] =
+                false;
         }
-
-
-        frame++;
-
-
-        /* PLAYER */
-
-        if (
-            keys.ArrowLeft ||
-            keys.KeyA
-        ) {
-
-            player.x -= 6;
-        }
-
-
-        if (
-            keys.ArrowRight ||
-            keys.KeyD
-        ) {
-
-            player.x += 6;
-        }
-
-
-        player.x =
-            Math.max(
-                roadLeft + 10,
-
-                Math.min(
-                    roadRight -
-                    player.width -
-                    10,
-
-                    player.x
-                )
-            );
-
-
-        /* SPAWN TRAFFIC */
-
-        if (
-            frame % 58 === 0
-        ) {
-
-            const lanes = [
-                235,
-                320,
-                405,
-                490
-            ];
-
-
-            const lane =
-                lanes[
-                    Math.floor(
-                        Math.random() *
-                        lanes.length
-                    )
-                ];
-
-
-            traffic.push({
-                x: lane,
-                y: -90,
-                width: 48,
-                height: 75,
-                speed:
-                    5 +
-                    Math.random() *
-                    2
-            });
-        }
-
-
-        traffic.forEach(car => {
-
-            car.y +=
-                car.speed +
-                Math.min(
-                    score / 500,
-                    3
-                );
-
-        });
-
-
-        traffic =
-            traffic.filter(
-                car =>
-                    car.y <
-                    canvas.height +
-                    100
-            );
-
-
-        /* COLLISION */
-
-        if (
-            traffic.some(car =>
-
-                player.x <
-                    car.x +
-                    car.width &&
-
-                player.x +
-                    player.width >
-                    car.x &&
-
-                player.y <
-                    car.y +
-                    car.height &&
-
-                player.y +
-                    player.height >
-                    car.y
-            )
-        ) {
-
-            finished = true;
-
-            drawRacing();
-
-            showGameOver(
-                "CRASH!"
-            );
-
-            return;
-        }
-
-
-        updateScore(
-            Math.floor(
-                frame / 7
-            )
-        );
-
-
-        drawRacing();
-
-        requestAnimationFrame(
-            racingLoop
-        );
-    }
+    );
 
 
     function drawCar(
@@ -3685,7 +5990,9 @@ else if (GAME === "racing") {
         colour
     ) {
 
-        ctx.fillStyle = colour;
+        ctx.fillStyle =
+            colour;
+
 
         ctx.fillRect(
             x,
@@ -3738,9 +6045,9 @@ else if (GAME === "racing") {
 
     function drawRacing() {
 
-        /* GRASS */
+        ctx.fillStyle =
+            "#07150e";
 
-        ctx.fillStyle = "#07150e";
 
         ctx.fillRect(
             0,
@@ -3750,22 +6057,21 @@ else if (GAME === "racing") {
         );
 
 
-        /* ROAD */
+        ctx.fillStyle =
+            "#171c27";
 
-        ctx.fillStyle = "#171c27";
 
         ctx.fillRect(
             roadLeft,
             0,
             roadRight -
-            roadLeft,
+                roadLeft,
             canvas.height
         );
 
 
-        /* ROAD EDGES */
-
-        ctx.fillStyle = "#55e8ff";
+        ctx.fillStyle =
+            "#55e8ff";
 
 
         ctx.fillRect(
@@ -3783,8 +6089,6 @@ else if (GAME === "racing") {
             canvas.height
         );
 
-
-        /* LANE MARKERS */
 
         ctx.fillStyle =
             "rgba(255,255,255,.35)";
@@ -3819,8 +6123,6 @@ else if (GAME === "racing") {
         }
 
 
-        /* PLAYER */
-
         drawCar(
             player.x,
             player.y,
@@ -3828,20 +6130,183 @@ else if (GAME === "racing") {
         );
 
 
-        /* TRAFFIC */
-
         traffic.forEach(
             (car, index) => {
 
                 drawCar(
+
                     car.x,
+
                     car.y,
 
                     index % 2
                         ? "#ff4f87"
                         : "#a879ff"
+
                 );
             }
+        );
+    }
+
+
+    function racingLoop() {
+
+        if (finished) {
+            return;
+        }
+
+
+        frame++;
+
+
+        if (
+            keys.ArrowLeft ||
+            keys.KeyA
+        ) {
+
+            player.x -= 6;
+        }
+
+
+        if (
+            keys.ArrowRight ||
+            keys.KeyD
+        ) {
+
+            player.x += 6;
+        }
+
+
+        player.x =
+            Math.max(
+
+                roadLeft + 10,
+
+                Math.min(
+
+                    roadRight -
+                        player.width -
+                        10,
+
+                    player.x
+
+                )
+
+            );
+
+
+        if (
+            frame % 58 === 0
+        ) {
+
+            const lanes = [
+                235,
+                320,
+                405,
+                490
+            ];
+
+
+            const lane =
+                lanes[
+                    Math.floor(
+                        Math.random() *
+                        lanes.length
+                    )
+                ];
+
+
+            traffic.push({
+
+                x: lane,
+
+                y: -90,
+
+                width: 48,
+
+                height: 75,
+
+                speed:
+                    5 +
+                    Math.random() *
+                    2
+
+            });
+        }
+
+
+        traffic.forEach(
+            car => {
+
+                car.y +=
+
+                    car.speed +
+
+                    Math.min(
+                        score / 500,
+                        3
+                    );
+            }
+        );
+
+
+        traffic =
+            traffic.filter(
+                car =>
+                    car.y <
+                    canvas.height +
+                    100
+            );
+
+
+        const collision =
+            traffic.some(
+                car =>
+
+                    player.x <
+                        car.x +
+                        car.width &&
+
+                    player.x +
+                        player.width >
+                        car.x &&
+
+                    player.y <
+                        car.y +
+                        car.height &&
+
+                    player.y +
+                        player.height >
+                        car.y
+            );
+
+
+        if (collision) {
+
+            finished = true;
+
+            drawRacing();
+
+            showGameOver(
+                "CRASH!"
+            );
+
+            return;
+        }
+
+
+        updateScore(
+            Math.floor(
+                frame / 7
+            )
+        );
+
+
+        drawRacing();
+
+
+        requestAnimationFrame(
+            racingLoop
         );
     }
 
@@ -3851,39 +6316,37 @@ else if (GAME === "racing") {
     racingLoop();
 }
 
+
 /* ============================================================
-   UNKNOWN GAME ERROR
+   UNKNOWN GAME
    ============================================================ */
 
 else {
 
     console.error(
-        "No game found for:",
+        "No game configured for:",
+        GAME,
         fileName
     );
 
 
-    if (ctx) {
+    if (ctx && canvas) {
 
-        ctx.fillStyle =
-            "#090d18";
-
-        ctx.fillRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
+        clearCanvas(
+            "#080d18"
         );
 
 
         ctx.fillStyle =
             "#ffffff";
 
+
         ctx.textAlign =
             "center";
 
+
         ctx.font =
-            "28px Arial";
+            "700 28px Arial";
 
 
         ctx.fillText(
@@ -3891,5 +6354,30 @@ else {
             canvas.width / 2,
             canvas.height / 2
         );
+
+
+        ctx.fillStyle =
+            "#8d98b5";
+
+
+        ctx.font =
+            "15px Arial";
+
+
+        ctx.fillText(
+            `Detected: ${GAME || "unknown"}`,
+            canvas.width / 2,
+            canvas.height / 2 + 35
+        );
+    }
+
+
+    if (
+        !ctx &&
+        domGame
+    ) {
+
+        domGame.textContent =
+            "Game not configured.";
     }
 }
