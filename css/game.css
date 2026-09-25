@@ -1,7 +1,13 @@
 /* ============================================================
    SARA'S & HAIDAR'S ARCADE
-   GAME PAGE STYLING
+   UNIVERSAL GAME PAGE CSS
+   Works with all current game HTML layouts
    ============================================================ */
+
+
+/* =========================
+   RESET
+   ========================= */
 
 * {
     margin: 0;
@@ -9,60 +15,118 @@
     box-sizing: border-box;
 }
 
+
 :root {
-    --background: #050812;
+
+    --bg: #050812;
+
+    --bg-secondary: #080d18;
+
     --panel: #0b1120;
+
     --panel-light: #111a2c;
 
-    --text: #ffffff;
-    --muted: #8f9ab7;
+    --text: #f7f9ff;
 
-    --cyan: #56eaff;
+    --muted: #8d98b5;
+
+    --cyan: #55e8ff;
+
+    --cyan-soft:
+        rgba(85, 232, 255, 0.12);
+
     --pink: #ff4f87;
-    --purple: #a97cff;
 
-    --border: rgba(255, 255, 255, 0.10);
+    --purple: #aa79ff;
+
+    --green: #58e99b;
+
+    --border:
+        rgba(255, 255, 255, 0.09);
+
+    --border-bright:
+        rgba(85, 232, 255, 0.30);
+
+    --shadow:
+        0 30px 80px
+        rgba(0, 0, 0, 0.38);
 }
 
-html,
-body {
+
+html {
     min-height: 100%;
+
+    background: var(--bg);
 }
 
+
 body {
+
+    min-height: 100vh;
+
+    margin: 0;
+
+    overflow-x: hidden;
+
+    color: var(--text);
+
     font-family:
         Inter,
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
+        Roboto,
+        Helvetica,
         Arial,
         sans-serif;
 
-    color: var(--text);
-
     background:
-        radial-gradient(
-            circle at 20% 10%,
-            rgba(86, 234, 255, 0.10),
-            transparent 35%
-        ),
-        radial-gradient(
-            circle at 80% 80%,
-            rgba(169, 124, 255, 0.08),
-            transparent 35%
-        ),
-        var(--background);
 
-    min-height: 100vh;
+        radial-gradient(
+            circle at 50% 5%,
+            rgba(72, 108, 255, 0.13),
+            transparent 32%
+        ),
+
+        radial-gradient(
+            circle at 15% 50%,
+            rgba(85, 232, 255, 0.05),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 85% 70%,
+            rgba(170, 121, 255, 0.05),
+            transparent 30%
+        ),
+
+        linear-gradient(
+            180deg,
+            #060914 0%,
+            #04060c 100%
+        );
 }
 
 
-/* NAV */
+/* ============================================================
+   NAVIGATION
 
+   Supports:
+   .nav
+   .game-nav
+   ============================================================ */
+
+.nav,
 .game-nav {
-    width: 100%;
 
-    min-height: 70px;
+    width: min(
+        1200px,
+        calc(100% - 40px)
+    );
+
+    min-height: 72px;
+
+    margin: 0 auto;
 
     display: flex;
 
@@ -70,95 +134,327 @@ body {
 
     justify-content: space-between;
 
-    padding: 0 35px;
+    gap: 20px;
 
     border-bottom:
         1px solid var(--border);
-
-    background:
-        rgba(5, 8, 18, 0.75);
-
-    backdrop-filter:
-        blur(20px);
-
-    -webkit-backdrop-filter:
-        blur(20px);
 }
 
 
+.nav a,
 .game-nav a {
+
     color: var(--cyan);
 
     text-decoration: none;
 
+    font-size: 14px;
+
     font-weight: 700;
 
     transition:
-        opacity 0.2s ease;
+        opacity 0.2s ease,
+        transform 0.2s ease;
 }
 
 
+.nav a:hover,
 .game-nav a:hover {
-    opacity: 0.7;
+
+    opacity: 0.75;
+
+    transform:
+        translateX(-2px);
 }
 
 
+.logo,
 .game-brand {
+
     color: var(--muted);
 
-    font-size: 13px;
+    font-size: 12px;
 
-    font-weight: 800;
+    font-weight: 900;
 
     letter-spacing: 2px;
+
+    text-transform: uppercase;
 }
 
 
-/* MAIN */
+/* ============================================================
+   MAIN GAME CONTAINERS
 
-.game-shell {
+   Supports:
+   .shell
+   .game-shell
+   .game-container
+   ============================================================ */
+
+.shell,
+.game-shell,
+.game-container {
+
     width: min(
-        1000px,
-        calc(100% - 40px)
+        960px,
+        calc(100% - 32px)
     );
+
+    min-height:
+        calc(100vh - 72px);
 
     margin: 0 auto;
 
     padding:
-        55px 0 80px;
+        42px 0 70px;
 
     display: flex;
 
     flex-direction: column;
 
     align-items: center;
+
+    justify-content: flex-start;
+
+    text-align: center;
 }
 
 
-/* HEADING */
+/* ============================================================
+   HEADINGS
+   ============================================================ */
+
+.shell > h1,
+.game-container > h1 {
+
+    margin: 0 0 8px;
+
+    color: var(--text);
+
+    font-size:
+        clamp(
+            30px,
+            5vw,
+            44px
+        );
+
+    line-height: 1.1;
+
+    font-weight: 900;
+
+    letter-spacing: -1.5px;
+}
+
 
 .game-heading {
+
     display: flex;
 
     align-items: center;
 
-    gap: 20px;
+    justify-content: center;
 
-    margin-bottom: 30px;
+    gap: 18px;
+
+    margin-bottom: 25px;
 
     text-align: left;
 }
 
 
+.game-heading h1 {
+
+    margin: 0;
+
+    font-size:
+        clamp(
+            34px,
+            5vw,
+            50px
+        );
+
+    line-height: 1;
+
+    font-weight: 900;
+
+    letter-spacing: -2px;
+}
+
+
 .game-icon {
-    width: 80px;
-    height: 80px;
+
+    width: 74px;
+
+    height: 74px;
+
+    flex-shrink: 0;
 
     display: grid;
 
     place-items: center;
 
-    font-size: 42px;
+    font-size: 38px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 22px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.08),
+            rgba(255,255,255,.025)
+        );
+
+    box-shadow:
+        0 15px 40px
+        rgba(0,0,0,.25);
+}
+
+
+.eyebrow {
+
+    margin-bottom: 6px;
+
+    color: var(--cyan);
+
+    font-size: 10px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+}
+
+
+.sub,
+.subtitle {
+
+    margin:
+        5px 0 24px;
+
+    color: var(--muted);
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+.game-heading .subtitle {
+
+    margin:
+        8px 0 0;
+}
+
+
+/* ============================================================
+   SCORE BARS
+
+   Supports:
+   .bar + .pill
+   .scorebar + .score-box
+   .game-stats + .stat
+   ============================================================ */
+
+.bar,
+.scorebar,
+.game-stats {
+
+    display: flex;
+
+    align-items: stretch;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-bottom: 18px;
+}
+
+
+.pill,
+.score-box,
+.stat {
+
+    min-width: 120px;
+
+    padding:
+        11px 18px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 3px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 14px;
+
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.03);
+}
+
+
+.pill small,
+.score-box span,
+.stat span {
+
+    color: var(--muted);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+}
+
+
+.pill b,
+.score-box strong,
+.stat strong {
+
+    color: var(--text);
+
+    font-size: 21px;
+
+    font-weight: 900;
+}
+
+
+/* ============================================================
+   CANVAS AREA
+   ============================================================ */
+
+.canvas-wrapper {
+
+    width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 16px;
 
     border:
         1px solid var(--border);
@@ -166,155 +462,107 @@ body {
     border-radius: 24px;
 
     background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.09),
-            rgba(255,255,255,.025)
-        );
+        rgba(255,255,255,.018);
 
-    box-shadow:
-        0 20px 50px
-        rgba(0,0,0,.25);
+    box-shadow: var(--shadow);
 }
 
 
-.eyebrow {
-    color: var(--cyan);
+/*
+   IMPORTANT:
 
-    font-size: 11px;
-
-    font-weight: 900;
-
-    letter-spacing: 2px;
-
-    margin-bottom: 5px;
-}
-
-
-.game-heading h1 {
-    font-size:
-        clamp(
-            32px,
-            5vw,
-            52px
-        );
-
-    line-height: 1;
-
-    letter-spacing: -2px;
-}
-
-
-.subtitle {
-    margin-top: 9px;
-
-    color: var(--muted);
-
-    font-size: 15px;
-}
-
-
-/* STATS */
-
-.game-stats {
-    display: flex;
-
-    gap: 12px;
-
-    margin-bottom: 20px;
-}
-
-
-.stat {
-    min-width: 130px;
-
-    padding:
-        12px 20px;
-
-    text-align: center;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 15px;
-
-    background:
-        rgba(255,255,255,.04);
-}
-
-
-.stat span {
-    display: block;
-
-    margin-bottom: 4px;
-
-    color: var(--muted);
-
-    font-size: 10px;
-
-    font-weight: 800;
-
-    letter-spacing: 1.5px;
-}
-
-
-.stat strong {
-    font-size: 24px;
-}
-
-
-/* CANVAS */
-
-.canvas-wrapper {
-    width: 100%;
-
-    display: flex;
-
-    justify-content: center;
-
-    padding: 20px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 25px;
-
-    background:
-        rgba(255,255,255,.025);
-
-    box-shadow:
-        0 30px 80px
-        rgba(0,0,0,.35);
-}
-
+   Do NOT force every canvas to width:100%.
+   Tetris has a narrow 240x480 board,
+   while Snake/Pong/etc use 800x500.
+*/
 
 canvas {
+
     display: block;
 
-    width: 100%;
-
-    max-width: 800px;
+    max-width: 100%;
 
     height: auto;
 
+    margin:
+        0 auto 18px;
+
     border:
-        1px solid
-        rgba(86,234,255,.35);
+        1px solid var(--border-bright);
 
     border-radius: 16px;
 
-    background: #090d18;
+    background: #080d18;
 
     box-shadow:
-        0 0 30px
-        rgba(86,234,255,.06);
+
+        0 20px 60px
+        rgba(0,0,0,.30),
+
+        0 0 25px
+        rgba(85,232,255,.04);
 }
 
 
-/* CONTROLS */
+.canvas-wrapper canvas {
+
+    margin: 0;
+}
+
+
+/* Normal wide games */
+
+canvas[width="800"] {
+
+    width: min(
+        800px,
+        100%
+    );
+}
+
+
+/* Tetris */
+
+canvas[width="240"],
+canvas[width="300"] {
+
+    width: auto;
+
+    max-height:
+        min(
+            58vh,
+            600px
+        );
+
+    max-width: 100%;
+}
+
+
+/* ============================================================
+   HELP / INSTRUCTIONS
+   ============================================================ */
+
+.help,
+.instructions {
+
+    margin:
+        4px 0 17px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    line-height: 1.6;
+
+    text-align: center;
+}
+
 
 .game-controls {
-    margin-top: 25px;
+
+    margin-top: 20px;
 
     display: flex;
 
@@ -322,105 +570,509 @@ canvas {
 
     align-items: center;
 
-    gap: 15px;
+    justify-content: center;
+
+    gap: 12px;
 }
 
 
-.help {
-    color: var(--muted);
+/* ============================================================
+   BUTTONS
+   ============================================================ */
 
-    font-size: 14px;
+button,
+.restart-btn {
 
-    font-weight: 600;
-}
+    appearance: none;
 
-
-.restart-btn,
-button {
     border: none;
 
+    outline: none;
+
     padding:
-        13px 25px;
+        12px 22px;
 
-    border-radius: 12px;
+    border-radius: 11px;
 
-    color: #041016;
+    color: #041017;
 
     background:
+
         linear-gradient(
             135deg,
-            #56eaff,
-            #6fdcff
+            #55e8ff,
+            #76ddff
         );
 
-    font-size: 14px;
+    font-family: inherit;
 
-    font-weight: 800;
+    font-size: 13px;
+
+    font-weight: 900;
 
     cursor: pointer;
 
+    box-shadow:
+        0 8px 25px
+        rgba(85,232,255,.15);
+
     transition:
-        transform .2s ease,
-        box-shadow .2s ease;
+
+        transform .18s ease,
+
+        box-shadow .18s ease,
+
+        filter .18s ease;
 }
 
 
-.restart-btn:hover,
-button:hover {
+button:hover,
+.restart-btn:hover {
+
     transform:
         translateY(-2px);
 
+    filter:
+        brightness(1.05);
+
     box-shadow:
-        0 10px 30px
-        rgba(86,234,255,.25);
+        0 12px 32px
+        rgba(85,232,255,.24);
 }
 
 
-/* MOBILE */
+button:active,
+.restart-btn:active {
+
+    transform:
+        translateY(0);
+}
+
+
+/* ============================================================
+   DOM GAMES
+   2048 / MINESWEEPER / REACTION
+   ============================================================ */
+
+#domgame {
+
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin:
+        5px auto 22px;
+}
+
+
+/* ============================================================
+   2048
+   ============================================================ */
+
+.board2048 {
+
+    width:
+        min(
+            430px,
+            92vw
+        );
+
+    aspect-ratio: 1;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            1fr
+        );
+
+    gap: 9px;
+
+    padding: 10px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 20px;
+
+    background:
+        rgba(255,255,255,.055);
+
+    box-shadow: var(--shadow);
+}
+
+
+.tile {
+
+    display: grid;
+
+    place-items: center;
+
+    min-width: 0;
+
+    border-radius: 12px;
+
+    background:
+        rgba(255,255,255,.055);
+
+    color: var(--text);
+
+    font-size:
+        clamp(
+            20px,
+            5vw,
+            34px
+        );
+
+    font-weight: 900;
+}
+
+
+/* ============================================================
+   MINESWEEPER
+   ============================================================ */
+
+.minegrid {
+
+    width:
+        min(
+            500px,
+            94vw
+        );
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            10,
+            1fr
+        );
+
+    gap: 4px;
+
+    padding: 10px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 18px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    box-shadow: var(--shadow);
+}
+
+
+.minegrid .cell {
+
+    aspect-ratio: 1;
+
+    min-width: 0;
+
+    padding: 0;
+
+    display: grid;
+
+    place-items: center;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    border-radius: 6px;
+
+    color: var(--text);
+
+    background:
+        #111a2b;
+
+    box-shadow: none;
+
+    font-size:
+        clamp(
+            11px,
+            2vw,
+            18px
+        );
+
+    font-weight: 800;
+}
+
+
+.minegrid .cell:hover {
+
+    transform: none;
+
+    background:
+        #18243a;
+
+    box-shadow: none;
+}
+
+
+/* ============================================================
+   REACTION GAME
+   ============================================================ */
+
+.reaction {
+
+    width:
+        min(
+            700px,
+            94vw
+        );
+
+    min-height: 330px;
+
+    display: grid;
+
+    place-items: center;
+
+    padding: 30px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 24px;
+
+    color: var(--text);
+
+    background:
+        #101827;
+
+    box-shadow: var(--shadow);
+
+    font-size:
+        clamp(
+            22px,
+            5vw,
+            38px
+        );
+
+    font-weight: 900;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    user-select: none;
+
+    transition:
+        background .2s ease,
+        transform .2s ease;
+}
+
+
+.reaction:hover {
+
+    transform:
+        translateY(-2px);
+}
+
+
+.reaction.go {
+
+    background:
+        #159447;
+
+    color: white;
+}
+
+
+.reaction.bad {
+
+    background:
+        #a72845;
+
+    color: white;
+}
+
+
+/* ============================================================
+   GAME STATUS / OVERLAYS
+   ============================================================ */
+
+.game-message {
+
+    margin-top: 15px;
+
+    color: var(--muted);
+
+    font-size: 14px;
+}
+
+
+/* ============================================================
+   SMALL SCREENS
+   ============================================================ */
 
 @media (
     max-width: 700px
 ) {
 
+    .nav,
     .game-nav {
-        padding:
-            0 18px;
-    }
 
-    .game-shell {
         width:
             calc(
-                100% - 20px
+                100% - 24px
             );
 
-        padding-top:
-            30px;
+        min-height: 62px;
     }
+
+
+    .logo,
+    .game-brand {
+
+        font-size: 10px;
+
+        letter-spacing: 1.3px;
+    }
+
+
+    .shell,
+    .game-shell,
+    .game-container {
+
+        width:
+            calc(
+                100% - 18px
+            );
+
+        padding:
+            28px 0 50px;
+    }
+
 
     .game-heading {
+
         width: 100%;
+
+        justify-content: flex-start;
+
+        gap: 13px;
     }
+
 
     .game-icon {
-        width: 65px;
-        height: 65px;
 
-        font-size: 34px;
+        width: 58px;
+
+        height: 58px;
+
+        border-radius: 17px;
+
+        font-size: 30px;
     }
 
-    .game-stats {
+
+    .game-heading h1 {
+
+        font-size: 31px;
+
+        letter-spacing: -1px;
+    }
+
+
+    .game-stats,
+    .bar,
+    .scorebar {
+
         width: 100%;
     }
 
+
+    .pill,
+    .score-box,
     .stat {
+
         flex: 1;
 
-        min-width: 0;
+        min-width: 100px;
     }
+
 
     .canvas-wrapper {
-        padding: 8px;
 
-        border-radius: 18px;
+        padding: 7px;
+
+        border-radius: 17px;
     }
+
+
+    canvas {
+
+        border-radius: 12px;
+    }
+
+
+    .reaction {
+
+        min-height: 260px;
+    }
+
+}
+
+
+/* ============================================================
+   VERY SMALL SCREENS
+   ============================================================ */
+
+@media (
+    max-width: 420px
+) {
+
+    .game-heading {
+
+        align-items:
+            flex-start;
+    }
+
+
+    .game-icon {
+
+        width: 50px;
+
+        height: 50px;
+
+        font-size: 25px;
+    }
+
+
+    .game-heading h1 {
+
+        font-size: 27px;
+    }
+
+
+    .pill,
+    .score-box,
+    .stat {
+
+        padding:
+            10px 8px;
+    }
+
+
+    .pill b,
+    .score-box strong,
+    .stat strong {
+
+        font-size: 18px;
+    }
+
+
+    .help,
+    .instructions {
+
+        font-size: 12px;
+    }
+
 }
