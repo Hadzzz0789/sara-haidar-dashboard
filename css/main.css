@@ -1,1 +1,488 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
 
+:root {
+    --bg: #07080d;
+    --surface: #0d1018;
+    --surface2: #111520;
+    --border: rgba(255,255,255,.08);
+
+    --text: #f7f8fc;
+    --muted: #7e879c;
+
+    --cyan: #4de8ff;
+    --purple: #986cff;
+    --pink: #ff4ba8;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background:
+        radial-gradient(circle at 20% 0%, rgba(84,73,255,.13), transparent 30%),
+        radial-gradient(circle at 90% 30%, rgba(255,55,153,.08), transparent 25%),
+        var(--bg);
+
+    color: var(--text);
+
+    font-family: Inter, sans-serif;
+
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    background-image:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+
+    background-size: 40px 40px;
+
+    pointer-events: none;
+}
+
+.navbar {
+    width: min(1400px, 92%);
+    margin: auto;
+
+    height: 100px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.brand {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+}
+
+.brand-icon {
+    width: 48px;
+    height: 48px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 13px;
+
+    font-family: "Space Grotesk";
+    font-weight: 800;
+
+    background:
+        linear-gradient(135deg, var(--cyan), var(--purple));
+
+    color: #06070b;
+
+    box-shadow:
+        0 0 35px rgba(77,232,255,.2);
+}
+
+.brand h2 {
+    font-family: "Space Grotesk";
+    font-size: 16px;
+}
+
+.brand p {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 4px;
+    margin-top: 4px;
+}
+
+.nav-right {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status span {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #55ff96;
+
+    box-shadow:
+        0 0 12px #55ff96;
+}
+
+.hero {
+    width: min(1400px, 92%);
+    margin: auto;
+
+    padding: 100px 0 70px;
+}
+
+.hero-tag {
+    color: var(--cyan);
+
+    font-size: 12px;
+    letter-spacing: 3px;
+    font-weight: 700;
+
+    margin-bottom: 22px;
+}
+
+.hero h1 {
+    font-family: "Space Grotesk";
+    font-size: clamp(55px, 7vw, 105px);
+    line-height: .95;
+    letter-spacing: -5px;
+
+    max-width: 1000px;
+}
+
+.hero h1 span {
+    color: transparent;
+
+    -webkit-text-stroke:
+        1px rgba(255,255,255,.35);
+}
+
+.hero > p {
+    max-width: 600px;
+
+    color: var(--muted);
+
+    font-size: 17px;
+    line-height: 1.7;
+
+    margin-top: 30px;
+}
+
+.stats {
+    display: flex;
+    gap: 55px;
+    margin-top: 55px;
+}
+
+.stats div {
+    display: flex;
+    flex-direction: column;
+}
+
+.stats strong {
+    font-family: "Space Grotesk";
+    font-size: 28px;
+}
+
+.stats span {
+    color: var(--muted);
+
+    font-size: 9px;
+    letter-spacing: 2px;
+
+    margin-top: 5px;
+}
+
+.controls {
+    width: min(1400px, 92%);
+    margin: auto auto 35px;
+
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.search-box {
+    width: 320px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 13px 17px;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    background: rgba(255,255,255,.025);
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: white;
+
+    width: 100%;
+}
+
+.filters {
+    display: flex;
+    gap: 8px;
+}
+
+.filter {
+    border: 1px solid var(--border);
+
+    background: rgba(255,255,255,.025);
+
+    color: var(--muted);
+
+    padding: 10px 16px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.filter:hover,
+.filter.active {
+    color: white;
+    border-color: rgba(255,255,255,.25);
+
+    background: rgba(255,255,255,.08);
+}
+
+.game-grid {
+    width: min(1400px, 92%);
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(280px,1fr));
+
+    gap: 16px;
+}
+
+.game-card {
+    position: relative;
+
+    min-height: 360px;
+
+    overflow: hidden;
+
+    text-decoration: none;
+    color: white;
+
+    border: 1px solid var(--border);
+
+    background:
+        linear-gradient(
+            160deg,
+            rgba(255,255,255,.055),
+            rgba(255,255,255,.012)
+        );
+
+    border-radius: 18px;
+
+    padding: 25px;
+
+    transition:
+        transform .3s,
+        border-color .3s,
+        box-shadow .3s;
+}
+
+.game-card:hover {
+    transform: translateY(-7px);
+
+    border-color:
+        rgba(255,255,255,.23);
+
+    box-shadow:
+        0 30px 60px rgba(0,0,0,.35);
+}
+
+.card-number {
+    position: absolute;
+
+    right: 20px;
+    top: 17px;
+
+    color: rgba(255,255,255,.15);
+
+    font-family: "Space Grotesk";
+    font-size: 12px;
+}
+
+.game-art {
+    height: 175px;
+
+    display: grid;
+    place-items: center;
+
+    font-size: 72px;
+
+    border-radius: 13px;
+
+    margin-bottom: 25px;
+
+    transition: transform .35s;
+}
+
+.game-card:hover .game-art {
+    transform: scale(1.03);
+}
+
+.green {
+    background:
+        radial-gradient(circle, rgba(58,255,150,.25), rgba(20,255,150,.025));
+}
+
+.yellow {
+    background:
+        radial-gradient(circle, rgba(255,214,60,.25), rgba(255,200,30,.025));
+}
+
+.red {
+    background:
+        radial-gradient(circle, rgba(255,75,90,.25), rgba(255,50,80,.025));
+}
+
+.blue {
+    background:
+        radial-gradient(circle, rgba(60,170,255,.25), rgba(40,100,255,.025));
+}
+
+.purple {
+    background:
+        radial-gradient(circle, rgba(160,90,255,.25), rgba(110,50,255,.025));
+}
+
+.orange {
+    background:
+        radial-gradient(circle, rgba(255,145,40,.25), rgba(255,100,30,.025));
+}
+
+.category {
+    color: var(--cyan);
+
+    font-size: 9px;
+    letter-spacing: 2px;
+
+    font-weight: 700;
+}
+
+.card-content h2 {
+    font-family: "Space Grotesk";
+    font-size: 25px;
+
+    margin: 7px 0;
+}
+
+.card-content p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.play {
+    position: absolute;
+
+    bottom: 23px;
+    right: 23px;
+
+    font-size: 10px;
+    letter-spacing: 2px;
+
+    opacity: 0;
+
+    transform: translateX(-8px);
+
+    transition: .25s;
+
+    color: var(--cyan);
+}
+
+.game-card:hover .play {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.game-card.hidden {
+    display: none;
+}
+
+footer {
+    width: min(1400px, 92%);
+    margin: 100px auto 0;
+
+    border-top: 1px solid var(--border);
+
+    padding: 40px 0 60px;
+
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+footer div {
+    font-family: "Space Grotesk";
+    color: white;
+
+    border: 1px solid var(--border);
+
+    padding: 10px;
+    border-radius: 8px;
+}
+
+footer span {
+    margin-left: auto;
+}
+
+@media(max-width:700px) {
+
+    .hero {
+        padding-top: 65px;
+    }
+
+    .hero h1 {
+        letter-spacing: -3px;
+    }
+
+    .controls {
+        flex-direction: column;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    .filters {
+        overflow-x: auto;
+    }
+
+    .nav-right .status {
+        display: none;
+    }
+
+    .stats {
+        gap: 30px;
+    }
+}
