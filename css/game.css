@@ -1,13 +1,6 @@
-/* ============================================================
-   SARA'S & HAIDAR'S ARCADE
-   UNIVERSAL GAME PAGE CSS
-   Works with all current game HTML layouts
-   ============================================================ */
-
-
-/* =========================
-   RESET
-   ========================= */
+/* =========================================================
+   SARA'S & HAIDAR'S ARCADE — UNIVERSAL GAME LAYOUT
+   ========================================================= */
 
 * {
     margin: 0;
@@ -15,59 +8,25 @@
     box-sizing: border-box;
 }
 
-
 :root {
-
     --bg: #050812;
-
-    --bg-secondary: #080d18;
-
-    --panel: #0b1120;
-
-    --panel-light: #111a2c;
-
+    --panel: #0a101d;
+    --panel2: #0d1525;
     --text: #f7f9ff;
-
     --muted: #8d98b5;
-
     --cyan: #55e8ff;
-
-    --cyan-soft:
-        rgba(85, 232, 255, 0.12);
-
+    --purple: #a879ff;
     --pink: #ff4f87;
-
-    --purple: #aa79ff;
-
-    --green: #58e99b;
-
-    --border:
-        rgba(255, 255, 255, 0.09);
-
-    --border-bright:
-        rgba(85, 232, 255, 0.30);
-
-    --shadow:
-        0 30px 80px
-        rgba(0, 0, 0, 0.38);
+    --border: rgba(255, 255, 255, 0.09);
 }
 
-
-html {
+html,
+body {
     min-height: 100%;
-
-    background: var(--bg);
 }
-
 
 body {
-
     min-height: 100vh;
-
-    margin: 0;
-
-    overflow-x: hidden;
-
     color: var(--text);
 
     font-family:
@@ -75,1004 +34,432 @@ body {
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
-        Roboto,
-        Helvetica,
         Arial,
         sans-serif;
 
     background:
-
         radial-gradient(
-            circle at 50% 5%,
-            rgba(72, 108, 255, 0.13),
-            transparent 32%
+            circle at 50% 0%,
+            rgba(61, 91, 210, 0.14),
+            transparent 35%
         ),
-
         radial-gradient(
-            circle at 15% 50%,
-            rgba(85, 232, 255, 0.05),
-            transparent 28%
-        ),
-
-        radial-gradient(
-            circle at 85% 70%,
-            rgba(170, 121, 255, 0.05),
+            circle at 20% 70%,
+            rgba(85, 232, 255, 0.04),
             transparent 30%
         ),
-
-        linear-gradient(
-            180deg,
-            #060914 0%,
-            #04060c 100%
-        );
+        #050812;
 }
 
+/* =========================
+   NAV
+   ========================= */
 
-/* ============================================================
-   NAVIGATION
-
-   Supports:
-   .nav
-   .game-nav
-   ============================================================ */
-
-.nav,
 .game-nav {
-
-    width: min(
-        1200px,
-        calc(100% - 40px)
-    );
-
-    min-height: 72px;
-
-    margin: 0 auto;
+    width: min(1050px, calc(100% - 40px));
+    height: 72px;
+    margin: auto;
 
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
 
-    gap: 20px;
-
-    border-bottom:
-        1px solid var(--border);
+    border-bottom: 1px solid var(--border);
 }
 
-
-.nav a,
 .game-nav a {
-
     color: var(--cyan);
-
     text-decoration: none;
-
     font-size: 14px;
-
     font-weight: 700;
-
-    transition:
-        opacity 0.2s ease,
-        transform 0.2s ease;
 }
 
-
-.nav a:hover,
 .game-nav a:hover {
-
     opacity: 0.75;
-
-    transform:
-        translateX(-2px);
 }
 
-
-.logo,
 .game-brand {
-
     color: var(--muted);
-
     font-size: 12px;
-
-    font-weight: 900;
-
+    font-weight: 800;
     letter-spacing: 2px;
-
-    text-transform: uppercase;
 }
 
+/* =========================
+   MAIN WRAPPER
+   ========================= */
 
-/* ============================================================
-   MAIN GAME CONTAINERS
+.game-page {
+    width: min(900px, calc(100% - 30px));
+    margin: auto;
 
-   Supports:
-   .shell
-   .game-shell
-   .game-container
-   ============================================================ */
-
-.shell,
-.game-shell,
-.game-container {
-
-    width: min(
-        960px,
-        calc(100% - 32px)
-    );
-
-    min-height:
-        calc(100vh - 72px);
-
-    margin: 0 auto;
-
-    padding:
-        42px 0 70px;
+    padding: 42px 0 70px;
 
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
-
-    justify-content: flex-start;
 
     text-align: center;
 }
 
+/* =========================
+   GAME HEADER
+   ========================= */
 
-/* ============================================================
-   HEADINGS
-   ============================================================ */
-
-.shell > h1,
-.game-container > h1 {
-
-    margin: 0 0 8px;
-
-    color: var(--text);
-
-    font-size:
-        clamp(
-            30px,
-            5vw,
-            44px
-        );
-
-    line-height: 1.1;
-
-    font-weight: 900;
-
-    letter-spacing: -1.5px;
+.game-header {
+    margin-bottom: 22px;
 }
-
-
-.game-heading {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 18px;
-
-    margin-bottom: 25px;
-
-    text-align: left;
-}
-
-
-.game-heading h1 {
-
-    margin: 0;
-
-    font-size:
-        clamp(
-            34px,
-            5vw,
-            50px
-        );
-
-    line-height: 1;
-
-    font-weight: 900;
-
-    letter-spacing: -2px;
-}
-
 
 .game-icon {
+    width: 68px;
+    height: 68px;
 
-    width: 74px;
-
-    height: 74px;
-
-    flex-shrink: 0;
+    margin: 0 auto 14px;
 
     display: grid;
-
     place-items: center;
 
-    font-size: 38px;
+    font-size: 36px;
 
-    border:
-        1px solid var(--border);
-
-    border-radius: 22px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
 
     background:
-
         linear-gradient(
             145deg,
             rgba(255,255,255,.08),
-            rgba(255,255,255,.025)
+            rgba(255,255,255,.02)
         );
-
-    box-shadow:
-        0 15px 40px
-        rgba(0,0,0,.25);
 }
 
-
-.eyebrow {
-
+.game-label {
     margin-bottom: 6px;
 
     color: var(--cyan);
 
     font-size: 10px;
-
     font-weight: 900;
-
     letter-spacing: 2px;
-
-    text-transform: uppercase;
 }
 
+.game-header h1 {
+    margin: 0;
 
-.sub,
-.subtitle {
+    font-size: clamp(34px, 5vw, 48px);
+    line-height: 1;
 
-    margin:
-        5px 0 24px;
+    font-weight: 900;
+    letter-spacing: -1.5px;
+}
+
+.game-description {
+    margin-top: 10px;
 
     color: var(--muted);
 
     font-size: 14px;
-
-    line-height: 1.6;
 }
 
+/* =========================
+   SCORES
+   ========================= */
 
-.game-heading .subtitle {
-
-    margin:
-        8px 0 0;
-}
-
-
-/* ============================================================
-   SCORE BARS
-
-   Supports:
-   .bar + .pill
-   .scorebar + .score-box
-   .game-stats + .stat
-   ============================================================ */
-
-.bar,
-.scorebar,
 .game-stats {
+    margin-bottom: 18px;
 
     display: flex;
-
-    align-items: stretch;
-
     justify-content: center;
-
-    flex-wrap: wrap;
-
     gap: 10px;
-
-    margin-bottom: 18px;
 }
 
+.game-stat {
+    min-width: 130px;
 
-.pill,
-.score-box,
-.stat {
+    padding: 11px 18px;
 
-    min-width: 120px;
-
-    padding:
-        11px 18px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 3px;
-
-    border:
-        1px solid var(--border);
-
+    border: 1px solid var(--border);
     border-radius: 14px;
 
-    background:
-        rgba(255, 255, 255, 0.035);
-
-    box-shadow:
-        inset 0 1px 0
-        rgba(255,255,255,.03);
+    background: rgba(255,255,255,.03);
 }
 
+.game-stat span {
+    display: block;
 
-.pill small,
-.score-box span,
-.stat span {
+    margin-bottom: 3px;
 
     color: var(--muted);
 
     font-size: 9px;
-
     font-weight: 800;
-
     letter-spacing: 1.5px;
-
-    text-transform: uppercase;
 }
 
-
-.pill b,
-.score-box strong,
-.stat strong {
-
-    color: var(--text);
-
-    font-size: 21px;
-
-    font-weight: 900;
+.game-stat strong {
+    font-size: 22px;
 }
 
+/* =========================
+   GAME STAGE
+   ========================= */
 
-/* ============================================================
-   CANVAS AREA
-   ============================================================ */
-
-.canvas-wrapper {
-
+.game-stage {
     width: 100%;
 
     display: flex;
-
-    justify-content: center;
-
     align-items: center;
+    justify-content: center;
 
     padding: 16px;
 
-    border:
-        1px solid var(--border);
-
+    border: 1px solid var(--border);
     border-radius: 24px;
 
     background:
         rgba(255,255,255,.018);
 
-    box-shadow: var(--shadow);
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.35);
 }
 
-
-/*
-   IMPORTANT:
-
-   Do NOT force every canvas to width:100%.
-   Tetris has a narrow 240x480 board,
-   while Snake/Pong/etc use 800x500.
-*/
+/* =========================
+   CANVAS
+   ========================= */
 
 canvas {
-
     display: block;
 
     max-width: 100%;
-
     height: auto;
 
-    margin:
-        0 auto 18px;
+    margin: auto;
 
-    border:
-        1px solid var(--border-bright);
-
-    border-radius: 16px;
+    border: 1px solid rgba(85,232,255,.25);
+    border-radius: 15px;
 
     background: #080d18;
 
     box-shadow:
-
-        0 20px 60px
-        rgba(0,0,0,.30),
-
-        0 0 25px
-        rgba(85,232,255,.04);
+        0 0 30px rgba(85,232,255,.035);
 }
 
-
-.canvas-wrapper canvas {
-
-    margin: 0;
-}
-
-
-/* Normal wide games */
+/* Wide games */
 
 canvas[width="800"] {
-
-    width: min(
-        800px,
-        100%
-    );
+    width: 100%;
+    max-width: 800px;
 }
-
 
 /* Tetris */
 
-canvas[width="240"],
-canvas[width="300"] {
-
+body[data-game="tetris"] .game-stage {
     width: auto;
-
-    max-height:
-        min(
-            58vh,
-            600px
-        );
-
-    max-width: 100%;
+    min-width: 290px;
 }
 
-
-/* ============================================================
-   HELP / INSTRUCTIONS
-   ============================================================ */
-
-.help,
-.instructions {
-
-    margin:
-        4px 0 17px;
-
-    color: var(--muted);
-
-    font-size: 13px;
-
-    font-weight: 600;
-
-    line-height: 1.6;
-
-    text-align: center;
+body[data-game="tetris"] canvas {
+    width: 240px;
+    max-width: 240px;
 }
 
-
-.game-controls {
-
-    margin-top: 20px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 12px;
-}
-
-
-/* ============================================================
-   BUTTONS
-   ============================================================ */
-
-button,
-.restart-btn {
-
-    appearance: none;
-
-    border: none;
-
-    outline: none;
-
-    padding:
-        12px 22px;
-
-    border-radius: 11px;
-
-    color: #041017;
-
-    background:
-
-        linear-gradient(
-            135deg,
-            #55e8ff,
-            #76ddff
-        );
-
-    font-family: inherit;
-
-    font-size: 13px;
-
-    font-weight: 900;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 8px 25px
-        rgba(85,232,255,.15);
-
-    transition:
-
-        transform .18s ease,
-
-        box-shadow .18s ease,
-
-        filter .18s ease;
-}
-
-
-button:hover,
-.restart-btn:hover {
-
-    transform:
-        translateY(-2px);
-
-    filter:
-        brightness(1.05);
-
-    box-shadow:
-        0 12px 32px
-        rgba(85,232,255,.24);
-}
-
-
-button:active,
-.restart-btn:active {
-
-    transform:
-        translateY(0);
-}
-
-
-/* ============================================================
-   DOM GAMES
-   2048 / MINESWEEPER / REACTION
-   ============================================================ */
+/* =========================
+   DOM-BASED GAMES
+   ========================= */
 
 #domgame {
-
     width: 100%;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
-    margin:
-        5px auto 22px;
 }
 
-
-/* ============================================================
-   2048
-   ============================================================ */
+/* 2048 */
 
 .board2048 {
-
-    width:
-        min(
-            430px,
-            92vw
-        );
-
+    width: min(430px, 90vw);
     aspect-ratio: 1;
 
+    padding: 10px;
+
     display: grid;
-
-    grid-template-columns:
-        repeat(
-            4,
-            1fr
-        );
-
+    grid-template-columns: repeat(4, 1fr);
     gap: 9px;
-
-    padding: 10px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 20px;
-
-    background:
-        rgba(255,255,255,.055);
-
-    box-shadow: var(--shadow);
-}
-
-
-.tile {
-
-    display: grid;
-
-    place-items: center;
-
-    min-width: 0;
-
-    border-radius: 12px;
-
-    background:
-        rgba(255,255,255,.055);
-
-    color: var(--text);
-
-    font-size:
-        clamp(
-            20px,
-            5vw,
-            34px
-        );
-
-    font-weight: 900;
-}
-
-
-/* ============================================================
-   MINESWEEPER
-   ============================================================ */
-
-.minegrid {
-
-    width:
-        min(
-            500px,
-            94vw
-        );
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            10,
-            1fr
-        );
-
-    gap: 4px;
-
-    padding: 10px;
-
-    border:
-        1px solid var(--border);
 
     border-radius: 18px;
 
-    background:
-        rgba(255,255,255,.025);
-
-    box-shadow: var(--shadow);
+    background: rgba(255,255,255,.055);
 }
 
+.tile {
+    display: grid;
+    place-items: center;
+
+    border-radius: 11px;
+
+    background: rgba(255,255,255,.06);
+
+    font-size: clamp(20px, 5vw, 34px);
+    font-weight: 900;
+}
+
+/* Minesweeper */
+
+.minegrid {
+    width: min(500px, 90vw);
+
+    padding: 9px;
+
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 4px;
+
+    border-radius: 17px;
+
+    background: rgba(255,255,255,.04);
+}
 
 .minegrid .cell {
-
     aspect-ratio: 1;
-
-    min-width: 0;
 
     padding: 0;
 
-    display: grid;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 5px;
 
-    place-items: center;
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-
-    border-radius: 6px;
-
-    color: var(--text);
-
-    background:
-        #111a2b;
+    color: white;
+    background: #111a2b;
 
     box-shadow: none;
 
-    font-size:
-        clamp(
-            11px,
-            2vw,
-            18px
-        );
-
-    font-weight: 800;
+    font-size: 16px;
 }
 
-
-.minegrid .cell:hover {
-
-    transform: none;
-
-    background:
-        #18243a;
-
-    box-shadow: none;
-}
-
-
-/* ============================================================
-   REACTION GAME
-   ============================================================ */
+/* Reaction */
 
 .reaction {
-
-    width:
-        min(
-            700px,
-            94vw
-        );
-
+    width: min(700px, 100%);
     min-height: 330px;
-
-    display: grid;
-
-    place-items: center;
 
     padding: 30px;
 
-    border:
-        1px solid var(--border);
+    display: grid;
+    place-items: center;
 
-    border-radius: 24px;
+    border-radius: 20px;
 
-    color: var(--text);
+    color: white;
+    background: #111827;
 
-    background:
-        #101827;
-
-    box-shadow: var(--shadow);
-
-    font-size:
-        clamp(
-            22px,
-            5vw,
-            38px
-        );
-
+    font-size: clamp(22px, 5vw, 38px);
     font-weight: 900;
 
-    text-align: center;
+    cursor: pointer;
+}
+
+.reaction.go {
+    background: #159447;
+}
+
+.reaction.bad {
+    background: #a72845;
+}
+
+/* =========================
+   CONTROLS
+   ========================= */
+
+.game-footer {
+    margin-top: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 13px;
+}
+
+#help {
+    color: var(--muted);
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.restart-button {
+    padding: 12px 22px;
+
+    border: 0;
+    border-radius: 11px;
+
+    color: #041016;
+
+    background:
+        linear-gradient(
+            135deg,
+            #55e8ff,
+            #7adfff
+        );
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 900;
 
     cursor: pointer;
 
-    user-select: none;
-
     transition:
-        background .2s ease,
-        transform .2s ease;
+        transform .2s ease,
+        box-shadow .2s ease;
 }
 
+.restart-button:hover {
+    transform: translateY(-2px);
 
-.reaction:hover {
-
-    transform:
-        translateY(-2px);
+    box-shadow:
+        0 10px 30px rgba(85,232,255,.2);
 }
 
+/* =========================
+   MOBILE
+   ========================= */
 
-.reaction.go {
+@media (max-width: 700px) {
 
-    background:
-        #159447;
-
-    color: white;
-}
-
-
-.reaction.bad {
-
-    background:
-        #a72845;
-
-    color: white;
-}
-
-
-/* ============================================================
-   GAME STATUS / OVERLAYS
-   ============================================================ */
-
-.game-message {
-
-    margin-top: 15px;
-
-    color: var(--muted);
-
-    font-size: 14px;
-}
-
-
-/* ============================================================
-   SMALL SCREENS
-   ============================================================ */
-
-@media (
-    max-width: 700px
-) {
-
-    .nav,
     .game-nav {
-
-        width:
-            calc(
-                100% - 24px
-            );
-
-        min-height: 62px;
+        width: calc(100% - 24px);
+        height: 62px;
     }
 
-
-    .logo,
-    .game-brand {
-
-        font-size: 10px;
-
-        letter-spacing: 1.3px;
+    .game-page {
+        width: calc(100% - 16px);
+        padding-top: 28px;
     }
-
-
-    .shell,
-    .game-shell,
-    .game-container {
-
-        width:
-            calc(
-                100% - 18px
-            );
-
-        padding:
-            28px 0 50px;
-    }
-
-
-    .game-heading {
-
-        width: 100%;
-
-        justify-content: flex-start;
-
-        gap: 13px;
-    }
-
 
     .game-icon {
-
         width: 58px;
-
         height: 58px;
-
-        border-radius: 17px;
 
         font-size: 30px;
     }
 
-
-    .game-heading h1 {
-
-        font-size: 31px;
-
-        letter-spacing: -1px;
+    .game-header h1 {
+        font-size: 32px;
     }
 
-
-    .game-stats,
-    .bar,
-    .scorebar {
-
+    .game-stats {
         width: 100%;
     }
 
-
-    .pill,
-    .score-box,
-    .stat {
-
+    .game-stat {
         flex: 1;
-
-        min-width: 100px;
+        min-width: 0;
     }
 
-
-    .canvas-wrapper {
-
+    .game-stage {
         padding: 7px;
-
         border-radius: 17px;
     }
 
-
-    canvas {
-
-        border-radius: 12px;
+    body[data-game="tetris"] .game-stage {
+        min-width: 0;
     }
-
-
-    .reaction {
-
-        min-height: 260px;
-    }
-
-}
-
-
-/* ============================================================
-   VERY SMALL SCREENS
-   ============================================================ */
-
-@media (
-    max-width: 420px
-) {
-
-    .game-heading {
-
-        align-items:
-            flex-start;
-    }
-
-
-    .game-icon {
-
-        width: 50px;
-
-        height: 50px;
-
-        font-size: 25px;
-    }
-
-
-    .game-heading h1 {
-
-        font-size: 27px;
-    }
-
-
-    .pill,
-    .score-box,
-    .stat {
-
-        padding:
-            10px 8px;
-    }
-
-
-    .pill b,
-    .score-box strong,
-    .stat strong {
-
-        font-size: 18px;
-    }
-
-
-    .help,
-    .instructions {
-
-        font-size: 12px;
-    }
-
 }
