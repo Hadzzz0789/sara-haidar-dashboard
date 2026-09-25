@@ -1,86 +1,86 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<title>Flappy Bird</title>
+    <title>
+        Flappy · S&H
+    </title>
 
-<style>
-
-body {
-    margin: 0;
-    text-align: center;
-    font-family: Arial;
-    background: #071524;
-    color: white;
-}
-
-nav {
-    text-align: left;
-    padding: 20px;
-}
-
-nav a {
-    color: #5ef4ff;
-    text-decoration: none;
-}
-
-canvas {
-    border: 3px solid white;
-    border-radius: 12px;
-    max-width: 95vw;
-}
-
-h1 {
-    color: #ffd83d;
-}
-
-button {
-    padding: 12px 25px;
-    border: 0;
-    border-radius: 8px;
-    background: #ffd83d;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-</style>
+    <link
+        rel="stylesheet"
+        href="../css/game.css"
+    >
 
 </head>
 
 <body>
 
-<nav>
-<a href="../index.html">← Back to Arcade</a>
+<nav class="nav">
+
+    <a href="../index.html">
+        ← Dashboard
+    </a>
+
+    <div class="logo">
+        S&H ARCADE
+    </div>
+
 </nav>
 
-<h1>🐤 FLAPPY</h1>
+<main class="shell">
 
-<p>
-Score: <span id="score">0</span>
-|
-Best: <span id="best">0</span>
-</p>
+    <h1>
+        🐤 Flappy
+    </h1>
 
-<canvas
-id="game"
-width="420"
-height="600">
-</canvas>
+    <p class="sub">
+        Fly through the gaps.
+    </p>
 
-<p>
-SPACE / CLICK to flap
-</p>
+    <div class="bar">
 
-<button onclick="resetGame()">
-Restart
-</button>
+        <div class="pill">
+            <small>SCORE</small>
+            <b id="score">0</b>
+        </div>
 
-<script src="../js/flappy.js"></script>
+        <div class="pill">
+            <small>BEST</small>
+            <b id="best">0</b>
+        </div>
+
+    </div>
+
+    <canvas
+        id="game"
+        width="800"
+        height="500">
+    </canvas>
+
+    <div
+        class="help"
+        id="help">
+    </div>
+
+    <button onclick="location.reload()">
+        Restart
+    </button>
+
+</main>
+
+<script>
+    window.GAME = "flappy";
+</script>
+
+<script src="../js/arcade.js"></script>
 
 </body>
 </html>
