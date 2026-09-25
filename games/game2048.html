@@ -1,1 +1,80 @@
+<!doctype html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        2048 · S&H
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="../css/game.css"
+    >
+
+</head>
+
+<body>
+
+<nav class="nav">
+
+    <a href="../index.html">
+        ← Dashboard
+    </a>
+
+    <div class="logo">
+        S&H ARCADE
+    </div>
+
+</nav>
+
+<main class="shell">
+
+    <h1>🔢 2048</h1>
+
+    <p class="sub">
+        Merge your way to 2048.
+    </p>
+
+    <div class="bar">
+
+        <div class="pill">
+            <small>SCORE</small>
+            <b id="score">0</b>
+        </div>
+
+        <div class="pill">
+            <small>BEST</small>
+            <b id="best">0</b>
+        </div>
+
+    </div>
+
+    <div id="domgame"></div>
+
+    <div
+        id="help"
+        class="help">
+    </div>
+
+    <button onclick="location.reload()">
+        New Game
+    </button>
+
+</main>
+
+<script>
+    window.GAME = "game2048";
+</script>
+
+<script src="../js/arcade.js"></script>
+
+</body>
+</html>
