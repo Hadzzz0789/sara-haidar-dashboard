@@ -1,83 +1,65 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Snake</title>
+    <title>Snake · S&H</title>
 
-<style>
-
-body {
-    margin: 0;
-    background: #080b16;
-    color: white;
-    font-family: Arial;
-    text-align: center;
-}
-
-nav {
-    padding: 20px;
-    text-align: left;
-}
-
-nav a {
-    color: #5ef4ff;
-    text-decoration: none;
-}
-
-h1 {
-    color: #5ef4ff;
-}
-
-canvas {
-    background: #111827;
-    border: 3px solid #5ef4ff;
-    border-radius: 10px;
-    max-width: 90vw;
-}
-
-.info {
-    margin: 15px;
-    font-size: 20px;
-}
-
-button {
-    background: #5ef4ff;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    margin: 10px;
-}
-
-</style>
+    <link rel="stylesheet" href="../css/game.css">
 </head>
 
 <body>
 
-<nav>
-    <a href="../index.html">← Back to Arcade</a>
+<nav class="nav">
+    <a href="../index.html">← Dashboard</a>
+    <div class="logo">S&H ARCADE</div>
 </nav>
 
-<h1>🐍 SNAKE</h1>
+<main class="shell">
 
-<div class="info">
-    Score: <span id="score">0</span>
-    &nbsp; | &nbsp;
-    High Score: <span id="highScore">0</span>
-</div>
+    <h1>🐍 Snake</h1>
 
-<canvas id="game" width="400" height="400"></canvas>
+    <p class="sub">
+        Eat. Grow. Survive.
+    </p>
 
-<br>
+    <div class="bar">
 
-<button onclick="restartGame()">Restart</button>
+        <div class="pill">
+            <small>SCORE</small>
+            <b id="score">0</b>
+        </div>
 
-<p>Use ↑ ↓ ← → or WASD</p>
+        <div class="pill">
+            <small>BEST</small>
+            <b id="best">0</b>
+        </div>
 
-<script src="../js/snake.js"></script>
+    </div>
+
+    <canvas
+        id="game"
+        width="800"
+        height="500">
+    </canvas>
+
+    <div
+        class="help"
+        id="help">
+    </div>
+
+    <button onclick="location.reload()">
+        Restart
+    </button>
+
+</main>
+
+<script>
+    window.GAME = "snake";
+</script>
+
+<script src="../js/arcade.js"></script>
 
 </body>
 </html>
